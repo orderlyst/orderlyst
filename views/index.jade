@@ -1,5 +1,10 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title= title
+    base(href="/")
+    link(rel='stylesheet', href='/assets/css/vendor.css')
+    meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
+  body(ng-app="orderlyst")
+    ng-view
+    script(src="/assets/scripts/vendor.js")
