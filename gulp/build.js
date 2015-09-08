@@ -52,7 +52,7 @@ var $ = require('gulp-load-plugins')({
   gulp.task('build', ['sass', 'scripts', 'images', 'bower', 'misc', 'browserify', 'jslint'], function () {
     gulp.start('post-clean');
 
-    if(!isProduction){
+    if(process.env.NODE_ENV == 'development'){
       gulp.watch('./assets/**/*.{jpg|png|gif|ico}', ['images']);
       gulp.watch('./assets/**/*.scss', ['sass']);
       gulp.watch('./assets/**/*.js', ['scripts']);

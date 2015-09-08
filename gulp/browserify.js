@@ -15,7 +15,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
   var bundler = browserify(
     {
-      entries     : ['assets/js/main.js'],
+      entries     : ['assets/scripts/main.js'],
       debug       : true,
       cache       : {},
       packageCache: {},
@@ -26,9 +26,9 @@ var sourcemaps = require('gulp-sourcemaps');
 
   var handleErrors = function(error) {
     $.notify.onError({
-      title  : 'Compile Error',
-      message: '<%= error.message %>'
-    }).apply(this, args);
+      title  : 'Browserify Bundle Error',
+      message: error
+    });
     console.log(error);
     this.emit('end');
   };
@@ -43,9 +43,12 @@ var sourcemaps = require('gulp-sourcemaps');
       // optional, remove if you don't need to buffer file contents
       .pipe(buffer())
       // optional, remove if you dont want sourcemaps
-      .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+      .pipe($.sourcemaps.init({})) // loads map from browserify file
          // Add transformation tasks to the pipeline here.
-      .pipe(sourcemaps.write('./')) // writes .map file
+      .pipe($.uglify({
+        compress: {drop_console: true}
+      }))
+      .pipe($.sourcemaps.write('./')) // writes .map file
       .pipe(gulp.dest('public/scripts'));
   };
 
