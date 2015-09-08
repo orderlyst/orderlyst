@@ -41,7 +41,7 @@ var $ = require('gulp-load-plugins')({
   });
 
   gulp.task('scripts', function () {
-    gulp.src('assets/scripts/**/*js')
+    gulp.src('assets/scripts/**/*.js')
       .pipe($.jshint())
       .pipe($.jshint.reporter('jshint-stylish'))
       .pipe($.uglify())
@@ -49,7 +49,7 @@ var $ = require('gulp-load-plugins')({
       .pipe($.notify({'message': 'JavaScripts are loaded.', onLast: true}));
   });
 
-  gulp.task('build', ['sass', 'scripts', 'images', 'bower', 'misc', 'jslint'], function () {
+  gulp.task('build', ['sass', 'scripts', 'images', 'bower', 'misc', 'browserify', 'jslint'], function () {
     gulp.start('post-clean');
 
     if(!isProduction){
