@@ -1,5 +1,9 @@
 
 var watchify = require('watchify');
+var $ = require('gulp-load-plugins')({
+  pattern : ['gulp-*', 'main-bower-files', 'del'],
+  camelize: true
+});
 var browserify = require('browserify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
@@ -9,23 +13,24 @@ var sourcemaps = require('gulp-sourcemaps');
 (function(){
   'use strict';
 
-  var file = 'main.js';
+  var bundler = browserify(
+    {
+      entries     : ['assets/js/main.js'],
+      debug       : true,
+      cache       : {},
+      packageCache: {},
+      fullPaths   : true
+    },
+    watchify.args
+  );
 
-  // add custom browserify options here
-  var customOpts = {
-    entries: ['./src/index.js'],
-    debug: true
-  };
-  var bundler = browserify({
-        entries     : ['assets/js/main.js'],
-        debug       : true,
-        cache       : {},
-        packageCache: {},
-        fullPaths   : true
-      }, watchify.args);
-
-  var handleErrors = function() {
-
+  var handleErrors = function(error) {
+    $.notify.onError({
+      title  : 'Compile Error',
+      message: '<%= error.message %>'
+    }).apply(this, args);
+    console.log(error);
+    this.emit('end');
   };
 
   // add transformations here
