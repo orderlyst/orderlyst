@@ -56,7 +56,7 @@ var $ = require('gulp-load-plugins')({
       gulp.watch('./assets/**/*.{jpg|png|gif|ico}', ['images']);
       gulp.watch('./assets/**/*.scss', ['sass']);
       gulp.watch('./assets/**/*.js', ['scripts']);
-      gulp.watch('**/*.js', ['app-lint']);
+      gulp.watch('**/*.js', ['jslint']);
     }
   });
 
