@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var OrderModel = require('../../models/order');
 var UserModel = require('../../models/user');
+var Join = require('join').Join;
 
 /**
  * To fetch an order's information
@@ -100,6 +101,9 @@ router.post('/:id/items', function(req, res, next) {
   });
 });
 
+/**
+ * To delete a order item
+ */
 router.delete('/:id/items/:itemId', function(req, res, next){
   var orderId = req.params.id;
   var itemId = req.params.itemId;
@@ -110,6 +114,7 @@ router.delete('/:id/items/:itemId', function(req, res, next){
     .exec(function(err, order){
       order.items.id(itemId).remove();
       order.save();
+      res.json({status: "200 OK"});
     });
 });
 
