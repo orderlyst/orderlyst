@@ -2,10 +2,12 @@ doctype html
 html
   head
     title= title
-    base(href="/")
-    link(rel='stylesheet', href='/assets/css/vendor.css')
+    link(rel='stylesheet', href='/lib/css/main.css')
     meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
   body(ng-app="orderlyst")
-    ng-view
+    .container-fluid
+      h1= message
+      h2= error.status
+      pre #{error.stack}
     script(src="/assets/scripts/vendor.js")
     script(src="/assets/scripts/main.js")
