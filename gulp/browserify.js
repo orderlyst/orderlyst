@@ -24,6 +24,10 @@ var sourcemaps = require('gulp-sourcemaps');
     watchify.args
   );
 
+  var transforms = [
+    'brfs'
+  ];
+
   var handleErrors = function(error) {
     $.notify.onError({
       title  : 'Browserify Bundle Error',
@@ -57,5 +61,9 @@ var sourcemaps = require('gulp-sourcemaps');
     bundler = watchify(bundler);
     bundler.on('update', rebundle); // on any dep update, runs the bundler
   }
+
+  transforms.forEach(function (transform) {
+    bundler.transform(transform);
+  });
 
 })();
