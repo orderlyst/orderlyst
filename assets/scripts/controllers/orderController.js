@@ -20,6 +20,8 @@ var joinOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
                 '/api/users',
                 {name: name}
             ).success(function (data) {
+                    // Save uid in local storage
+                    $store.set('_uid', data._id);
                     $location.url('/orders/' + orderCode);
             });
         }
