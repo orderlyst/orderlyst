@@ -29,8 +29,10 @@ router.post('/', function(req, res, next) {
     "name": name
   });
   user.save(function(err){
-    if (!user) {
+    if (user) {
       res.json(user);
+    } else {
+      next(err);
     }
   });
 });
@@ -44,7 +46,7 @@ router.post('/:id', function(req, res, next) {
 
   UserModel
     .findOne({
-      "_id": userid
+      "_id": userId
     })
     .exec(function(err, user){
       user.name = name;
@@ -54,7 +56,7 @@ router.post('/:id', function(req, res, next) {
       } else {
         next(err);
       }
-    })
+    });
 });
 
 module.exports = router;

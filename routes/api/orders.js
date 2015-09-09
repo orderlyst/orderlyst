@@ -86,7 +86,7 @@ router.post('/:id/items', function(req, res, next) {
   join.then(function(orderCallback, userCallback){
     var order = orderCallback[1];
     var user = userCallback[1];
-    if (order && user)
+    if (order && user) {
       order.items.push({
         name: req.body.name,
         price: req.body.price,
@@ -97,7 +97,7 @@ router.post('/:id/items', function(req, res, next) {
     } else {
       next();
     }
-  }).
+  });
 });
 
 router.delete('/:id/items/:itemId', function(req, res, next){
