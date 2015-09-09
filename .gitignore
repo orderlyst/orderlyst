@@ -36,3 +36,6 @@ public
 
 #ignore any custom config file
 config/*.json
+
+#ignore idea
+.idea
