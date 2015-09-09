@@ -33,7 +33,7 @@ var $ = require('gulp-load-plugins')({
   });
 
   gulp.task('bower-css', function(){
-    gulp.src($.mainBowerFiles())
+    return gulp.src($.mainBowerFiles())
       .pipe($.filter('**/*.css'))
       .pipe($.flatten())
       .pipe($.minifyCss({

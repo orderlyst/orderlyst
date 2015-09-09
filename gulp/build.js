@@ -17,20 +17,21 @@ var $ = require('gulp-load-plugins')({
   });
 
   gulp.task('images', function () {
-    gulp.src('assets/images/**/*.{jpg,png,gif}')
+    return gulp.src('assets/images/**/*.{jpg,png,gif}')
       .pipe(gulp.dest('public/assets/images/'))
       .pipe($.notify({'message': 'Images are loaded.', onLast: true}));
-    gulp.src("assets/favicon.ico")
-      .pipe(gulp.dest('public/'));
   });
 
   gulp.task('misc', function () {
-    gulp.src("assets/robots.txt")
+    return gulp.src([
+        "assets/robots.txt",
+        "assets/favicon.ico"
+      ])
       .pipe(gulp.dest('public/'));
   });
 
   gulp.task('sass', function () {
-    gulp.src('assets/sass/**/*.scss')
+    return gulp.src('assets/sass/**/*.scss')
       .pipe($.sass().on('error', $.sass.logError))
       .pipe($.minifyCss({
         processImport: false
@@ -41,7 +42,7 @@ var $ = require('gulp-load-plugins')({
   });
 
   gulp.task('scripts', function () {
-    gulp.src('assets/scripts/**/*.js')
+    return gulp.src('assets/scripts/**/*.js')
       .pipe($.jshint())
       .pipe($.jshint.reporter('jshint-stylish'))
       .pipe($.uglify())
@@ -53,10 +54,9 @@ var $ = require('gulp-load-plugins')({
     gulp.start('post-clean');
 
     if(process.env.NODE_ENV == 'development'){
-      gulp.watch('./assets/images/**/*.{jpg|png|gif|ico}', ['images']);
+      gulp.watch('./assets/images/**/*.{jpg|png|gif}', ['images']);
       gulp.watch('./assets/sass/**/*.scss', ['sass']);
       gulp.watch('./assets/scripts/**/*.js', ['scripts']);
-      gulp.watch('**/*.js', ['jslint']);
     }
   });
 
