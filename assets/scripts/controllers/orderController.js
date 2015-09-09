@@ -16,11 +16,12 @@ var joinOrder = function($scope, $http, $location) {
 };
 
 var createOrder = function($scope, $http, $location) {
-    $scope.submit = function(joinOrder) {
-        var name = joinOrder.name;
-        if (name === "" || orderCode === "") return;
+    $scope.createOrder = {};
+    $scope.submit = function() {
+        alert('meow');
+        var name = $scope.createOrder.name;
+        if (name === "") return;
         console.log(name);
-        console.log(orderCode);
         // First create user and go to order page
         $http.post(
             '/api/user',
@@ -30,7 +31,7 @@ var createOrder = function($scope, $http, $location) {
                     '/api/orders',
                     {hostUserId: data._id});
         }).success(function(data) {
-            $location.url('/orders/' + data.code);
+            $location.url('/orders/' + data._id);
         });
     };
 };
