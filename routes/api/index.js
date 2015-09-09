@@ -5,8 +5,8 @@ var subrouters = [
   "/users"
 ];
 
-subrouters.forEach(function(router){
-  router.use(router, require('.' + router));
+subrouters.forEach(function(route){
+  router.use(route, require('.' + route));
 });
 
 module.exports = router;
