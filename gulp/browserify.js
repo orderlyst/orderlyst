@@ -9,6 +9,7 @@ var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
+var debowerify = require('debowerify');
 
 (function(){
   'use strict';
@@ -25,6 +26,7 @@ var sourcemaps = require('gulp-sourcemaps');
   );
 
   var transforms = [
+    debowerify,
     'brfs'
   ];
 
@@ -40,6 +42,12 @@ var sourcemaps = require('gulp-sourcemaps');
   // add transformations here
   // i.e. b.transform(coffeeify);
   var rebundle = function() {
+    console.log('Rebundling...');
+
+    transforms.forEach(function (transform) {
+      bundler.transform(transform);
+    });
+
     return bundler.bundle()
       // log errors if they happen
       .on('error', handleErrors)
@@ -47,12 +55,12 @@ var sourcemaps = require('gulp-sourcemaps');
       // optional, remove if you don't need to buffer file contents
       .pipe(buffer())
       // optional, remove if you dont want sourcemaps
-      .pipe($.sourcemaps.init({})) // loads map from browserify file
+//      .pipe($.sourcemaps.init({})) // loads map from browserify file
          // Add transformation tasks to the pipeline here.
-      .pipe($.uglify({
+      .pipe($.streamify($.uglify({
         compress: {drop_console: true}
-      }))
-      .pipe($.sourcemaps.write('./')) // writes .map file
+      })))
+//      .pipe($.sourcemaps.write('./')) // writes .map file
       .pipe(gulp.dest('public/assets/scripts'));
   };
 
@@ -61,9 +69,5 @@ var sourcemaps = require('gulp-sourcemaps');
     bundler = watchify(bundler);
     bundler.on('update', rebundle); // on any dep update, runs the bundler
   }
-
-  transforms.forEach(function (transform) {
-    bundler.transform(transform);
-  });
 
 })();
