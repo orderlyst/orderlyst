@@ -5,7 +5,7 @@ var randomCodeGenerator = function(){
 };
 
 var OrderItemSchema = mongoose.Schema({
-  owner: {
+  user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
