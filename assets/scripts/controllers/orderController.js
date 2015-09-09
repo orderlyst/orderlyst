@@ -7,7 +7,7 @@ var joinOrder = function($scope, $http, $location) {
         console.log(orderCode);
         // First create user and go to order page
         $http.post(
-            '/api/user',
+            '/api/users',
             {name: name}
         ).success(function(data) {
            $location.url('/orders/' + orderCode);
@@ -18,24 +18,23 @@ var joinOrder = function($scope, $http, $location) {
 joinOrder.$inject = ['$scope', '$http', '$location'];
 
 var createOrder = function($scope, $http, $location) {
-    //$scope.createOrder = {};
-    //$scope.submit = function() {
-    //    alert('meow');
-    //    var name = $scope.createOrder.name;
-    //    if (name === "") return;
-    //    console.log(name);
-    //    // First create user and go to order page
-    //    $http.post(
-    //        '/api/user',
-    //        {name: name}
-    //    ).success(function(data) {
-    //        return $http.post(
-    //                '/api/orders',
-    //                {hostUserId: data._id});
-    //    }).success(function(data) {
-    //        $location.url('/orders/' + data._id);
-    //    });
-    //};
+    $scope.createOrder = {};
+    $scope.submit = function() {
+        var name = $scope.createOrder.name;
+        if (name === "") return;
+        console.log(name);
+        // First create user and go to order page
+        $http.post(
+            '/api/users',
+            {name: name}
+        ).success(function(data) {
+            return $http.post(
+                    '/api/orders',
+                    {hostUserId: data._id});
+        }).success(function(data) {
+            $location.url('/orders/' + data._id);
+        });
+    };
 };
 
 createOrder.$inject = ['$scope', '$http', '$location'];
@@ -51,7 +50,7 @@ var viewOrder = function ($scope, $http, $routeParams) {
     );
 };
 
-viewOrder.$inject = ['$scope', '$http', '$location'];
+viewOrder.$inject = ['$scope', '$http', '$routeParams'];
 
 
 module.exports = {
