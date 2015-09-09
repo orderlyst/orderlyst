@@ -1,0 +1,10 @@
+.container.text-center
+    .row
+        .text-center
+            h1 Orderlyst
+    .row
+        .form-wrapper
+            form.join-order-form(accept-charset="UTF-8", ng-submit="submit(createOrder)")
+                input(placeholder="Name",ng-model="createOrder.name")
+                input(type='submit', ng-click="submit(createOrder)", value='Create')
+    p {{createOrder.name}}
