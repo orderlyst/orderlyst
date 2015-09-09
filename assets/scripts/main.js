@@ -1,6 +1,7 @@
 require('angular');
 require('angular-animate');
 require('angular-route');
+require('ngStorage');
 
 var OrderController = require('./controllers/orderController');
 
@@ -14,5 +15,6 @@ var app = angular.module('orderlyst', [
     controller('ViewOrderController', OrderController.viewOrder);
 
 require('./routes/index')(app);
+require('./services/localStorage')(app);
 
 module.exports = app;

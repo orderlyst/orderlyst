@@ -17,8 +17,10 @@ var joinOrder = function($scope, $http, $location) {
 
 joinOrder.$inject = ['$scope', '$http', '$location'];
 
-var createOrder = function($scope, $http, $location) {
+var createOrder = ['$scope', '$http', '$location', '$store',
+    function($scope, $http, $location, $store) {
     $scope.createOrder = {};
+    $store.bind($scope, 'test', 'Some Default Text');
     $scope.submit = function() {
         var name = $scope.createOrder.name;
         if (name === "") return;
@@ -35,9 +37,7 @@ var createOrder = function($scope, $http, $location) {
             $location.url('/orders/' + data._id);
         });
     };
-};
-
-createOrder.$inject = ['$scope', '$http', '$location'];
+}];
 
 var viewOrder = function ($scope, $http, $routeParams) {
     var id               = $routeParams.orderId;
