@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var OrderModel = require('../../models/order');
+var UserModel = require('../../models/user');
 
 /**
  * To fetch an order's information
@@ -20,5 +21,29 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+/**
+ * To create a new order
+ */
+router.post('/', function(req, res, next) {
+  var hostId = req.body.hostUserId;
+
+  UserModel
+    .findOne({
+      "_id": hostId
+    })
+    .exec(function(err, user){
+      if (user) {
+        var order = new OrderModel({
+          host: user._id
+        });
+        order.save(function(err) {
+          res.json(order);
+        });
+      } else {
+        next(err);
+      }
+    });
+
+});
 
 module.exports = router;
