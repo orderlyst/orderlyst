@@ -10,10 +10,10 @@ var $ = require('gulp-load-plugins')({
   gulp.task('jslint', function(){
     return gulp.src(
         [
-          "**/*.js",
           "!./node_modules/**",
           "!./bower_components/**",
-          "!./public/**"
+          "!./public/**",
+          "**/*.js"
         ]
       )
       .pipe($.jshint())

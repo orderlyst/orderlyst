@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
     if (!user) {
       res.json(user);
     }
-  })
+  });
 });
 
 module.exports = router;
