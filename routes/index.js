@@ -1,34 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 router.use('/api/*', require('./api/index'));
 
 // render partials for angular
 router.get('/partials/:filename', function (req, res, next) {
-  var filename = req.params.filename,
-      locals;
+  var filename = req.params.filename;
 
   if (!filename) {
     return next();
   }
 
-  if (req.session.passport) {
-    locals = {user: req.session.passport.user};
-  }
-
   filename = filename.replace('-', '/').replace('..', '');
-  res.render("partials/" + filename, locals);
+  res.render("partials/" + filename, {});
 });
 
 // catch all for loading angular page
 router.all('/*', function (req, res) {
-  res.render('index', {title: 'Kardboard'});
+  res.render('index', {title: 'Orderlyst'});
 });
-
 
 module.exports = router;
