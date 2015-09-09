@@ -17,25 +17,45 @@ var joinOrder = function($scope, $http, $location) {
 
 joinOrder.$inject = ['$scope', '$http', '$location'];
 
-var createOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var createOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
+    function($rootScope, $scope, $http, $location, $store) {
     $scope.createOrder = {};
-    $store.bind($scope, 'test', 'Some Default Text');
+    $store.bind($rootScope, '_uid', -1);
+    var uid = $store.get('_uid');
+    var hasAccount = (uid !== -1);
+    if (hasAccount) {
+        $http.post(
+            '/api/orders',
+            {hostUserId: uid}
+        ).success(function(data) {
+                $location.url('/orders/' + data._id);
+        });
+    }
     $scope.submit = function() {
         var name = $scope.createOrder.name;
         if (name === "") return;
-        console.log(name);
         // First create user and go to order page
-        $http.post(
-            '/api/users',
-            {name: name}
-        ).success(function(data) {
-            return $http.post(
+        if (uid !== -1) {
+            $http.post(
+                '/api/orders',
+                {hostUserId: uid}
+            ).success(function(data) {
+                $location.url('/orders/' + data._id);
+            });
+        } else {
+            $http.post(
+                '/api/users',
+                {name: name}
+            ).success(function (data) {
+                // Save uid in local storage
+                $store.set('_uid', data._id);
+                return $http.post(
                     '/api/orders',
                     {hostUserId: data._id});
-        }).success(function(data) {
-            $location.url('/orders/' + data._id);
-        });
+            }).success(function (data) {
+                $location.url('/orders/' + data._id);
+            });
+        }
     };
 }];
 
