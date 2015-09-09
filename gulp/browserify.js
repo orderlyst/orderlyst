@@ -49,7 +49,7 @@ var sourcemaps = require('gulp-sourcemaps');
         compress: {drop_console: true}
       }))
       .pipe($.sourcemaps.write('./')) // writes .map file
-      .pipe(gulp.dest('public/scripts'));
+      .pipe(gulp.dest('public/assets/scripts'));
   };
 
   gulp.task('browserify', rebundle); // so you can run `gulp js` to build the file

@@ -53,9 +53,9 @@ var $ = require('gulp-load-plugins')({
     gulp.start('post-clean');
 
     if(process.env.NODE_ENV == 'development'){
-      gulp.watch('./assets/**/*.{jpg|png|gif|ico}', ['images']);
-      gulp.watch('./assets/**/*.scss', ['sass']);
-      gulp.watch('./assets/**/*.js', ['scripts']);
+      gulp.watch('./assets/images/**/*.{jpg|png|gif|ico}', ['images']);
+      gulp.watch('./assets/sass/**/*.scss', ['sass']);
+      gulp.watch('./assets/scripts/**/*.js', ['scripts']);
       gulp.watch('**/*.js', ['jslint']);
     }
   });
