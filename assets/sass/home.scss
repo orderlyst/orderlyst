@@ -24,7 +24,6 @@
 
     // Typing cursor animation
     .cursor {
-      @include animation(blink 1s infinite);
     }
 
     @media (min-width: $screen-xs-min) {
