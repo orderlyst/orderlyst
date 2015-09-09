@@ -17,4 +17,16 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+router.post('/', function(req, res, next) {
+  var name = req.body.name;
+  var user = new UserModel({
+    "name": name
+  });
+  user.save(function(err){
+    if (!user) {
+      res.json(user);
+    }
+  })
+});
+
 module.exports = router;
