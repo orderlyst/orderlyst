@@ -29,7 +29,13 @@ module.exports = function(app) {
               templateUrl: "/partials/create",
               controller: "CreateOrderController"
             }
-          );
+          ).when(
+            "/orders/:orderId",
+            {
+              controller: "ViewOrderController",
+              templateUrl: "/partials/view"
+            }
+        );
 
         $routeProvider.otherwise({ redirectTo: "/" });
       }

@@ -10,7 +10,8 @@ var app = angular.module('orderlyst', [
       'ngRoute'
     ]).
     controller('JoinOrderController', OrderController.joinOrder).
-    controller('CreateOrderController', OrderController.createOrder);
+    controller('CreateOrderController', OrderController.createOrder).
+    controller('ViewOrderController', OrderController.viewOrder);
 
 require('./routes/index')(app);
 

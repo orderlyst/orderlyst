@@ -35,8 +35,20 @@ var createOrder = function($scope, $http, $location) {
     };
 };
 
+var viewOrder = function ($scope, $http, $routeParams) {
+    var id               = $routeParams.orderId;
+    $http.get('/api/orders/' + id + '/items').
+        success(function(data) {
+            $scope.items = { '0':
+            {'name': '2', 'price': '2'}
+        };
+        }
+    );
+};
+
 
 module.exports = {
     joinOrder: joinOrder,
-    createOrder: createOrder
+    createOrder: createOrder,
+    viewOrder: viewOrder
 };
