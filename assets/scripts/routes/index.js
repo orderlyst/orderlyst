@@ -17,6 +17,18 @@ module.exports = function(app) {
             {
               templateUrl: "/partials/index"
             }
+          ).when(
+            "/join",
+            {
+              templateUrl: "/partials/join",
+              controller: "JoinOrderController"
+            }
+          ).when(
+            "/create",
+            {
+              templateUrl: "/partials/create",
+              controller: "CreateOrderController"
+            }
           );
 
         $routeProvider.otherwise({ redirectTo: "/" });

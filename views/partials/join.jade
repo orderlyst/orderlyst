@@ -1,0 +1,10 @@
+.container.text-center(ng-controller="JoinOrderController")
+    .row
+        .text-center
+            h1 Orderlyst
+    .row
+        .form-wrapper
+            form.join-order-form(accept-charset="UTF-8", ng-submit="submit(joinOrder)")
+                input(placeholder="Name",ng-model="joinOrder.name")
+                input(placeholder="Order Code",ng-model="joinOrder.code")
+                input(type='submit', value='Join')
