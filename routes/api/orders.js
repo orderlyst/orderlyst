@@ -92,11 +92,25 @@ router.post('/:id/items', function(req, res, next) {
         price: req.body.price,
         user: user._id
       });
+      order.save();
       res.json({status: '200 OK'});
     } else {
       next();
     }
   }).
+});
+
+router.delete('/:id/items/:itemId', function(req, res, next){
+  var orderId = req.params.id;
+  var itemId = req.params.itemId;
+  OrderModel
+    .findOne({
+      "_id": orderId
+    })
+    .exec(function(err, order){
+      order.items.id(itemId).remove();
+      order.save();
+    });
 });
 
 module.exports = router;
