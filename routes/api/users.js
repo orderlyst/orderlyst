@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../../models/user');
 
+/**
+ * To fetch a user's information
+ */
 router.get('/:id', function(req, res, next) {
   var userId = req.params.id;
   UserModel
@@ -17,6 +20,9 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+/**
+ * To create a new user
+ */
 router.post('/', function(req, res, next) {
   var name = req.body.name;
   var user = new UserModel({
@@ -29,6 +35,9 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/**
+ * To update an existing user
+ */
 router.post('/:id', function(req, res, next) {
   var name = req.body.name;
   var userId = req.params.id;
