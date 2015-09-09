@@ -1,19 +1,30 @@
-var joinOrder = function($scope, $http, $location) {
+var joinOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
+    function($rootScope, $scope, $http, $location, $store) {
+    $scope.joinOrder = {};
+    $store.bind($rootScope, '_uid', -1);
+    var uid = $store.get('_uid');
+    $scope.hasAccount = (uid !== -1);
     $scope.submit = function(joinOrder) {
-        var name = joinOrder.name;
-        var orderCode = joinOrder.code;
+        var name, orderCode;
+        if ($scope.hasAccount) {
+            name = uid;
+        } else {
+            name = joinOrder.name;
+        }
+        orderCode = joinOrder.code;
         if (name === "" || orderCode === "") return;
-        console.log(name);
-        console.log(orderCode);
-        // First create user and go to order page
-        $http.post(
-            '/api/users',
-            {name: name}
-        ).success(function(data) {
-           $location.url('/orders/' + orderCode);
-        });
+        if ($scope.hasAccount) {
+            $location.url('/orders/' + orderCode);
+        } else {
+            $http.post(
+                '/api/users',
+                {name: name}
+            ).success(function (data) {
+                    $location.url('/orders/' + orderCode);
+            });
+        }
     };
-};
+}];
 
 joinOrder.$inject = ['$scope', '$http', '$location'];
 
@@ -35,7 +46,7 @@ var createOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
         var name = $scope.createOrder.name;
         if (name === "") return;
         // First create user and go to order page
-        if (uid !== -1) {
+        if (hasAccount) {
             $http.post(
                 '/api/orders',
                 {hostUserId: uid}

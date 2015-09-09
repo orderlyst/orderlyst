@@ -5,7 +5,7 @@
     .row
         .form-wrapper
             form.join-order-form(accept-charset="UTF-8", ng-submit="submit(joinOrder)")
-                input(placeholder="Name",ng-model="joinOrder.name")
+                input(placeholder="Name",ng-model="joinOrder.name", ng-if="!hasAccount")
                 input(placeholder="Order Code",ng-model="joinOrder.code")
                 input(type='submit', ng-click="submit(joinOrder)", value='Join')
     p {{joinOrder.name}}
