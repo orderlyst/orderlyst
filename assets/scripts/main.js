@@ -1,7 +1,6 @@
 require('angular');
 require('angular-animate');
 require('angular-route');
-require('ngStorage');
 
 var OrderController = require('./controllers/orderController');
 
