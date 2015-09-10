@@ -1,7 +1,6 @@
-var joinOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
-    function($rootScope, $scope, $http, $location, $store) {
+var joinOrder = ['$scope', '$http', '$location', '$store',
+    function($scope, $http, $location, $store) {
     $scope.joinOrder = {};
-    $store.bind($rootScope, '_uid', -1);
     var uid = $store.get('_uid');
     $scope.hasAccount = (uid !== -1);
     $scope.submit = function(joinOrder) {
@@ -28,12 +27,9 @@ var joinOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
     };
 }];
 
-joinOrder.$inject = ['$scope', '$http', '$location'];
-
-var createOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
-    function($rootScope, $scope, $http, $location, $store) {
+var createOrder = ['$scope', '$http', '$location', '$store',
+    function($scope, $http, $location, $store) {
     $scope.createOrder = {};
-    $store.bind($rootScope, '_uid', -1);
     var uid = $store.get('_uid');
     var hasAccount = (uid !== -1);
     if (hasAccount) {
@@ -72,18 +68,20 @@ var createOrder = ['$rootScope', '$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = function ($scope, $http, $routeParams) {
+var viewOrder = ['$scope', '$http', '$routeParams', '$store',
+    function ($scope, $http, $routeParams, $store) {
     var id               = $routeParams.orderId;
-    $http.get('/api/orders/' + id + '/items').
-        success(function(data) {
-            $scope.items = { '0':
-            {'name': '2', 'price': '2'}
-        };
-        }
-    );
-};
-
-viewOrder.$inject = ['$scope', '$http', '$routeParams'];
+    $scope.items = {};
+    $scope.retrieveOrderItems = function() {
+        $http.get('/api/orders/' + id + '/items').
+            success(function (data) {
+                $scope.items = {
+                    '0': {'name': '2', 'price': '2', 'user': '3'}
+                };
+            }
+        );
+    };
+}];
 
 
 module.exports = {

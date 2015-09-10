@@ -12,7 +12,11 @@ var app = angular.module('orderlyst', [
     ]).
     controller('JoinOrderController', OrderController.joinOrder).
     controller('CreateOrderController', OrderController.createOrder).
-    controller('ViewOrderController', OrderController.viewOrder);
+    controller('ViewOrderController', OrderController.viewOrder).
+    // User authentication
+    run(['$rootScope', '$store', function($rootScope, $store) {
+        $store.bind($rootScope, '_uid', -1);
+    }]);
 
 require('./routes/index')(app);
 require('./services/localStorage')(app);
