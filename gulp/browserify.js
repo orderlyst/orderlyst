@@ -57,9 +57,9 @@ var debowerify = require('debowerify');
       // optional, remove if you dont want sourcemaps
 //      .pipe($.sourcemaps.init({})) // loads map from browserify file
          // Add transformation tasks to the pipeline here.
-      .pipe($.streamify($.uglify({
-        compress: {drop_console: true}
-      })))
+      //.pipe($.streamify($.uglify({
+      //  compress: {drop_console: true}
+      //})))
 //      .pipe($.sourcemaps.write('./')) // writes .map file
       .pipe(gulp.dest('public/assets/scripts'));
   };

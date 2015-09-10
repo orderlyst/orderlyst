@@ -45,7 +45,7 @@ var $ = require('gulp-load-plugins')({
     return gulp.src('assets/scripts/**/*.js')
       .pipe($.jshint())
       .pipe($.jshint.reporter('jshint-stylish'))
-      .pipe($.uglify())
+      //.pipe($.uglify())
       .pipe(gulp.dest('public/assets/scripts/'))
       .pipe($.notify({'message': 'JavaScripts are loaded.', onLast: true}));
   });

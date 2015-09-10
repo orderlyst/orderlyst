@@ -58,7 +58,7 @@ var $ = require('gulp-load-plugins')({
     return gulp.src($.mainBowerFiles())
       .pipe(jsFilter)
       .pipe($.concat('vendor.js'))
-      .pipe($.uglify())
+      //.pipe($.uglify())
       .pipe(gulp.dest('public/assets/scripts'));
   });
 
