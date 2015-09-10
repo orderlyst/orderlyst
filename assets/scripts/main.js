@@ -8,16 +8,17 @@ var OrderController = require('./controllers/orderController');
 var app = angular.module('orderlyst', [
       'ngAnimate',
       'ngRoute'
-    ]).
-    controller('JoinOrderController', OrderController.joinOrder).
+    ]);
+
+require('./routes/index')(app);
+require('./services/localStorage')(app);
+
+app.controller('JoinOrderController', OrderController.joinOrder).
     controller('CreateOrderController', OrderController.createOrder).
     controller('ViewOrderController', OrderController.viewOrder).
     // User authentication
     run(['$rootScope', '$store', function($rootScope, $store) {
         $store.bind($rootScope, '_uid', -1);
     }]);
-
-require('./routes/index')(app);
-require('./services/localStorage')(app);
 
 module.exports = app;
