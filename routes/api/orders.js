@@ -93,8 +93,10 @@ router.post('/:id/items', function(req, res, next) {
         price: req.body.price,
         user: user._id
       });
-      order.save();
-      res.json({status: '200 OK'});
+      order.save(function(err){
+        res.json(order.items[order.items.length - 1]);
+      });
+      res.json({});
     } else {
       next();
     }
