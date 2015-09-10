@@ -1,12 +1,15 @@
-var mongoose = require('mongoose');
+module.exports = function(sequelize, DataTypes) {
+	"use strict";
+  var User = sequelize.define("User", {
+		"userId": {
+			"type": DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true // Automatically gets converted to SERIAL for postgres
+		},
+		"name":{
+			"type": DataTypes.STRING
+		}
+	});
 
-var UserSchema = mongoose.Schema({
-	name: {
-		type: String,
-		trim: true
-	}
-});
-
-var UserModel = mongoose.model('User', UserSchema);
-
-module.exports = UserModel;
+	return User;
+};
