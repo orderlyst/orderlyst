@@ -105,10 +105,11 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
             formData
         ).success(function(data) {
             $scope.isLoading = false;
-            $scope.items.push(formData);
+
+            $scope.items.push(angular.copy(formData));
             // Clear formData
-            $scope.formData.name = '';
-            $scope.formData.price = '';
+            formData.name = '';
+            formData.price = '';
         });
     };
     $scope.removeOrderItem = function(item) {
