@@ -27,7 +27,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
                 {name: name}
             ).success(function (data) {
                     // Save uid in local storage
-                    $store.set('_uid', data._id);
+                    $store.set('_orderlyst_uid', data._id);
                     // NEED CLARIFICATION ON API
                     $location.url('/orders/' + orderCode);
             });
@@ -65,10 +65,10 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                 {name: name}
             ).then(function (data) {
                 // Save uid in local storage
-                $store.set('_uid', data._id);
+                $store.set('_orderlyst_uid', data.data._id);
                 return $http.post(
                     '/api/orders',
-                    {hostUserId: data._id});
+                    {hostUserId: data.data._id});
             }).then(function (data) {
                 $location.url('/orders/' + data._id);
             });
@@ -76,13 +76,15 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
-    function ($scope, $http, $routeParams, $store, $location) {
+var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location', '$userService',
+    function ($scope, $http, $routeParams, $store, $location, $userService) {
     var id               = $routeParams.orderId;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
+    $scope.userNames = {};
+    $scope.getUserData = $userService.getUserDetail;
     // Authenticate user
     if (!hasAccount) {
         $location.url('/join/' + id);

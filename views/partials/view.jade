@@ -1,4 +1,4 @@
-.col-sm-12.text-center(ng-repeat="item in items")
+.col-sm-12.text-center(ng-repeat="item in items track by item._id")
     p
         | Name {{item.user}}
         | Item {{item.name}}
