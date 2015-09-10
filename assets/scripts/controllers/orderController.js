@@ -82,7 +82,6 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
     var uid              = $store.get('_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
-    $scope.items = {};
     $scope.formData = {'user': uid};
     // Authenticate user
     if (!hasAccount) {
