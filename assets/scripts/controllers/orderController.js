@@ -76,8 +76,8 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store',
-    function ($scope, $http, $routeParams, $store) {
+var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
+    function ($scope, $http, $routeParams, $store, $location) {
     var id               = $routeParams.orderId;
     var uid              = $store.get('_uid');
     var hasAccount       = (uid !== -1);
