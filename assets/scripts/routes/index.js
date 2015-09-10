@@ -23,7 +23,13 @@ module.exports = function(app) {
               templateUrl: "/partials/join",
               controller: "JoinOrderController"
             }
-          ).when(
+        ).when(
+            "/join/:id",
+            {
+              templateUrl: "/partials/join",
+              controller: "JoinOrderController"
+            }
+        ).when(
             "/create",
             {
               templateUrl: "/partials/create",

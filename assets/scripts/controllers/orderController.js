@@ -1,6 +1,13 @@
-var joinOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
+    function($scope, $http, $location, $store, $routeParams) {
     $scope.joinOrder = {};
+    var orderId = $routeParams.id;
+    if (orderId !== null) {
+        $http.get('/api/orders/' + orderId).
+        success(function(data) {
+                $scope.joinOrder.code = data.code;
+        });
+    }
     var uid = $store.get('_uid');
     $scope.hasAccount = (uid !== -1);
     $scope.submit = function(joinOrder) {
@@ -68,10 +75,19 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store',
+var viewOrder = ['$scope', '$http', '$routeParams', '$location', '$store',
     function ($scope, $http, $routeParams, $store) {
     var id               = $routeParams.orderId;
+    var uid              = $store.get('_uid');
+    var hasAccount       = (uid !== -1);
     $scope.items = {};
+    // Authenticate user
+    if (!hasAccount) {
+        $location.url('/join/' + id);
+    }
+
+    $scope.retrieveOrderItems();
+    // Scope methods
     $scope.retrieveOrderItems = function() {
         $http.get('/api/orders/' + id + '/items').
             success(function (data) {
@@ -81,6 +97,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
             }
         );
     };
+
 }];
 
 
