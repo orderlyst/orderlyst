@@ -2,7 +2,8 @@
     p
         | Name {{item.user}}
         | Item {{item.name}}
-        | Price {{item.price}}
+        | Price {{item.price}} &nbsp
+        span.btn.btn-danger(ng-click="removeOrderItem(item)") Delete
 .form-wrapper
     form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
         input(placeholder="Item",ng-model="formData.name")

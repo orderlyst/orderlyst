@@ -101,7 +101,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
         if (formData.name === '' || formData.price === '') return;
         $scope.isLoading = true;
         $http.post(
-            '/apir/orders/' + id + '/items',
+            '/api/orders/' + id + '/items',
             formData
         ).success(function(data) {
             $scope.isLoading = false;
@@ -110,6 +110,17 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
             $scope.formData.name = '';
             $scope.formData.price = '';
         });
+    };
+    $scope.removeOrderItem = function(item) {
+        $scope.isLoading = true;
+        $http.delete(
+            '/api/orders/' + id + '/items/' + item._id
+        ).success(function(data) {
+                $scope.isLoading = false;
+                $scope.items = $scope.items.filter(function(i) {
+                    return i._id !== item._id;
+                });
+            });
     };
 }];
 
