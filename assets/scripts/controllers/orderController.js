@@ -28,6 +28,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
             ).success(function (data) {
                     // Save uid in local storage
                     $store.set('_uid', data._id);
+                    // NEED CLARIFICATION ON API
                     $location.url('/orders/' + orderCode);
             });
         }
