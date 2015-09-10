@@ -98,7 +98,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
     // Scope methods
     $scope.createOrderItem = function() {
         var orderItemData = angular.copy($scope.formData);
-        if (formData.name === '' || formData.price === '') return;
+        if (orderItemData.name === '' || orderItemData.price === '') return;
         $scope.isLoading = true;
         // Clear formData
         $scope.formData.name = '';
