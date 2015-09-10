@@ -1,3 +1,22 @@
+var startOrder = ['$scope', '$http', '$location', '$store',
+    function($scope, $http, $location, $store) {
+    var uid = $store.get('_orderlyst_uid');
+    var hasAccount = (uid !== -1);
+    $scope.createOrder = function() {
+        if (hasAccount) {
+            $http.post(
+                '/api/orders',
+                {hostUserId: uid}
+            ).success(function (data) {
+                    $location.url('/orders/' + data._id);
+            });
+        } else {
+            $location.url('/create');
+        }
+    };
+}];
+
+
 var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
     function($scope, $http, $location, $store, $routeParams) {
     $scope.joinOrder = {};
@@ -142,6 +161,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
 
 
 module.exports = {
+    startOrder: startOrder,
     joinOrder: joinOrder,
     createOrder: createOrder,
     viewOrder: viewOrder

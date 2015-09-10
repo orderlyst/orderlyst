@@ -15,7 +15,8 @@ module.exports = function(app) {
           .when(
             "/",
             {
-              templateUrl: "/partials/index"
+              templateUrl: "/partials/index",
+              controller: "StartOrderController"
             }
           ).when(
             "/join",
