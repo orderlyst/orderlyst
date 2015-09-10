@@ -106,7 +106,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
         ).success(function(data) {
             $scope.isLoading = false;
 
-            $scope.items.push(angular.copy(formData));
+            $scope.items.push(data);
             // Clear formData
             formData.name = '';
             formData.price = '';
