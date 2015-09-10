@@ -63,13 +63,13 @@ var createOrder = ['$scope', '$http', '$location', '$store',
             $http.post(
                 '/api/users',
                 {name: name}
-            ).success(function (data) {
+            ).then(function (data) {
                 // Save uid in local storage
                 $store.set('_uid', data._id);
                 return $http.post(
                     '/api/orders',
                     {hostUserId: data._id});
-            }).success(function (data) {
+            }).then(function (data) {
                 $location.url('/orders/' + data._id);
             });
         }
