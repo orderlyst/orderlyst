@@ -8,7 +8,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
                 $scope.joinOrder.code = data.code;
         });
     }
-    var uid = $store.get('_uid');
+    var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
     $scope.submit = function() {
         var name, orderCode;
@@ -38,7 +38,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
 var createOrder = ['$scope', '$http', '$location', '$store',
     function($scope, $http, $location, $store) {
     $scope.createOrder = {};
-    var uid = $store.get('_uid');
+    var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     if (hasAccount) {
         $http.post(
@@ -79,7 +79,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
     function ($scope, $http, $routeParams, $store, $location) {
     var id               = $routeParams.orderId;
-    var uid              = $store.get('_uid');
+    var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
@@ -122,6 +122,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
                 });
             });
     };
+
     //$scope.userName = function(uid) {
     //    $http.get('/api/users/' + uid)
     //        .success(function(data) {

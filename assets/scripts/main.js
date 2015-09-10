@@ -18,7 +18,7 @@ app.controller('JoinOrderController', OrderController.joinOrder).
     controller('ViewOrderController', OrderController.viewOrder).
     // User authentication
     run(['$rootScope', '$store', function($rootScope, $store) {
-        $store.bind($rootScope, '_uid', -1);
+        $store.bind($rootScope, '_orderlyst_uid', -1);
     }]);
 
 module.exports = app;
