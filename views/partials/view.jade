@@ -1,3 +1,10 @@
-.col-sm-12(ng-repeat="item in items")
-    p {{item.name}}
-    p {{item.price}}
+.col-sm-12.text-center(ng-repeat="item in items")
+    p
+        | Name {{item.user}}
+        | Item {{item.name}}
+        | Price {{item.price}}
+.form-wrapper
+    form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+        input(placeholder="Item",ng-model="formData.name")
+        input(placeholder="Price",ng-model="formData.price")
+        input(type='submit', value='New Item')

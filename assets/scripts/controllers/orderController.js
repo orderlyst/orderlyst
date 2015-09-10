@@ -83,7 +83,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
     $scope.items = {};
-    $scope.formData = {};
+    $scope.formData = {'user': uid};
     // Authenticate user
     if (!hasAccount) {
         $location.url('/join/' + id);
@@ -91,21 +91,24 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
 
     $http.get('/api/orders/' + id + '/items').
         success(function (data) {
-            $scope.items = {
-                '0': {'name': '2', 'price': '2', 'user': '3'}
-            };
+            $scope.items = data;
         }
     );
 
     // Scope methods
     $scope.createOrderItem = function() {
+        var formData = $scope.formData;
+        if (formData.name === '' || formData.price === '') return;
         $scope.isLoading = true;
         $http.post(
             '/apir/orders/' + id + '/items',
-            $scope.formData
+            formData
         ).success(function(data) {
             $scope.isLoading = false;
-            $scope.items[data._id] = data;
+            $scope.items.push(formData);
+            // Clear formData
+            $scope.formData.name = '';
+            $scope.formData.price = '';
         });
     };
 }];
