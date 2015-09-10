@@ -76,25 +76,37 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location', '$userService',
-    function ($scope, $http, $routeParams, $store, $location, $userService) {
+var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
+    function ($scope, $http, $routeParams, $store, $location) {
     var id               = $routeParams.orderId;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
-    $scope.userNames = {};
-    $scope.getUserData = $userService.getUserDetail;
+    $scope.userDictionary = {};
+
+    // Get user details method
+    var fetchUserDetail = function (uid) {
+        if ($scope.userDictionary[uid] !== undefined) return;
+        $http.get('/api/users/' + uid)
+            .success(function (data) {
+                $scope.userDictionary[uid] = data;
+            });
+    };
+
     // Authenticate user
+    fetchUserDetail(uid);
     if (!hasAccount) {
         $location.url('/join/' + id);
     }
 
     $http.get('/api/orders/' + id + '/items').
-        success(function (data) {
-            $scope.items = data;
-        }
-    );
+    success(function (data) {
+        $scope.items = data;
+        data.map(function(datum) {
+            fetchUserDetail(datum.user);
+        });
+    });
 
     // Scope methods
     $scope.createOrderItem = function() {
@@ -126,13 +138,6 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location', '$use
                 });
             });
     };
-
-    //$scope.userName = function(uid) {
-    //    $http.get('/api/users/' + uid)
-    //        .success(function(data) {
-    //           return data.name;
-    //        });
-    //};
 }];
 
 

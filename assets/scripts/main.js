@@ -12,7 +12,6 @@ var app = angular.module('orderlyst', [
 
 require('./routes/index')(app);
 require('./services/localStorage')(app);
-require('./services/user')(app);
 
 app.controller('JoinOrderController', OrderController.joinOrder).
     controller('CreateOrderController', OrderController.createOrder).
