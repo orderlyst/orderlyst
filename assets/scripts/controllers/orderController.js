@@ -97,19 +97,19 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
 
     // Scope methods
     $scope.createOrderItem = function() {
-        var formData = $scope.formData;
+        var orderItemData = angular.copy($scope.formData);
         if (formData.name === '' || formData.price === '') return;
         $scope.isLoading = true;
+        // Clear formData
+        $scope.formData.name = '';
+        $scope.formData.price = '';
         $http.post(
             '/api/orders/' + id + '/items',
-            formData
+            orderItemData
         ).success(function(data) {
             $scope.isLoading = false;
 
             $scope.items.push(data);
-            // Clear formData
-            formData.name = '';
-            formData.price = '';
         });
     };
     $scope.removeOrderItem = function(item) {
@@ -123,6 +123,12 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
                 });
             });
     };
+    //$scope.userName = function(uid) {
+    //    $http.get('/api/users/' + uid)
+    //        .success(function(data) {
+    //           return data.name;
+    //        });
+    //};
 }];
 
 
