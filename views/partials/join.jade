@@ -1,11 +1,13 @@
-.container.text-center
-    .row
-        .text-center
-            h1 Orderlyst
-    .row
-        .form-wrapper
-            form.join-order-form(accept-charset="UTF-8", ng-submit="submit()")
-                input(placeholder="Name",ng-model="joinOrder.name", ng-if="!hasAccount")
-                input(placeholder="Order Code",ng-model="joinOrder.code")
-                input(type='submit', value='Join')
-    p {{joinOrder.name}}
+.container
+  .row
+    .col-md-12
+      h1 Orderlyst
+  .row
+    .col-md-12
+      form.form(ng-submit="submit()")
+        .form-group
+          input.form-control(placeholder="Name",ng-model="joinOrder.name", ng-if="!hasAccount")
+        .form-group
+          input.form-control(placeholder="Order Code",ng-model="joinOrder.code")
+        button.btn.btn-primary.btn-block(type='submit') Join Order
+      p {{joinOrder.name}}
