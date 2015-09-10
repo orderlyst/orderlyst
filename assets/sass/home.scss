@@ -1,4 +1,10 @@
 @import 'mixins/variables';
+@import 'bootstrap';
+
+body {
+  background: $color-background;
+  background-size: cover;
+}
 
 .homepage {
   background: $color-primary-green;
@@ -7,6 +13,14 @@
     top: 0;
     height: 70px;
   }
+}
+
+.btn-dark {
+  @include button-variant($color-dark-gray, $color-light-gray, $color-light-gray);
+}
+
+.btn-light{
+  @include button-variant($color-white, $color-light-gray, $color-light-gray);
 }
 
 .hero-copy {

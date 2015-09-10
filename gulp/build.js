@@ -4,6 +4,8 @@ var $ = require('gulp-load-plugins')({
   camelize: true
 });
 
+var bootstrapDir = './bower_components/bootstrap-sass';
+
 (function(){
   "use strict";
 
@@ -32,7 +34,9 @@ var $ = require('gulp-load-plugins')({
 
   gulp.task('sass', function () {
     return gulp.src('assets/sass/**/*.scss')
-      .pipe($.sass().on('error', $.sass.logError))
+      .pipe($.sass({
+        includePaths: [bootstrapDir + '/assets/stylesheets']
+      }).on('error', $.sass.logError))
       .pipe($.minifyCss({
         processImport: false
       }))
