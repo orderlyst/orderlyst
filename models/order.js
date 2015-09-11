@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     "code": {
       "type": DataTypes.STRING,
-      "defaultValue": ""
+      "defaultValue": randomCodeGenerator
     },
     "surcharge": {
       "type": DataTypes.FLOAT,
