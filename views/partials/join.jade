@@ -1,13 +1,19 @@
 ion-view
-  .row
-    .col-md-12
-      h1 Orderlyst
-  .row
-    .col-md-12
-      form.form(ng-submit="submit()")
-        .form-group
-          input.form-control(placeholder="Name",ng-model="joinOrder.name", ng-if="!hasAccount")
-        .form-group
-          input.form-control(placeholder="Order Code",ng-model="joinOrder.code")
-        button.btn.btn-dark.btn-block(type='submit') Join Order
-      p {{joinOrder.name}}
+  include ./header
+  ion-view
+    ion-view
+      ion-content.has-header.text-center(padding='true')
+        img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif',\
+        style='width: 100%; height: 170px;')
+        h4 Get started by filling up the form
+        form
+          label.item.item-input
+            span.input-label
+            input(type='text', placeholder='Group Code', ng-model="joinOrder.code")
+        form
+          label.item.item-input
+            span.input-label
+            input(type='text', placeholder='Your Name', ng-model="joinOrder.name", ng-if="!hasAccount")
+        .row
+          .col-80.col-offset-10
+            button.button.button-balanced.button-block Join Order
