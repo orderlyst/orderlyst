@@ -8,7 +8,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
                 '/api/orders',
                 {hostUserId: uid}
             ).success(function (data) {
-                    $location.url('/orders/' + data._id);
+                    $location.url('/orders/' + data.orderId);
             });
         } else {
             $location.url('/create');
@@ -46,7 +46,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
                 {name: name}
             ).success(function (data) {
                     // Save uid in local storage
-                    $store.set('_orderlyst_uid', data._id);
+                    $store.set('_orderlyst_uid', data.userId);
                     // NEED CLARIFICATION ON API
                     $location.url('/orders/' + orderCode);
             });
@@ -64,7 +64,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
             '/api/orders',
             {hostUserId: uid}
         ).success(function(data) {
-                $location.url('/orders/' + data._id);
+                $location.url('/orders/' + data.orderId);
         });
     }
     $scope.submit = function() {
@@ -76,7 +76,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                 '/api/orders',
                 {hostUserId: uid}
             ).success(function(data) {
-                $location.url('/orders/' + data._id);
+                $location.url('/orders/' + data.orderId);
             });
         } else {
             $http.post(
@@ -84,12 +84,12 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                 {name: name}
             ).then(function (data) {
                 // Save uid in local storage
-                $store.set('_orderlyst_uid', data.data._id);
+                $store.set('_orderlyst_uid', data.data.userId);
                 return $http.post(
                     '/api/orders',
-                    {hostUserId: data.data._id});
+                    {hostUserId: data.data.userId});
             }).then(function (data) {
-                $location.url('/orders/' + data._id);
+                $location.url('/orders/' + data.orderId);
             });
         }
     };
@@ -150,11 +150,11 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
         $http.delete(
-            '/api/orders/' + id + '/items/' + item._id
+            '/api/orders/' + id + '/items/' + item.itemId
         ).success(function(data) {
                 $scope.isLoading = false;
                 $scope.items = $scope.items.filter(function(i) {
-                    return i._id !== item._id;
+                    return i.itemId !== item.itemId;
                 });
             });
     };
