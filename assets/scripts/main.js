@@ -1,6 +1,5 @@
 require('angular');
 require('angular-animate');
-require('angular-route');
 require('angular-filter');
 
 var OrderController = require('./controllers/orderController');
@@ -9,7 +8,6 @@ var OrderController = require('./controllers/orderController');
 var app = angular.module('orderlyst', [
       'ionic',
       'ngAnimate',
-      'ngRoute',
       'angular.filter'
     ]);
 
