@@ -3,6 +3,23 @@ var router = express.Router();
 var Join = require('join').Join;
 
 /**
+ * To search for an order
+ */
+router.post('/search', function(req, res, next) {
+  var code = req.body.code;
+
+  req.models.Order
+    .find({
+      "where": {
+        code: code
+      }
+    })
+    .then(function(order){
+      res.json(order);
+    });
+});
+
+/**
  * To fetch an order's information
  */
 router.get('/:id', function(req, res, next) {
