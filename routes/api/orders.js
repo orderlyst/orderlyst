@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
     .then(function(user){
       req.models.Order
         .create({
-          "UserUserId": user.userId,
+          "UserUserId": user.userId
         })
         .then(function(order){
           res.json(order);
