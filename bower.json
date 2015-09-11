@@ -17,11 +17,12 @@
     "angular": "~1.4.5",
     "angular-route": "~1.4.5",
     "angular-animate": "~1.4.5",
-    "bootstrap": "~3.3.5",
-    "bootstrap-sass": "~3.3.5",
-    "ratchet": "2.0.2",
+    "ionic": "latest",
     "font-awesome": "fontawesome#~4.4.0"
   },
-  "devDependencies": {
+  "devDependencies": {},
+  "resolutions": {
+    "angular-animate": "~1.4.5",
+    "angular": "~1.4.5"
   }
 }

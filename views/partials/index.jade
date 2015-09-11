@@ -1,18 +1,19 @@
-.container.main-container
-  .row
-    #homeLogo
-      #homePageSlider.slider
-        .slide-group
-          .slide
-            img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
-            span.slide-text
-              span.icon.icon-left-nav
-              |         Slide me
-          .slide
-            img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
-          .slide
-            img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
-  .row
-    .col-xs-8.col-xs-offset-2
-      a.btn.btn-positive.btn-block(href='/join') Join Order
-      a.btn.btn-negative.btn-block(ng-click="createOrder()") Create Order
+.row#homeLogo
+  .col
+    ion-slide-box#homePageSlider
+      ion-slide
+        .box.blue
+          img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
+      ion-slide
+        .box.yellow
+          img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
+      ion-slide
+        .box.pink
+          img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif')
+      ion-slide-pager
+.row.row-center
+  .col-80.col-offset-10
+    div
+      a.button.button-calm.button-block(href='/join') Join Order
+    div
+      a.button.button-royal.button-block(ng-click="createOrder()") Create Order

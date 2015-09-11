@@ -1,11 +1,16 @@
-.col-sm-12.text-center(ng-repeat="item in items track by item._id")
-    p
-        | Name {{userDictionary[item.user].name}}
-        | Item {{item.name}}
-        | Price {{item.price}} &nbsp
-        span.btn.btn-danger(ng-click="removeOrderItem(item)") Delete
-.form-wrapper
-    form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
-        input(placeholder="Item",ng-model="formData.name")
-        input(placeholder="Price",ng-model="formData.price")
-        input(type='submit', value='New Item')
+.container
+    .row
+        header.bar.bar-nav
+            h1.title Orderlyst
+    .row
+        .col-sm-12.text-center(ng-repeat="item in items track by item._id")
+            p
+                | Name {{userDictionary[item.user].name}}
+                | Item {{item.name}}
+                | Price {{item.price}} &nbsp
+                span.btn.btn-danger(ng-click="removeOrderItem(item)") Delete
+        .form-wrapper
+            form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+                input(placeholder="Item",ng-model="formData.name")
+                input(placeholder="Price",ng-model="formData.price")
+                input(type='submit', value='New Item')

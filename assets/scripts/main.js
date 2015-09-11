@@ -6,6 +6,7 @@ var OrderController = require('./controllers/orderController');
 
 // @ngInject
 var app = angular.module('orderlyst', [
+      'ionic',
       'ngAnimate',
       'ngRoute'
     ]);
