@@ -5,18 +5,24 @@ ion-view
         ion-tab(title="Total Order")
             ion-view
                 ion-content
-                    ion-list
-                        ion-item(ng-repeat="item in items track by item._id")
-                            p
-                                | Name {{userDictionary[item.user].name}}
-                                | Item {{item.name}}
-                                | Price {{item.price}} &nbsp
-                                span.btn.btn-danger(ng-click="removeOrderItem(item)") Delete
+                    .row(ng-repeat="item in items track by item._id")
+                        .col.col-10
+                            | 1
+                        .col.col-60
+                            | {{item.name}}
+                        .col.col-20
+                            | {{item.price | currency}} 
+                        .col.col-10
+                            .a.icon.ion-close(ng-click="removeOrderItem(item)")
                     .form-wrapper
                         form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
-                            input(placeholder="Item",ng-model="formData.name")
-                            input(placeholder="Price",ng-model="formData.price")
-                            input(type='submit', value='New Item')
+                        .list
+                            label.item.item-input
+                                input(type="text",placeholder="Item",ng-model="formData.name")
+                            label.item.item-input
+                                input(type="text",placeholder="Price",ng-model="formData.price")
+                            button.button.button-block.button-stable(ng-click="createOrderItem()")
+                                | Add New Item
         ion-tab(title="User Order")
             ion-view
                 ion-content
