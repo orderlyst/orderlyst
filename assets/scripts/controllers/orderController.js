@@ -103,6 +103,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
     $scope.userDictionary = {};
+    $scope.items = [];
 
     // Get user details method
     var fetchUserDetail = function (uid) {
