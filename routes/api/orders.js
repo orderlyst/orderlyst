@@ -26,15 +26,11 @@ router.post('/', function(req, res, next) {
   var hostId = req.body.hostUserId;
 
   req.models.User
-    .find({
-      "where": {
-        userId: userId
-      }
-    })
+    .findById(hostId)
     .then(function(user){
       req.models.Order
         .create({
-          "host": user.userId,
+          "UserUserId": user.userId,
         })
         .then(function(order){
           res.json(order);
@@ -49,9 +45,9 @@ router.get('/:id/items', function(req, res, next) {
   var orderId = req.params.id;
 
   req.models.Item
-    .find({
+    .findAll({
       "where": {
-        orderId: orderId
+        OrderOrderId: orderId
       }
     })
     .then(function(items){
@@ -91,7 +87,8 @@ router.post('/:id/items', function(req, res, next) {
         .create({
           "name": req.body.name,
           "price": req.body.price,
-          "userId": user.userId
+          "UserUserId": user.userId,
+          "OrderOrderId": order.orderId
         })
         .then(function(item){
           res.json(item);

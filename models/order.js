@@ -5,7 +5,7 @@ var randomCodeGenerator = function(){
 module.exports = function(sequelize, DataTypes) {
 	"use strict";
   var Order = sequelize.define("Order", {
-  		"userId": {
+  		"orderId": {
   			"type": DataTypes.INTEGER,
   			primaryKey: true,
   			autoIncrement: true // Automatically gets converted to SERIAL for postgres
