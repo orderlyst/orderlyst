@@ -24,7 +24,7 @@ module.exports = function(app) {
                 controller: "JoinOrderController"
             }
             ).state('joinOrder', {
-                url: "/join/:id",
+                url: "/join/:orderCode",
                 templateUrl: "/partials/join",
                 controller: "JoinOrderController"
             }
@@ -34,7 +34,7 @@ module.exports = function(app) {
                 controller: "CreateOrderController"
             }
             ).state('view', {
-                url: "/orders/:orderId",
+                url: "/orders/:orderCode",
                 controller: "ViewOrderController",
                 templateUrl: "/partials/view"
             }

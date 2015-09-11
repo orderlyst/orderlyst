@@ -8,7 +8,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
                 '/api/orders',
                 {hostUserId: uid}
             ).success(function (data) {
-                    $location.url('/orders/' + data.orderId);
+                $location.url('/orders/' + data.code);
             });
         } else {
             $location.url('/create');
@@ -20,13 +20,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams',
     function($scope, $http, $location, $store, $stateParams) {
     $scope.joinOrder = {};
-    var orderId = $stateParams.id;
-    if (orderId !== null) {
-        $http.get('/api/orders/' + orderId).
-        success(function(data) {
-                $scope.joinOrder.code = data.code;
-        });
-    }
+    $scope.joinOrder.code = $stateParams.orderCode;
     var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
     $scope.submit = function() {
@@ -47,7 +41,6 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams',
             ).success(function (data) {
                     // Save uid in local storage
                     $store.set('_orderlyst_uid', data.userId);
-                    // NEED CLARIFICATION ON API
                     $location.url('/orders/' + orderCode);
             });
         }
@@ -63,8 +56,8 @@ var createOrder = ['$scope', '$http', '$location', '$store',
         $http.post(
             '/api/orders',
             {hostUserId: uid}
-        ).success(function(data) {
-                $location.url('/orders/' + data.orderId);
+        ).success(function (data) {
+            $location.url('/orders/' + data.code);
         });
     }
     $scope.submit = function() {
@@ -75,8 +68,8 @@ var createOrder = ['$scope', '$http', '$location', '$store',
             $http.post(
                 '/api/orders',
                 {hostUserId: uid}
-            ).success(function(data) {
-                $location.url('/orders/' + data.orderId);
+            ).success(function (data) {
+                    $location.url('/orders/' + data.code);
             });
         } else {
             $http.post(
@@ -89,7 +82,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                     '/api/orders',
                     {hostUserId: data.data.userId});
             }).then(function (data) {
-                $location.url('/orders/' + data.orderId);
+                $location.url('/orders/' + data.data.orderId);
             });
         }
     };
@@ -97,13 +90,14 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     function ($scope, $http, $stateParams, $store, $location) {
-    var id               = $stateParams.orderId;
+    var code               = $stateParams.orderCode;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
     $scope.userDictionary = {};
     $scope.items = [];
+    $scope.orderId = -1;
 
     // Get user details method
     var fetchUserDetail = function (uid) {
@@ -117,13 +111,19 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     // Authenticate user
     fetchUserDetail(uid);
     if (!hasAccount) {
-        $location.url('/join/' + id);
+        $location.url('/join/' + code);
     }
 
-    $http.get('/api/orders/' + id + '/items').
-    success(function (data) {
-        $scope.items = data;
-        data.map(function(datum) {
+    // Fetch order and item
+    $http.post(
+        '/api/orders/search',
+        {code: code}
+    ).then(function(response) {
+        $scope.orderId =  response.data.orderId;
+        return $http.get('/api/orders/' + response.data.orderId + '/items');
+    }).then(function (response) {
+        $scope.items = response.data;
+        $scope.items.map(function(datum) {
             fetchUserDetail(datum.user);
         });
     });
@@ -139,7 +139,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.formData.name = '';
         $scope.formData.price = '';
         $http.post(
-            '/api/orders/' + id + '/items',
+            '/api/orders/' + $scope.orderId + '/items',
             orderItemData
         ).success(function(data) {
             $scope.isLoading = false;
@@ -150,7 +150,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
         $http.delete(
-            '/api/orders/' + id + '/items/' + item.itemId
+            '/api/orders/' + $scope.orderId + '/items/' + item.itemId
         ).success(function(data) {
                 $scope.isLoading = false;
                 $scope.items = $scope.items.filter(function(i) {
