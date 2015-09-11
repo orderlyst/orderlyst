@@ -17,10 +17,10 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
-    function($scope, $http, $location, $store, $routeParams) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams',
+    function($scope, $http, $location, $store, $stateParams) {
     $scope.joinOrder = {};
-    var orderId = $routeParams.id;
+    var orderId = $stateParams.id;
     if (orderId !== null) {
         $http.get('/api/orders/' + orderId).
         success(function(data) {
@@ -95,9 +95,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
-    function ($scope, $http, $routeParams, $store, $location) {
-    var id               = $routeParams.orderId;
+var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
+    function ($scope, $http, $stateParams, $store, $location) {
+    var id               = $stateParams.orderId;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;

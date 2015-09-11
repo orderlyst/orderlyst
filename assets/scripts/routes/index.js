@@ -3,48 +3,44 @@ module.exports = function(app) {
 
   app.config(
     [
-      '$routeProvider',
+      '$stateProvider',
+      '$urlRouterProvider',
       '$locationProvider',
       '$httpProvider',
-      function($routeProvider, $locationProvider, $httpProvider) {
+      function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
         $locationProvider.html5Mode({
           "enabled": true
         });
 
-        $routeProvider
-          .when(
-            "/",
-            {
-              templateUrl: "/partials/index",
-              controller: "StartOrderController"
+        $stateProvider
+            .state('index', {
+                url: '/',
+                templateUrl: "/partials/index",
+                controller: "StartOrderController"
             }
-          ).when(
-            "/join",
-            {
-              templateUrl: "/partials/join",
-              controller: "JoinOrderController"
+            ).state('join', {
+                url: "/join",
+                templateUrl: "/partials/join",
+                controller: "JoinOrderController"
             }
-        ).when(
-            "/join/:id",
-            {
-              templateUrl: "/partials/join",
-              controller: "JoinOrderController"
+            ).state('joinOrder', {
+                url: "/join/:id",
+                templateUrl: "/partials/join",
+                controller: "JoinOrderController"
             }
-        ).when(
-            "/create",
-            {
-              templateUrl: "/partials/create",
-              controller: "CreateOrderController"
+            ).state('create', {
+                url: "/create",
+                templateUrl: "/partials/create",
+                controller: "CreateOrderController"
             }
-          ).when(
-            "/orders/:orderId",
-            {
-              controller: "ViewOrderController",
-              templateUrl: "/partials/view"
+            ).state('view', {
+                url: "/orders/:orderId",
+                controller: "ViewOrderController",
+                templateUrl: "/partials/view"
             }
         );
 
-        $routeProvider.otherwise({ redirectTo: "/" });
+        $urlRouterProvider.otherwise('/');
       }
     ]
   );

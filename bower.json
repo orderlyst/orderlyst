@@ -15,7 +15,6 @@
   ],
   "dependencies": {
     "angular": "~1.4.5",
-    "angular-route": "~1.4.5",
     "angular-animate": "~1.4.5",
     "ionic": "latest",
     "angular-filter": "~0.5.5",
