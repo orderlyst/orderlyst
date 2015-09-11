@@ -97,7 +97,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.formData = {'user': uid};
     $scope.userDictionary = {};
     $scope.items = [];
-    $scope.orderId = -1;
+    $scope.order = {};
 
     // Get user details method
     var fetchUserDetail = function (uid) {
@@ -119,7 +119,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         '/api/orders/search',
         {code: code}
     ).then(function(response) {
-        $scope.orderId =  response.data.orderId;
+        $scope.order =  response.data;
         return $http.get('/api/orders/' + response.data.orderId + '/items');
     }).then(function (response) {
         $scope.items = response.data;
@@ -139,7 +139,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.formData.name = '';
         $scope.formData.price = '';
         $http.post(
-            '/api/orders/' + $scope.orderId + '/items',
+            '/api/orders/' + $scope.order.orderId + '/items',
             orderItemData
         ).success(function(data) {
             $scope.isLoading = false;
@@ -150,7 +150,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
         $http.delete(
-            '/api/orders/' + $scope.orderId + '/items/' + item.itemId
+            '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId
         ).success(function(data) {
                 $scope.isLoading = false;
                 $scope.items = $scope.items.filter(function(i) {
@@ -158,6 +158,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
             });
     };
+    $scope.totalFee = function() {
+        return $scope.items.reduce(function(a, b) {
+            return a + b.price;
+        }, 0);
+    }
 }];
 
 

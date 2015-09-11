@@ -5,15 +5,27 @@ ion-view
             ion-tab(title="Total Orders")
                 ion-view
                     ion-content
-                        div(ng-repeat="(name, prices) in items | groupBy: 'name'")
+                        ul.list(ng-repeat="(name, prices) in items | groupBy: 'name'")
                             div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                .row
+                                li.row.item
                                     .col.col-10
                                         | {{groupedItems.length}}
                                     .col.col-60
                                         | {{name}}
-                                    .col.col-30
+                                    .col.col-30.text-right
                                         | {{price * groupedItems.length | currency}}
+                        .order-fee
+                            .row.item
+                                .col.col-60.col-offset-10 Subtotal:
+                                .col.col-30.text-right {{totalFee() | currency}}
+                            .row.item
+                                .col.col-60.col-offset-10 Delivery Fee:
+                                .col.col-30.text-right $0.00
+                            hr
+                            .row.item
+                                .col.col-60.col-offset-10 Total:
+                                .col.col-30.text-right {{totalFee() | currency}}
+
                         .form-wrapper
                             form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
                             .list
