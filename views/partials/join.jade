@@ -6,13 +6,13 @@ ion-view
         img(src='http://1.bp.blogspot.com/-P2GRkzMsIwc/UrjBzoeEYPI/AAAAAAAAHH4/RBdeQl3sesw/s1600/DSC03794-SNOW.gif',\
         style='width: 100%; height: 170px;')
         h4 Get started by filling up the form
-        form(ng-submit="submit()")
-          label.item.item-input
-            span.input-label
+        form.list(ng-submit="submit()")
+          label.item.item-divider.item-input.item-floating-label
+            span.input-label Group Code
             input(type='text', placeholder='Group Code', ng-model="joinOrder.code")
-          label.item.item-input
-            span.input-label
-            input(type='text', placeholder='Your Name', ng-model="joinOrder.name", ng-if="!hasAccount")
+          label.item.item-divider.item-input.item-floating-label(ng-if="!hasAccount")
+            span.input-label Your Name
+            input(type='text', placeholder='Your Name', ng-model="joinOrder.name")
           .row
             .col-80.col-offset-10
               input.button.button-balanced.button-block(type="submit", value="Join Order")
