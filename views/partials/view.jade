@@ -5,15 +5,15 @@ ion-view
         ion-tab(title="Total Order")
             ion-view
                 ion-content
-                    .row(ng-repeat="item in items track by item._id")
-                        .col.col-10
-                            | 1
-                        .col.col-60
-                            | {{item.name}}
-                        .col.col-20
-                            | {{item.price | currency}} 
-                        .col.col-10
-                            .a.icon.ion-close(ng-click="removeOrderItem(item)")
+                    div(ng-repeat="(name, prices) in items | groupBy: 'name'")
+                        div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                            .row
+                                .col.col-10
+                                    | {{groupedItems.length}}
+                                .col.col-60
+                                    | {{name}}
+                                .col.col-30
+                                    | {{price * groupedItems.length | currency}}
                     .form-wrapper
                         form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
                         .list
