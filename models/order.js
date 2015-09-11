@@ -1,56 +1,57 @@
-var mongoose = require('mongoose');
-
 var randomCodeGenerator = function(){
   return Math.random().toString(36).substring(4,Math.random() * 2 + 8);
 };
 
-var OrderItemSchema = mongoose.Schema({
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
-  },
-  name: {
-    type: String
-  },
-  price: {
-    type: Number
-  }
-});
+module.exports = function(sequelize, DataTypes) {
+	"use strict";
+  var Order = sequelize.define("Order", {
+<<<<<<< HEAD
+    "orderId": {
+      "type": DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true // Automatically gets converted to SERIAL for postgres
+    },
+=======
+  		"orderId": {
+  			"type": DataTypes.INTEGER,
+  			primaryKey: true,
+  			autoIncrement: true // Automatically gets converted to SERIAL for postgres
+  		},
+>>>>>>> fixed minor bugs
+    "code": {
+      "type": DataTypes.STRING,
+      "defaultValue": ""
+    },
+    "surcharge": {
+      "type": DataTypes.FLOAT,
+      "defaultValue": 0
+    },
+    "tax": {
+      "type": DataTypes.FLOAT,
+      "defaultValue": 0
+    },
+    "isOpen": {
+      "type": DataTypes.BOOLEAN,
+      "defaultValue": true
+    },
+    "closed": {
+      "type": DataTypes.DATE,
+      allowNull: true
+    }
+  }, {
+    "classMethods": {
+      associate: function(models) {
+        Order.belongsTo(models.User, {
+          "onDelete": "NO ACTION",
+          "foreignKey": {
+            allowNull: false
+          }
+        });
 
-var OrderSchema = mongoose.Schema({
-  host: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User'
-  },
-  code: {
-    type: String,
-    default: randomCodeGenerator
-  },
-  surcharge: {
-    type: Number,
-    default: 0.0
-  },
-  tax: {
-    type: Number,
-    default: 0.0
-  },
-  isOpen: {
-    type: Boolean,
-    default: true
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  closed: {
-    type: Date,
-    default: null
-  },
-  items: [
-    OrderItemSchema
-  ]
-});
+        Order.hasMany(models.Item);
+      }
+    }
+  });
 
-var OrderModel = mongoose.model('Order', OrderSchema);
-
-module.exports = OrderModel;
+  return Order;
+};

@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var OrderModel = require('../../models/order');
-var UserModel = require('../../models/user');
 var Join = require('join').Join;
 
 /**
@@ -9,16 +7,15 @@ var Join = require('join').Join;
  */
 router.get('/:id', function(req, res, next) {
   var orderId = req.params.id;
-  OrderModel
-    .findOne({
-      "_id": orderId
-    })
-    .exec(function(err, order){
-      if (order) {
-        res.json(order);
-      } else {
-        next(err);
+
+  req.models.Order
+    .find({
+      "where": {
+        orderId: orderId
       }
+    })
+    .then(function(order){
+      res.json(order);
     });
 });
 
@@ -28,23 +25,17 @@ router.get('/:id', function(req, res, next) {
 router.post('/', function(req, res, next) {
   var hostId = req.body.hostUserId;
 
-  UserModel
-    .findOne({
-      "_id": hostId
-    })
-    .exec(function(err, user){
-      if (user) {
-        var order = new OrderModel({
-          host: user._id
-        });
-        order.save(function(err) {
+  req.models.User
+    .findById(hostId)
+    .then(function(user){
+      req.models.Order
+        .create({
+          "UserUserId": user.userId
+        })
+        .then(function(order){
           res.json(order);
         });
-      } else {
-        next(err);
-      }
     });
-
 });
 
 /**
@@ -52,16 +43,15 @@ router.post('/', function(req, res, next) {
  */
 router.get('/:id/items', function(req, res, next) {
   var orderId = req.params.id;
-  OrderModel
-    .findOne({
-      "_id": orderId
-    })
-    .exec(function(err, order){
-      if (order) {
-        res.json(order.items);
-      } else {
-        next(err);
+
+  req.models.Item
+    .findAll({
+      "where": {
+        OrderOrderId: orderId
       }
+    })
+    .then(function(items){
+      res.json(items);
     });
 });
 
@@ -72,30 +62,37 @@ router.post('/:id/items', function(req, res, next) {
   var orderId = req.params.id;
   var userId = req.body.user;
   var join = Join.create();
-  OrderModel
-    .findOne({
-      "_id": orderId
-    })
-    .exec(join.add());
 
-  UserModel
-    .findOne({
-      "_id": userId
+  req.models.Order
+    .find({
+      "where": {
+        orderId: orderId
+      }
     })
-    .exec(join.add());
+    .then(join.add());
+
+  req.models.User
+    .find({
+      "where": {
+        userId: userId
+      }
+    })
+    .then(join.add());
 
   join.then(function(orderCallback, userCallback){
-    var order = orderCallback[1];
-    var user = userCallback[1];
+    var order = orderCallback[0];
+    var user = userCallback[0];
     if (order && user) {
-      order.items.push({
-        name: req.body.name,
-        price: req.body.price,
-        user: user._id
-      });
-      order.save(function(err){
-        res.json(order.items[order.items.length - 1]);
-      });
+      req.models.Item
+        .create({
+          "name": req.body.name,
+          "price": req.body.price,
+          "UserUserId": user.userId,
+          "OrderOrderId": order.orderId
+        })
+        .then(function(item){
+          res.json(item);
+        });
     } else {
       next();
     }
@@ -108,15 +105,14 @@ router.post('/:id/items', function(req, res, next) {
 router.delete('/:id/items/:itemId', function(req, res, next){
   var orderId = req.params.id;
   var itemId = req.params.itemId;
-  OrderModel
-    .findOne({
-      "_id": orderId
-    })
-    .exec(function(err, order){
-      order.items.id(itemId).remove();
-      order.save();
-      res.json({status: "200 OK"});
+
+  req.models.Item
+    .destroy({
+      itemId: itemId,
+      orderId: orderId
     });
+
+  res.json({status: "200 OK"});
 });
 
 module.exports = router;
