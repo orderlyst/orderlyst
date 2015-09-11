@@ -1,3 +1,22 @@
+var startOrder = ['$scope', '$http', '$location', '$store',
+    function($scope, $http, $location, $store) {
+    var uid = $store.get('_orderlyst_uid');
+    var hasAccount = (uid !== -1);
+    $scope.createOrder = function() {
+        if (hasAccount) {
+            $http.post(
+                '/api/orders',
+                {hostUserId: uid}
+            ).success(function (data) {
+                    $location.url('/orders/' + data._id);
+            });
+        } else {
+            $location.url('/create');
+        }
+    };
+}];
+
+
 var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
     function($scope, $http, $location, $store, $routeParams) {
     $scope.joinOrder = {};
@@ -8,7 +27,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
                 $scope.joinOrder.code = data.code;
         });
     }
-    var uid = $store.get('_uid');
+    var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
     $scope.submit = function() {
         var name, orderCode;
@@ -27,7 +46,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
                 {name: name}
             ).success(function (data) {
                     // Save uid in local storage
-                    $store.set('_uid', data._id);
+                    $store.set('_orderlyst_uid', data._id);
                     // NEED CLARIFICATION ON API
                     $location.url('/orders/' + orderCode);
             });
@@ -38,7 +57,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$routeParams',
 var createOrder = ['$scope', '$http', '$location', '$store',
     function($scope, $http, $location, $store) {
     $scope.createOrder = {};
-    var uid = $store.get('_uid');
+    var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     if (hasAccount) {
         $http.post(
@@ -65,10 +84,10 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                 {name: name}
             ).then(function (data) {
                 // Save uid in local storage
-                $store.set('_uid', data._id);
+                $store.set('_orderlyst_uid', data.data._id);
                 return $http.post(
                     '/api/orders',
-                    {hostUserId: data._id});
+                    {hostUserId: data.data._id});
             }).then(function (data) {
                 $location.url('/orders/' + data._id);
             });
@@ -76,40 +95,55 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$routeParams', '$store',
-    function ($scope, $http, $routeParams, $store) {
+var viewOrder = ['$scope', '$http', '$routeParams', '$store', '$location',
+    function ($scope, $http, $routeParams, $store, $location) {
     var id               = $routeParams.orderId;
-    var uid              = $store.get('_uid');
+    var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = false;
-    $scope.items = {};
     $scope.formData = {'user': uid};
+    $scope.userDictionary = {};
+
+    // Get user details method
+    var fetchUserDetail = function (uid) {
+        if ($scope.userDictionary[uid] !== undefined) return;
+        $http.get('/api/users/' + uid)
+            .success(function (data) {
+                $scope.userDictionary[uid] = data;
+            });
+    };
+
     // Authenticate user
+    fetchUserDetail(uid);
     if (!hasAccount) {
         $location.url('/join/' + id);
     }
 
     $http.get('/api/orders/' + id + '/items').
-        success(function (data) {
-            $scope.items = data;
-        }
-    );
+    success(function (data) {
+        $scope.items = data;
+        data.map(function(datum) {
+            fetchUserDetail(datum.user);
+        });
+    });
 
     // Scope methods
     $scope.createOrderItem = function() {
-        var formData = $scope.formData;
-        if (formData.name === '' || formData.price === '') return;
+        var orderItemData = angular.copy($scope.formData);
+        if (orderItemData.name === '' ||
+            orderItemData.price === '' ||
+            isNaN(+orderItemData.price)) return;
         $scope.isLoading = true;
+        // Clear formData
+        $scope.formData.name = '';
+        $scope.formData.price = '';
         $http.post(
             '/api/orders/' + id + '/items',
-            formData
+            orderItemData
         ).success(function(data) {
             $scope.isLoading = false;
 
             $scope.items.push(data);
-            // Clear formData
-            formData.name = '';
-            formData.price = '';
         });
     };
     $scope.removeOrderItem = function(item) {
@@ -127,6 +161,7 @@ var viewOrder = ['$scope', '$http', '$routeParams', '$store',
 
 
 module.exports = {
+    startOrder: startOrder,
     joinOrder: joinOrder,
     createOrder: createOrder,
     viewOrder: viewOrder

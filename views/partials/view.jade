@@ -1,6 +1,6 @@
-.col-sm-12.text-center(ng-repeat="item in items")
+.col-sm-12.text-center(ng-repeat="item in items track by item._id")
     p
-        | Name {{item.user}}
+        | Name {{userDictionary[item.user].name}}
         | Item {{item.name}}
         | Price {{item.price}} &nbsp
         span.btn.btn-danger(ng-click="removeOrderItem(item)") Delete
