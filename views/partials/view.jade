@@ -2,7 +2,7 @@ ion-header-bar.bar-positive
     a.title(href="/") Orderlyst
 ion-view
     ion-tabs.tabs-striped.tabs-top.tabs-color-assertive(has-header="true")
-        ion-tab(title="Total Order")
+        ion-tab(title="Total Orders")
             ion-view
                 ion-content
                     div(ng-repeat="(name, prices) in items | groupBy: 'name'")
@@ -15,7 +15,7 @@ ion-view
                                 .col.col-30
                                     | {{price * groupedItems.length | currency}}
                     .form-wrapper
-                        form.new-orderp-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+                        form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
                         .list
                             label.item.item-input
                                 input(type="text",placeholder="Item",ng-model="formData.name")
@@ -23,6 +23,6 @@ ion-view
                                 input(type="text",placeholder="Price",ng-model="formData.price")
                             button.button.button-block.button-stable(ng-click="createOrderItem()")
                                 | Add New Item
-        ion-tab(title="User Order")
+        ion-tab(title="User Orders")
             ion-view
                 ion-content
