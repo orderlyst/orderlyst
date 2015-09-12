@@ -96,7 +96,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.isLoading = false;
     $scope.formData = {'user': uid};
     $scope.userDictionary = {};
-    $scope.items = [];
+    $scope.items = [
+        {'name': 'hi', 'price': 1, 'UserUserId': 1}
+    ];
     $scope.order = {};
 
     // Get user details method

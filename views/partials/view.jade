@@ -38,3 +38,18 @@ ion-view
             ion-tab(title="User Orders")
                 ion-view
                     ion-content
+                        div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
+                            .list.card
+                                .item.item-divider
+                                    | {{userDictionary[user].name}}
+                                    .span.pull-right.ion-plus
+                                ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
+                                    div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                        li.row.item
+                                            .col.col-10
+                                                span.orderlyst-badge.badge.badge-assertive {{groupedItems.length}}
+                                            .col.col-60
+                                                | {{name}}
+                                            .col.col-30.text-right
+                                                | {{price * groupedItems.length | currency}}
+
