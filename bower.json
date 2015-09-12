@@ -16,7 +16,8 @@
   "dependencies": {
     "angular": "~1.4.5",
     "angular-animate": "~1.4.5",
-    "ionic": "latest",
+    "ionic": "~1.1.0",
+    "ionicons": "~2.0.1",
     "angular-filter": "~0.5.5",
     "font-awesome": "fontawesome#~4.4.0"
   },
