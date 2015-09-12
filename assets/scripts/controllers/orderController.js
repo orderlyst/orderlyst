@@ -119,12 +119,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         '/api/orders/search',
         {code: code}
     ).then(function(response) {
-        $scope.order =  response.data;
         return $http.get('/api/orders/' + response.data.orderId + '/items');
     }).then(function (response) {
         $scope.items = response.data;
         $scope.items.map(function(datum) {
-            fetchUserDetail(datum.user);
+            fetchUserDetail(datum.UserUserId);
         });
     });
 
