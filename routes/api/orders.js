@@ -125,8 +125,10 @@ router.delete('/:id/items/:itemId', function(req, res, next){
 
   req.models.Item
     .destroy({
-      itemId: itemId,
-      orderId: orderId
+      "where": {
+        "itemId": itemId,
+        "OrderOrderId": orderId
+      }
     });
 
   res.json({status: "200 OK"});
