@@ -5,7 +5,7 @@ ion-view
             ion-tab(title="Total Orders")
                 ion-view
                     ion-content
-                        ul.list(ng-repeat="(name, prices) in items | groupBy: 'name'")
+                        ul(ng-repeat="(name, prices) in items | groupBy: 'name'")
                             div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                 li.row.item
                                     .col.col-10
