@@ -1,6 +1,11 @@
 module.exports = function(sequelize, DataTypes) {
 	"use strict";
   var Item = sequelize.define("Item", {
+    "itemId": {
+      "type": DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     "name":{
 				"type": DataTypes.STRING
 			},
