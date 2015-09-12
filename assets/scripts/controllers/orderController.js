@@ -75,14 +75,14 @@ var createOrder = ['$scope', '$http', '$location', '$store',
             $http.post(
                 '/api/users',
                 {name: name}
-            ).then(function (data) {
+            ).then(function (response) {
                 // Save uid in local storage
-                $store.set('_orderlyst_uid', data.data.userId);
+                $store.set('_orderlyst_uid', response.data.userId);
                 return $http.post(
                     '/api/orders',
-                    {hostUserId: data.data.userId});
-            }).then(function (data) {
-                $location.url('/orders/' + data.data.orderId);
+                    {hostUserId: response.data.userId});
+            }).then(function (response) {
+                $location.url('/orders/' + response.data.code);
             });
         }
     };
