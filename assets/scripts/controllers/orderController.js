@@ -160,7 +160,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     };
     $scope.totalFee = function() {
         return $scope.items.reduce(function(a, b) {
-            return a + b.price;
+            return a + parseFloat(b.price);
         }, 0);
     };
 }];
