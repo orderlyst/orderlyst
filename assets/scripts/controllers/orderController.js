@@ -162,7 +162,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         return $scope.items.reduce(function(a, b) {
             return a + b.price;
         }, 0);
-    }
+    };
 }];
 
 
