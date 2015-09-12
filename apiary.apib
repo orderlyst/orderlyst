@@ -1,0 +1,240 @@
+FORMAT: 1A
+HOST: http://localhost:3000/api
+
+# orderlyst
+
+Orderlyst API Server provides RESTful transfer of information between the frontend applications and datastore.
+
+## Group Users
+
+## Users Collection [/users]
+
+### Fetch a User [GET /users/{userId}]
+
+In this action, you can fetch a user's name and information.
+
++ Parameters
+    + userId: 1 (required, integer) - ID of the user
+
++ Response 200 (application/json)
+
+        {
+          "userId": 1,
+          "name": "TEST",
+          "createdAt": "2015-09-11T13:31:17.000Z",
+          "updatedAt": "2015-09-11T13:36:01.000Z"
+        }
+
+### Create a New User [POST /users/]
+
+In this action, you can create a new user which can be used in interacting with an order and its items later.
+
++ Request (application/json)
+
+        {
+            "name": "Test"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "userId": 1,
+          "name": "Test",
+          "createdAt": "2015-09-11T13:31:17.000Z",
+          "updatedAt": "2015-09-11T13:36:01.000Z"
+        }
+
+### Update a User [POST /users/{userId}]
+
+In the event that the user wants to change a detail, such as changing their name, you can use this action to update their details.
+
++ Request (application/json)
+
+        {
+            "name": "Alpha"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "userId": 1,
+          "name": "Alpha",
+          "createdAt": "2015-09-11T13:31:17.000Z",
+          "updatedAt": "2015-09-11T13:36:01.000Z"
+        }
+
+## Group Orders & Items
+
+## Orders Collection [/orders]
+
+### Fetch an Order [GET /orders/{orderId}]
+
+In this action, you can fetch an order and its information.
+
++ Parameters
+    + orderId: 1 (required, integer) - ID of the order
+
++ Response 200 (application/json)
+
+        {
+          "orderId": 1,
+          "code": "3e1D",
+          "surcharge": 0,
+          "tax": 0,
+          "isOpen": true,
+          "closed": null,
+          "createdAt": "2015-09-11T13:32:41.000Z",
+          "updatedAt": "2015-09-11T13:32:41.000Z",
+          "UserUserId": 1
+        }
+
+### Create an Order [POST /orders/]
+
+In this action, you can create a new order.
+
++ Request (application/json)
+
+        {
+            "hostUserId": "1"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "orderId": 1,
+          "code": "3e1D",
+          "surcharge": 0,
+          "tax": 0,
+          "isOpen": true,
+          "closed": null,
+          "createdAt": "2015-09-11T13:32:41.000Z",
+          "updatedAt": "2015-09-11T13:32:41.000Z",
+          "UserUserId": 1
+        }
+        
+### Update an Order [POST /orders/{orderId}]
+
+In this action, you can create a new order.
+
++ Parameters
+    + orderId: 1 (required, integer) - ID of the order
+
++ Request (application/json)
+
+        {
+            "surchage": "5",
+            "tax": "0.07",
+            "isOpen": true
+        }
+
++ Response 200 (application/json)
+
+        {
+          "orderId": 1,
+          "code": "3e1D",
+          "surcharge": 5,
+          "tax": 0.07,
+          "isOpen": true,
+          "closed": null,
+          "createdAt": "2015-09-11T13:32:41.000Z",
+          "updatedAt": "2015-09-11T13:32:41.000Z",
+          "UserUserId": 1
+        }
+        
+### Search for an Order [GET /orders/search]
+
+In this action, you can search for an order and its information.
+
++ Request (application/json)
+
+        {
+            "code": "2EDc"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "orderId": 1,
+          "code": "2EDc",
+          "surcharge": 0,
+          "tax": 0,
+          "isOpen": true,
+          "closed": null,
+          "createdAt": "2015-09-11T13:32:41.000Z",
+          "updatedAt": "2015-09-11T13:32:41.000Z",
+          "UserUserId": 1
+        }
+
+## Items Collection [/orders/{orderId}/items]
+
+### Fetch all items of an order [GET /orders/{orderId}/items]
+
+In this action, you can fetch all the order's items
+
++ Parameters
+    + orderId: 1 (required, integer) - ID of the order
+
++ Response 200 (application/json)
+
+        [
+          {
+            "itemId": 1,
+            "name": "prata",
+            "price": 2.5,
+            "createdAt": "2015-09-11T13:35:29.000Z",
+            "updatedAt": "2015-09-11T13:35:29.000Z",
+            "UserUserId": 1,
+            "OrderOrderId": 1
+          },
+          {
+            "itemId": 2,
+            "name": "nasi briyani",
+            "price": 8.5,
+            "createdAt": "2015-09-11T13:35:29.000Z",
+            "updatedAt": "2015-09-11T13:35:29.000Z",
+            "UserUserId": 1,
+            "OrderOrderId": 1
+          }
+        ]
+
+### Create an Order Item [POST /orders/{orderId}/items]
+
+In this action, you can create a new order item.
+
++ Parameters
+    + orderId: 1 (required, integer) - ID of the order
+
++ Request (application/json)
+
+        {
+            "name": "prata",
+            "price": "2.5",
+            "user": "1"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "itemId": 2,
+          "name": "prata",
+          "price": 2.5,
+          "UserUserId": 1,
+          "OrderOrderId": 1,
+          "updatedAt": "2015-09-12T04:39:46.000Z",
+          "createdAt": "2015-09-12T04:39:46.000Z"
+        }
+        
+        
+### Delete an Order Item [DELETE /orders/{orderId}/items/{itemId}]
+
+In this action, you can delete an order's item
+
++ Parameters
+    + orderId: 8 (required, integer) - ID of the order
+    + itemId: 4 (required, integer) - ID of the item
+
++ Response 200 (application/json)
+
+        {
+          "status": "200 OK"
+        }
