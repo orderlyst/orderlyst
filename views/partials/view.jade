@@ -9,7 +9,7 @@ ion-view
                             div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                 li.row.item
                                     .col.col-10
-                                        | {{groupedItems.length}}
+                                        span.orderlyst-badge.badge.badge-assertive {{groupedItems.length}}
                                     .col.col-60
                                         | {{name}}
                                     .col.col-30.text-right
