@@ -46,3 +46,16 @@ html {
 .pull-right {
   float: right;
 }
+
+.buttons-with-side-margin {
+  .button:first-child {
+    margin-left: 2%;
+  }
+  .button:last-child {
+    margin-right: 2%;
+  }
+  .button {
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+}
