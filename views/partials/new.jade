@@ -1,0 +1,11 @@
+ion-modal-view
+    h2.text-center Add Item
+    form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+    .list
+        label.item.item-input
+            input(type="text",placeholder="Item",ng-model="itemFormData.name")
+        label.item.item-input
+            input(type="text",placeholder="Price",ng-model="itemFormData.price")
+        button.button.button-block.button-stable(ng-click="createOrderItem()")
+            | Add To Order
+        button.button.button-full.button-energized(ng-click="closeModal()") Cancel

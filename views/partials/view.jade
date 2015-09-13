@@ -30,15 +30,15 @@ ion-view
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
 
-                        .form-wrapper
-                            form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
-                            .list
-                                label.item.item-input
-                                    input(type="text",placeholder="Item",ng-model="itemFormData.name")
-                                label.item.item-input
-                                    input(type="text",placeholder="Price",ng-model="itemFormData.price")
-                                button.button.button-block.button-stable(ng-click="createOrderItem()")
-                                    | Add New Item
+                        //.form-wrapper
+                        //    form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+                        //    .list
+                        //        label.item.item-input
+                        //            input(type="text",placeholder="Item",ng-model="itemFormData.name")
+                        //        label.item.item-input
+                        //            input(type="text",placeholder="Price",ng-model="itemFormData.price")
+                        //        button.button.button-block.button-stable(ng-click="createOrderItem()")
+                        //            | Add New Item
             ion-tab(title="User Orders")
                 ion-view
                     ion-content
@@ -58,7 +58,7 @@ ion-view
                                                 .col.col-30.text-right
                                                     | {{price * groupedItems.length | currency}}
                             .button-bar.row.buttons-with-side-margin
-                                .button.button.button-royal.button-block Add Item
+                                .button.button.button-royal.button-block(ng-click="openModal()") Add Item
                                 .button.button.button-calm.button-block  My Order
 
                         .spacer(ng-if="!items.length")

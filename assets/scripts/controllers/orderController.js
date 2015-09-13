@@ -88,8 +88,10 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'loadOrder', '$ionicTabsDelegate', '$timeout',
-    function ($scope, $http, $stateParams, $store, $location, loadOrder, $ionicTabsDelegate, $timeout) {
+var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
+    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal',
+    function ($scope, $http, $stateParams, $store, $location, loadOrder,
+              $ionicTabsDelegate, $timeout, $ionicModal) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -97,6 +99,26 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'load
     } else {
         $scope.order = loadOrder.data;
     }
+
+    // Setup new order item modal form
+    $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
+        $scope.modal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
+
+    $scope.openModal = function() {
+        $scope.modal.show();
+    };
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
 
     var code               = $stateParams.orderCode;
     var uid              = $store.get('_orderlyst_uid');
@@ -147,6 +169,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'load
             orderItemData.price === '' ||
             isNaN(+orderItemData.price)) return;
         $scope.isLoading = true;
+        // Hide modal
+        $scope.modal.hide();
         // Clear formData
         $scope.itemFormData.name = '';
         $scope.itemFormData.price = '';
