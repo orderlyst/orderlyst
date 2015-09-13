@@ -57,10 +57,10 @@ ion-view
                                                     | {{name}}
                                                 .col.col-30.text-right
                                                     | {{price * groupedItems.length | currency}}
-                            .button-bar.row.buttons-with-side-margin
-                                .button.button.button-royal.button-block(ng-click="openModal()") Add Item
-                                .button.button.button-calm.button-block  My Order
-
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
+
+                        .button-bar.row.buttons-with-side-margin
+                            .button.button.button-royal.button-block(ng-click="openModal()") Add Item
+                            .button.button.button-calm.button-block  My Order
 
