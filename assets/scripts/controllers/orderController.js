@@ -88,8 +88,8 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'loadOrder',
-    function ($scope, $http, $stateParams, $store, $location, loadOrder) {
+var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'loadOrder', '$ionicTabsDelegate', '$timeout',
+    function ($scope, $http, $stateParams, $store, $location, loadOrder, $ionicTabsDelegate, $timeout) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -102,9 +102,18 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'load
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = true;
+    $scope.isOwner = uid === $scope.order.UserUserId;
+    $scope.orderFormData = {};
     $scope.itemFormData = {'user': uid};
     $scope.userDictionary = {};
     $scope.items = [];
+
+    // Set default active tab based on isOwner
+    if (!$scope.isOwner) {
+        $timeout(function(){
+            $ionicTabsDelegate.select(1);
+        },0);
+    }
 
     // Get user details method
     var fetchUserDetail = function (uid) {
