@@ -34,9 +34,9 @@ ion-view
                             form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
                             .list
                                 label.item.item-input
-                                    input(type="text",placeholder="Item",ng-model="formData.name")
+                                    input(type="text",placeholder="Item",ng-model="itemFormData.name")
                                 label.item.item-input
-                                    input(type="text",placeholder="Price",ng-model="formData.price")
+                                    input(type="text",placeholder="Price",ng-model="itemFormData.price")
                                 button.button.button-block.button-stable(ng-click="createOrderItem()")
                                     | Add New Item
             ion-tab(title="User Orders")

@@ -102,7 +102,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'load
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = true;
-    $scope.formData = {'user': uid};
+    $scope.itemFormData = {'user': uid};
     $scope.userDictionary = {};
     $scope.items = [];
 
@@ -133,14 +133,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'load
 
     // Scope methods
     $scope.createOrderItem = function() {
-        var orderItemData = angular.copy($scope.formData);
+        var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||
             orderItemData.price === '' ||
             isNaN(+orderItemData.price)) return;
         $scope.isLoading = true;
         // Clear formData
-        $scope.formData.name = '';
-        $scope.formData.price = '';
+        $scope.itemFormData.name = '';
+        $scope.itemFormData.price = '';
         $http.post(
             '/api/orders/' + $scope.order.orderId + '/items',
             orderItemData
