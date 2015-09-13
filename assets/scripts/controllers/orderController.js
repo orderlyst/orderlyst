@@ -88,16 +88,23 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     };
 }];
 
-var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    function ($scope, $http, $stateParams, $store, $location) {
+var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location', 'loadOrder',
+    function ($scope, $http, $stateParams, $store, $location, loadOrder) {
+    // Firstly check if order exists
+    if (loadOrder.data === null) {
+        // Redirect to home in this case
+        $location.url('/');
+    } else {
+        $scope.order = loadOrder.data;
+    }
+
     var code               = $stateParams.orderCode;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
-    $scope.isLoading = false;
+    $scope.isLoading = true;
     $scope.formData = {'user': uid};
     $scope.userDictionary = {};
     $scope.items = [];
-    $scope.order = {};
 
     // Get user details method
     var fetchUserDetail = function (uid) {
@@ -114,15 +121,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $location.url('/join/' + code);
     }
 
-    // Fetch order and item
-    $http.post(
-        '/api/orders/search',
-        {code: code}
-    ).then(function(response) {
-        $scope.order = response.data;
-        return $http.get('/api/orders/' + response.data.orderId + '/items');
-    }).then(function (response) {
-        $scope.items = response.data;
+    // Fetch order item
+    $http.get('/api/orders/' + $scope.order.orderId + '/items')
+    .success(function (data) {
+        $scope.isLoading = false;
+        $scope.items = data;
         $scope.items.map(function(datum) {
             fetchUserDetail(datum.UserUserId);
         });

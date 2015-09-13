@@ -36,7 +36,15 @@ module.exports = function(app) {
             ).state('view', {
                 url: "/orders/:orderCode",
                 controller: "ViewOrderController",
-                templateUrl: "/partials/view"
+                templateUrl: "/partials/view",
+                resolve: {
+                    loadOrder:  function($http, $stateParams){
+                        return $http.post(
+                            '/api/orders/search',
+                            {code: $stateParams.orderCode}
+                        );
+                    }
+                }
             }
         );
 
