@@ -4,12 +4,12 @@ ion-view
     ion-view
       ion-content.has-header.text-center
         .spacer
-          h3.vertical-aligned Your Group's Order
-        h4 Get started by filling up the form
+          h3.vertical-aligned Join an Order
+        h4 Enter the code of the order to join.
         form(ng-submit="submit()")
           .list
             label.item.item-divider.item-input.item-floating-label
-              span.input-label Group Code
+              span.input-label Order Code
               input(type='text', placeholder='Your order code, e.g.: wwcjy', ng-model="joinOrder.code")
             label.item.item-divider.item-input.item-floating-label(ng-if="!hasAccount")
               span.input-label Your Name
