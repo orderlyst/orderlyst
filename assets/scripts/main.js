@@ -3,7 +3,6 @@ require('angular-animate');
 require('angular-filter');
 
 var OrderController = require('./controllers/orderController');
-var NavBarController = require('./controllers/navbarController');
 
 // @ngInject
 var app = angular.module('orderlyst', [
