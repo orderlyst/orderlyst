@@ -23,6 +23,12 @@ html {
   border: none;
 }
 
+.slider-slide {
+  .box {
+    height: 100%;
+  }
+}
+
 .main-container {
   height: 100%;
 }
@@ -91,4 +97,11 @@ html {
   min-width: 30px;
   height: 43px;
   left: 0;
+}
+
+.carousel-logo {
+  background: url('/assets/images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
