@@ -1,5 +1,7 @@
 var randomCodeGenerator = function(){
-  return Math.random().toString(36).substring(4,Math.random() * 2 + 8);
+  var max = 99999;
+  var min = 458;
+  return '' + (Math.floor(Math.random() * (max - min + 1)) + min);
 };
 
 module.exports = function(sequelize, DataTypes) {
