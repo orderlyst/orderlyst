@@ -105,7 +105,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.modal = modal;
     }, {
         scope: $scope,
-        animation: 'slide-in-up'
+        animation: 'slide-in-up',
+        hardwareBackButtonClose: false
     });
 
     $scope.openModal = function() {
