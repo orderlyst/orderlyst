@@ -10,7 +10,7 @@ ion-view
           .list
             label.item.item-divider.item-input.item-floating-label
               span.input-label Group Code
-              input(type='text', placeholder='Group Code', ng-model="joinOrder.code")
+              input(type='text', placeholder='Your order code, e.g.: wwcjy', ng-model="joinOrder.code")
             label.item.item-divider.item-input.item-floating-label(ng-if="!hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="joinOrder.name")
