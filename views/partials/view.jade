@@ -2,6 +2,30 @@ ion-view
     include ./header
     ion-view
         ion-tabs.tabs-striped.tabs-top.tabs-color-assertive(has-header="true")
+            ion-tab(title="User Orders")
+                ion-view
+                    ion-content
+                        div(ng-if="items.length")
+                            div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
+                                .list.card
+                                    .item.item-divider
+                                        | {{userDictionary[user].name}}
+                                        .span.pull-right.ion-plus
+                                    ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
+                                        div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                            li.row.item
+                                                .col.col-10
+                                                    span.orderlyst-badge {{groupedItems.length}}
+                                                .col.col-60
+                                                    | {{name}}
+                                                .col.col-30.text-right
+                                                    | {{price * groupedItems.length | currency}}
+                        .spacer(ng-if="!items.length")
+                            .vertical-aligned Be the first one to order
+
+                        .button-bar.row.buttons-with-side-margin
+                            .button.button.button-royal.button-block(ng-click="openModal()") Add Item
+                            .button.button.button-calm.button-block  My Order
             ion-tab(title="Total Orders")
                 ion-view
                     ion-content.main-container
@@ -39,28 +63,4 @@ ion-view
                         //            input(type="text",placeholder="Price",ng-model="itemFormData.price")
                         //        button.button.button-block.button-stable(ng-click="createOrderItem()")
                         //            | Add New Item
-            ion-tab(title="User Orders")
-                ion-view
-                    ion-content
-                        div(ng-if="items.length")
-                            div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
-                                .list.card
-                                    .item.item-divider
-                                        | {{userDictionary[user].name}}
-                                        .span.pull-right.ion-plus
-                                    ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
-                                        div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                            li.row.item
-                                                .col.col-10
-                                                    span.orderlyst-badge {{groupedItems.length}}
-                                                .col.col-60
-                                                    | {{name}}
-                                                .col.col-30.text-right
-                                                    | {{price * groupedItems.length | currency}}
-                        .spacer(ng-if="!items.length")
-                            .vertical-aligned Be the first one to order
-
-                        .button-bar.row.buttons-with-side-margin
-                            .button.button.button-royal.button-block(ng-click="openModal()") Add Item
-                            .button.button.button-calm.button-block  My Order
 

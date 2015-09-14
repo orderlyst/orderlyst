@@ -132,11 +132,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.items = [];
 
     // Set default active tab based on isOwner
-    if (!$scope.isOwner) {
-        $timeout(function(){
-            $ionicTabsDelegate.select(1);
-        },0);
-    }
+    //if (!$scope.isOwner) {
+    //    $timeout(function(){
+    //        $ionicTabsDelegate.select(1);
+    //    },0);
+    //}
 
     // Get user details method
     var fetchUserDetail = function (uid) {
