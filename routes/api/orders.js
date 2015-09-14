@@ -56,6 +56,31 @@ router.post('/', function(req, res, next) {
 });
 
 /**
+ * To update an order's information
+ */
+router.post('/:id', function(req, res, next) {
+  var orderId = req.params.id;
+
+  req.models.Order
+    .find({
+      "where": {
+        orderId: orderId
+      }
+    })
+    .then(function(order){
+      if (req.body.surcharge) {
+        order.surcharge = req.body.surcharge;
+      }
+      if (req.body.tax) {
+        order.tax = req.body.tax;
+      }
+      order.isOpen = req.body.isOpen;
+      order.save();
+      res.json(order);
+    });
+});
+
+/**
  * To fetch an order's items
  */
 router.get('/:id/items', function(req, res, next) {
