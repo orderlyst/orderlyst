@@ -6,6 +6,12 @@ ion-modal-view
             input(type="text",placeholder="Item",ng-model="itemFormData.name")
         label.item.item-input
             input(type="tel",placeholder="Price",ng-model="itemFormData.price")
+        .item
+            .pull-right
+                | Quantity
+                span.ion-minus
+                span.orderlyst-badge 1
+                span.ion-plus
         button.button.button-block.button-stable(ng-click="createOrderItem()")
             | Add To Order
         button.button.button-full.button-energized(ng-click="closeModal()") Cancel
