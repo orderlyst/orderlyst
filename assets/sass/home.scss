@@ -1,5 +1,17 @@
+// Import partials and utilities
+@import 'mixins/variables';
+
 #homeLogo {
-  height: 65%;
+  height: 100%;
+  .carousel-logo {
+    background: url('/assets/images/logo.png');
+    background-size: auto $home-logo-height-percent;
+    background-repeat: no-repeat;
+    background-position: center top;
+  }
+  .carousel-logo-spacer {
+    height: 65%;
+  }
   #homePageSlider {
     height: 100%;
     img {
@@ -9,4 +21,9 @@
     text-align: center;
     vertical-align: middle;
   }
+}
+
+#homeButtons {
+  position: absolute;
+  top: $home-logo-height-percent;
 }
