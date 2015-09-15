@@ -1,3 +1,5 @@
+var idTransform = require('../middlewares/id-transform');
+
 module.exports = function(sequelize, DataTypes) {
 	"use strict";
   var Item = sequelize.define("Item", {
@@ -28,6 +30,14 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
           }
         });
+      }
+    },
+    "getterMethods": {
+      "UserUserId": function() {
+        return idTransform(this.getDataValue('UserUserId'));
+      },
+      "OrderOrderId": function() {
+        return idTransform(this.getDataValue('OrderOrderId'));
       }
     }
   });

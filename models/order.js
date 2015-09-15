@@ -1,3 +1,5 @@
+var idTransform = require('../middlewares/id-transform');
+
 var randomCodeGenerator = function(){
   var max = 99999;
   var min = 458;
@@ -10,7 +12,10 @@ module.exports = function(sequelize, DataTypes) {
     "orderId": {
       "type": DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true // Automatically gets converted to SERIAL for postgres
+      autoIncrement: true,
+      get: function() {
+        return idTransform(this.getDataValue('orderId'))
+      }
     },
     "code": {
       "type": DataTypes.STRING,
@@ -43,6 +48,11 @@ module.exports = function(sequelize, DataTypes) {
         });
 
         Order.hasMany(models.Item);
+      }
+    },
+    "getterMethods": {
+      "UserUserId": function() {
+        return idTransform(this.getDataValue('UserUserId'));
       }
     }
   });
