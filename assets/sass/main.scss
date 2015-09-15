@@ -49,6 +49,10 @@ html {
   text-align:right;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .pull-left {
   float: left;
 }
@@ -101,7 +105,7 @@ html {
 
 .carousel-logo {
   background: url('/assets/images/logo.png');
-  background-size: contain;
+  background-size: auto 100%;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-position: center;
 }
