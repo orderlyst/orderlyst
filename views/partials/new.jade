@@ -1,18 +1,19 @@
 ion-modal-view
     ion-header-bar.bar-stable
         h2.title Add Item
-    form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
-    .list
-        label.item.item-input
-            input(type="text",placeholder="Item",ng-model="itemFormData.name")
-        label.item.item-input
-            input(type="tel",placeholder="Price",ng-model="itemFormData.price")
-        .item.row
-            .col-20.text-center.col-offset-20 Quantity&nbsp
-            .col-20.text-right.ion-minus &nbsp
-            .col-20
-                input.item.text-center.full-width(type="tel", value="1")
-            .col-20.text-left.ion-plus
-        button.button.button-block.button-stable(ng-click="createOrderItem()")
-            | Add To Order
-        button.button.button-full.button-energized(ng-click="closeModal()") Cancel
+    ion-content.has-header
+        form.new-order-item-form(accept-charset="UTF-8", ng-submit="createOrderItem()")
+        .list
+            label.item.item-input
+                input(type="text",placeholder="Item",ng-model="itemFormData.name")
+            label.item.item-input
+                input(type="tel",placeholder="Price",ng-model="itemFormData.price")
+            .item.row
+                .col-20.text-center.col-offset-20 Quantity&nbsp
+                .col-20.text-right.ion-minus(ng-click="decrementFormDataQuantity()")
+                .col-20
+                    input.item.text-center.full-width(type="tel", value="{{itemFormData.quantity}}")
+                .col-20.text-left.ion-plus(ng-click="incrementFormDataQuantity()")
+            button.button.button-block.button-stable(ng-click="createOrderItem()")
+                | Add To Order
+            button.button.button-full.button-energized(ng-click="closeModal()") Cancel

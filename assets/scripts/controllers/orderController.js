@@ -127,7 +127,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.isLoading = true;
     $scope.isOwner = uid === $scope.order.UserUserId;
     $scope.orderFormData = {};
-    $scope.itemFormData = {'user': uid};
+    $scope.itemFormData = {'user': uid, 'quantity': 1};
     $scope.userDictionary = {};
     $scope.items = [];
 
@@ -163,26 +163,45 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
     });
 
-    // Scope methods
+    // Item Form scope methods
+    $scope.incrementFormDataQuantity = function() {
+        // Cast the quantity to numeric first
+        $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
+        if ($scope.itemFormData.quantity < 1) $scope.itemFormData.quantity = 1;
+        else $scope.itemFormData.quantity++;
+    };
+
+    $scope.decrementFormDataQuantity = function() {
+        // Cast the quantity to numeric first
+        $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
+        if ($scope.itemFormData.quantity > 1) $scope.itemFormData.quantity--;
+        else $scope.itemFormData.quantity = 1;
+    };
+
     $scope.createOrderItem = function() {
         var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||
             orderItemData.price === '' ||
-            isNaN(+orderItemData.price)) return;
+            isNaN(+orderItemData.price ||
+            +orderItemData.quantity < 1)) return;
         $scope.isLoading = true;
         // Hide modal
         $scope.modal.hide();
         // Clear formData
         $scope.itemFormData.name = '';
         $scope.itemFormData.price = '';
-        $http.post(
-            '/api/orders/' + $scope.order.orderId + '/items',
-            orderItemData
-        ).success(function(data) {
-            $scope.isLoading = false;
+        $scope.itemFormData.quantity = 1;
+        // Add items quantity times
+        for (var i = 0; i < orderItemData.quantity; i++) {
+            $http.post(
+                '/api/orders/' + $scope.order.orderId + '/items',
+                orderItemData
+            ).success(function (data) {
+                $scope.isLoading = false;
 
-            $scope.items.push(data);
-        });
+                $scope.items.push(data);
+            });
+        }
     };
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
