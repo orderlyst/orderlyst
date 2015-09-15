@@ -204,7 +204,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         if ($scope.itemFormData.quantity > 1) $scope.itemFormData.quantity--;
         else $scope.itemFormData.quantity = 1;
     };
-
+    $scope.createAdHocOrderItem = function(name, price) {
+        $scope.isLoading = true;
+        $http.post(
+            '/api/orders/' + $scope.order.orderId + '/items',
+            {name:name, price:price, user:uid}
+        ).success(function (data) {
+            $scope.isLoading = false;
+            $scope.items.push(data);
+        });
+    };
     $scope.createOrderItem = function() {
         var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||

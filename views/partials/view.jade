@@ -19,7 +19,7 @@ ion-view
                                                 | {{name}}
                                             .col.col-30.text-right
                                                 | {{price * groupedItems.length | currency}}
-                                            ion-option-button.button-positive.ion-plus
+                                            ion-option-button.button-positive.ion-plus(ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
 
