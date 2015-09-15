@@ -16,3 +16,13 @@
   text-align: center;
   vertical-align: baseline;
 }
+
+.user-order-item {
+  border: 1px solid #ddd !important;
+  border-radius: 0px !important;
+  .item-content {
+    padding: 1pc 0 1pc 0;
+    display: flex;
+    width: 100%;
+  }
+}

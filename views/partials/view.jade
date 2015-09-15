@@ -5,21 +5,21 @@ ion-view
             ion-tab(title="User Orders")
                 ion-view
                     ion-content
-                        div(ng-if="items.length")
+                        ion-list(ng-if="items.length")
                             div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
                                 .list.card
                                     .item.item-divider
                                         | {{userDictionary[user].name}}
                                         .span.pull-right.ion-plus
                                     ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
-                                        div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                            li.row.item
-                                                .col.col-10
-                                                    span.orderlyst-badge {{groupedItems.length}}
-                                                .col.col-60
-                                                    | {{name}}
-                                                .col.col-30.text-right
-                                                    | {{price * groupedItems.length | currency}}
+                                        ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                            .col.col-10
+                                                span.orderlyst-badge {{groupedItems.length}}
+                                            .col.col-60
+                                                | {{name}}
+                                            .col.col-30.text-right
+                                                | {{price * groupedItems.length | currency}}
+                                            ion-option-button.button-positive.ion-plus
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
 
