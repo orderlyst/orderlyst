@@ -1,4 +1,5 @@
 require('angular');
+require('./helpers/google-analytics');
 require('angular-animate');
 require('angular-filter');
 
@@ -6,9 +7,10 @@ var OrderController = require('./controllers/orderController');
 
 // @ngInject
 var app = angular.module('orderlyst', [
-      'ionic',
-      'ngAnimate',
-      'angular.filter'
+        'ionic',
+        'ngAnimate',
+        'angular.filter',
+        'analytics'
     ]);
 
 require('./routes/index')(app);
