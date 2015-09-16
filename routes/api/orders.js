@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
     .then(function(user){
       req.models.Order
         .create({
-          "UserUserId": user.userId
+          "UserUserId": user.getDataValue('userId')
         })
         .then(function(order){
           res.json(order);
@@ -130,8 +130,8 @@ router.post('/:id/items', function(req, res, next) {
         .create({
           "name": req.body.name,
           "price": req.body.price,
-          "UserUserId": user.userId,
-          "OrderOrderId": order.orderId
+          "UserUserId": user.getDataValue('userId'),
+          "OrderOrderId": order.getDataValue('orderId')
         })
         .then(function(item){
           res.json(item);

@@ -7,7 +7,7 @@ module.exports = function(id) {
   for (var i = 0, len = id.length; i < len; i++) {
     num = 0 + id[i];
     cKey = 0 + Key[i % KeyLength];
-    result = '' + (num ^ cKey);
+    result += '' + (num ^ cKey);
   }
   return result;
 };
