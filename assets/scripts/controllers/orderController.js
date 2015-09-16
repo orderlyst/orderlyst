@@ -17,8 +17,8 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams',
-    function($scope, $http, $location, $store, $stateParams) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
+    function($scope, $http, $location, $store, $stateParams, $q) {
     $scope.joinOrder = {};
     $scope.joinOrder.code = $stateParams.orderCode;
     var uid = $store.get('_orderlyst_uid');
@@ -32,18 +32,42 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams',
         }
         orderCode = $scope.joinOrder.code;
         if (name === "" || orderCode === "") return;
-        if ($scope.hasAccount) {
-            $location.url('/orders/' + orderCode);
-        } else {
-            $http.post(
-                '/api/users',
-                {name: name}
-            ).success(function (data) {
+        var promises = [];
+
+        promises.push($http.post(
+          '/api/orders/search',
+          {
+            code: orderCode
+          }
+        ));
+
+        if (!$scope.hasAccount) {
+            //$location.url('/orders/' + orderCode);
+          console.log('creating user');
+          promises.push($http.post(
+              '/api/users',
+              {
+                name: name
+              }
+          ));
+          /*
+          .success(function (data) {
                     // Save uid in local storage
                     $store.set('_orderlyst_uid', data.userId);
                     $location.url('/orders/' + orderCode);
             });
+          */
         }
+
+        $q.all(promises).then(function(result){
+          var order = result[0].data;
+          if (result[1]) {
+            // user created
+            var user = result[1].data;
+            $store.set('_orderlyst_uid', user.userId);
+          }
+          $location.url('/orders/' + order.orderId);
+        });
     };
 }];
 
