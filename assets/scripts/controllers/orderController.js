@@ -6,9 +6,11 @@ var startOrder = ['$scope', '$http', '$location', '$store',
         if (hasAccount) {
             $http.post(
                 '/api/orders',
-                {hostUserId: uid}
+                {
+                  hostUserId: uid
+                }
             ).success(function (data) {
-                $location.url('/orders/' + data.code);
+                $location.url('/orders/' + data.orderId);
             });
         } else {
             $location.url('/create');
