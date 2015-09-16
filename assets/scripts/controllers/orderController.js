@@ -158,12 +158,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.userDictionary = {};
     $scope.items = [];
 
-    // Set default active tab based on isOwner
-    //if (!$scope.isOwner) {
-    //    $timeout(function(){
-    //        $ionicTabsDelegate.select(1);
-    //    },0);
-    //}
+    // For showing new item added message
+    var notifyItemAdded = function(message) {
+        $scope.newItemAdded = true;
+        $scope.alertMessage = message;
+        $timeout(function() {
+            $scope.newItemAdded = false;
+        }, 1000);
+    }
 
     // Get user details method
     var fetchUserDetail = function (uid) {
@@ -212,6 +214,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         ).success(function (data) {
             $scope.isLoading = false;
             $scope.items.push(data);
+            $scope.newItemAdded = true;
+            $scope.alertMessage = "New item added";
+            notifyItemAdded(name + ' added');
         });
     };
     $scope.createOrderItem = function() {
@@ -234,10 +239,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 orderItemData
             ).success(function (data) {
                 $scope.isLoading = false;
-
                 $scope.items.push(data);
             });
         }
+        notifyItemAdded(orderItemData.name + ' added');
     };
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;

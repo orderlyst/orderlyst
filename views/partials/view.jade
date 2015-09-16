@@ -1,4 +1,5 @@
 ion-view
+    .alert.alert-green(ng-if="newItemAdded") {{alertMessage}}
     include ./header
     ion-view
         ion-tabs.tabs-striped.tabs-top.tabs-color-assertive(has-header="true")
@@ -23,7 +24,7 @@ ion-view
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
 
-                        .button-bar.row.buttons-with-side-margin
+                        bar.bar-footer.button-bar.row.buttons-with-side-margin
                             .button.button.button-royal.button-block(ng-click="openModal()") Add Item
                             .button.button.button-calm.button-block  My Order
             ion-tab(title="Total Orders")
