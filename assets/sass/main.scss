@@ -19,8 +19,12 @@ html {
   margin-right: 1pc;
 }
 
-.bar-header a {
-  text-decoration: none;
+.bar.bar-header {
+  background-color: $color-primary-blue;
+  color: white;
+  a {
+    text-decoration: none;
+  }
 }
 
 .tab-item {
