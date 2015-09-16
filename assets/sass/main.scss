@@ -1,8 +1,13 @@
+// Import partials and utilities
+@import 'mixins/variables';
+
 body,
 html {
   width: 100%;
   height: 100%;
   word-wrap: break-word;
+  font-family: $default-font;
+  font-weight: 400px;
 }
 
 .bar-header a {
@@ -17,6 +22,12 @@ html {
   &:focus {
     border: none;
   }
+}
+
+.button-footer {
+  position: absolute;
+  bottom: 0;
+  z-index: 100;
 }
 
 .panel {
