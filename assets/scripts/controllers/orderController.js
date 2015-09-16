@@ -225,8 +225,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||
             orderItemData.price === '' ||
-            isNaN(+orderItemData.price ||
-            +orderItemData.quantity < 1)) return;
+            isNaN(+orderItemData.price) ||
+            +orderItemData.quantity < 1) return;
         $scope.isLoading = true;
         // Hide modal
         $scope.modal.hide();
