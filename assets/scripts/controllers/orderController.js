@@ -147,7 +147,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.modal.remove();
     });
 
-    var code               = $stateParams.orderCode;
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = true;
@@ -176,7 +175,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     // Authenticate user
     fetchUserDetail(uid);
     if (!hasAccount) {
-        $location.url('/join/' + code);
+        $location.url('/join/' + $scope.order.code);
     }
 
     // Fetch order item
