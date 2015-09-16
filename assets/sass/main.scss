@@ -7,7 +7,7 @@ html {
   height: 100%;
   word-wrap: break-word;
   font-family: $default-font;
-  font-weight: 400px;
+  font-weight: 400;
 }
 
 .slider-pager .slider-pager-page.active {
@@ -21,6 +21,15 @@ html {
 
 .bar-header a {
   text-decoration: none;
+}
+
+.tab-item {
+  color: $color-primary-grey !important;
+}
+
+.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
+  color: black !important;
+  border: 0 solid $color-primary-yellow !important;
 }
 
 .button {
