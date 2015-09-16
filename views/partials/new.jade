@@ -14,6 +14,6 @@ ion-modal-view
                 .col-20
                     input.item.text-center.full-width(type="tel", value="{{itemFormData.quantity}}")
                 .col-20.text-left.ion-plus(ng-click="incrementFormDataQuantity()")
-            button.button.button-block.button-stable(ng-click="createOrderItem()")
-                | Add To Order
-            button.button.button-full.button-energized(ng-click="closeModal()") Cancel
+            .button-bar.row.buttons-with-side-margin
+              button.button.button-block.button-stable(ng-click="createOrderItem()") Add To Order
+              button.button.button-full.button-energized(ng-click="closeModal()") Cancel

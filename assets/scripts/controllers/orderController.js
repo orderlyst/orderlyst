@@ -21,12 +21,25 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
-    function($scope, $http, $location, $store, $stateParams, $q) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal) {
     $scope.joinOrder = {};
     $scope.joinOrder.code = $stateParams.orderCode;
     var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
+
+    $ionicModal.fromTemplateUrl('/partials/orderNotFound', function(modal) {
+        $scope.modal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up',
+        hardwareBackButtonClose: true
+    });
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+
     $scope.submit = function() {
         var name, orderCode;
         if ($scope.hasAccount) {
@@ -46,7 +59,6 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
         ));
 
         if (!$scope.hasAccount) {
-            //$location.url('/orders/' + orderCode);
           console.log('creating user');
           promises.push($http.post(
               '/api/users',
@@ -60,10 +72,15 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
           var order = result[0].data;
           if (result[1]) {
             // user created
+            $scope.hasAccount = true;
             var user = result[1].data;
             $store.set('_orderlyst_uid', user.userId);
           }
-          $location.url('/orders/' + order.orderId);
+          if (order) {
+            $location.url('/orders/' + order.orderId);
+          } else {
+            $scope.modal.show();
+          }
         });
     };
 }];
