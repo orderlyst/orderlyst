@@ -32,8 +32,12 @@ html {
 }
 
 .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-  color: black !important;
+  color: $color-primary-black !important;
   border: 0 solid $color-primary-yellow !important;
+}
+
+.item-divider {
+  background-color: $color-primary-cream;
 }
 
 .button {

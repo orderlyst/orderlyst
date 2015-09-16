@@ -15,9 +15,10 @@
   max-height: 1.5em;
   border-radius: 50%;
   background-color: $color-primary-yellow;
-  color: black;
+  color: $color-primary-black;
   text-align: center;
   vertical-align: baseline;
+  font-size: 15px;
 }
 
 .user-order-item {
