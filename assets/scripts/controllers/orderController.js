@@ -184,7 +184,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $timeout(function() {
             $scope.newItemAdded = false;
         }, 1000);
-    }
+    };
 
     // Get user details method
     var fetchUserDetail = function (uid) {
