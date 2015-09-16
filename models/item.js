@@ -34,10 +34,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     "getterMethods": {
       "UserUserId": function() {
-        return idTransform(this.getDataValue('UserUserId'));
+        return idTransform.encrypt(this.getDataValue('UserUserId'));
       },
       "OrderOrderId": function() {
-        return idTransform(this.getDataValue('OrderOrderId'));
+        return idTransform.encrypt(this.getDataValue('OrderOrderId'));
       }
     }
   });

@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true,
 			autoIncrement: true,
 			get: function() {
-				return idTransform(this.getDataValue('userId'));
+				return idTransform.encrypt(this.getDataValue('userId'));
 			}
 		},
 		"name":{

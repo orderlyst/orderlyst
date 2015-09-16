@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true,
       get: function() {
-        return idTransform(this.getDataValue('orderId'))
+        return idTransform.encrypt(this.getDataValue('orderId'))
       }
     },
     "code": {
@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     "getterMethods": {
       "UserUserId": function() {
-        return idTransform(this.getDataValue('UserUserId'));
+        return idTransform.encrypt(this.getDataValue('UserUserId'));
       }
     }
   });
