@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var autoprefixer = require('gulp-autoprefixer');
 var $ = require('gulp-load-plugins')({
   pattern : ['gulp-*', 'del'],
   camelize: true
@@ -37,6 +38,7 @@ var bootstrapDir = './bower_components/bootstrap-sass';
       .pipe($.sass({
         includePaths: [bootstrapDir + '/assets/stylesheets']
       }).on('error', $.sass.logError))
+      .pipe(autoprefixer())
       .pipe($.minifyCss({
         processImport: false
       }))
