@@ -1,3 +1,5 @@
+var pluralize = require('../helpers/pluralize.js');
+
 var startOrder = ['$scope', '$http', '$location', '$store',
     function($scope, $http, $location, $store) {
     var uid = $store.get('_orderlyst_uid');
@@ -216,7 +218,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.items.push(data);
             $scope.newItemAdded = true;
             $scope.alertMessage = "New item added";
-            notifyItemAdded(name + ' added');
+            notifyItemAdded(pluralize(1, name) + ' added');
         });
     };
     $scope.createOrderItem = function() {
@@ -242,7 +244,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items.push(data);
             });
         }
-        notifyItemAdded(orderItemData.name + ' added');
+        notifyItemAdded(pluralize(orderItemData.quantity, orderItemData.name) + ' added');
     };
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
