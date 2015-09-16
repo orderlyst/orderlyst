@@ -24,7 +24,7 @@ router.post('/search', function(req, res, next) {
  * To fetch an order's information
  */
 router.get('/:id', function(req, res, next) {
-  var orderId = idTransform(req.params.id);
+  var orderId = idTransform.decrypt(req.params.id);
 
   req.models.Order
     .find({
@@ -41,8 +41,8 @@ router.get('/:id', function(req, res, next) {
  * To create a new order
  */
 router.post('/', function(req, res, next) {
-  var hostId = idTransform(req.body.hostUserId);
-
+  var hostId = idTransform.decrypt(req.body.hostUserId);
+  console.log(hostId);
   req.models.User
     .findById(hostId)
     .then(function(user){
@@ -60,7 +60,7 @@ router.post('/', function(req, res, next) {
  * To update an order's information
  */
 router.post('/:id', function(req, res, next) {
-  var orderId = idTransform(req.params.id);
+  var orderId = idTransform.decrypt(req.params.id);
 
   req.models.Order
     .find({
@@ -85,7 +85,7 @@ router.post('/:id', function(req, res, next) {
  * To fetch an order's items
  */
 router.get('/:id/items', function(req, res, next) {
-  var orderId = idTransform(req.params.id);
+  var orderId = idTransform.decrypt(req.params.id);
 
   req.models.Item
     .findAll({
@@ -102,8 +102,8 @@ router.get('/:id/items', function(req, res, next) {
  * To create a new order item
  */
 router.post('/:id/items', function(req, res, next) {
-  var orderId = idTransform(req.params.id);
-  var userId = idTransform(req.body.user);
+  var orderId = idTransform.decrypt(req.params.id);
+  var userId = idTransform.decrypt(req.body.user);
   var join = Join.create();
 
   req.models.Order
@@ -146,7 +146,7 @@ router.post('/:id/items', function(req, res, next) {
  * To delete a order item
  */
 router.delete('/:id/items/:itemId', function(req, res, next){
-  var orderId = idTransform(req.params.id);
+  var orderId = idTransform.decrypt(req.params.id);
   var itemId = req.params.itemId;
 
   req.models.Item

@@ -57,7 +57,7 @@ var bootstrapDir = './bower_components/bootstrap-sass';
   gulp.task('build', ['sass', 'scripts', 'images', 'bower', 'misc', 'browserify', 'jslint'], function () {
     gulp.start('post-clean');
 
-    if(process.env.NODE_ENV == 'development'){
+    if(process.env.NODE_ENV === 'development'){
       gulp.watch('./assets/images/**/*.{jpg|png|gif}', ['images']);
       gulp.watch('./assets/sass/**/*.scss', ['sass']);
       gulp.watch('./assets/scripts/**/*.js', ['scripts']);

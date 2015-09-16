@@ -3,7 +3,7 @@ var KeyLength = Key.length;
 
 var keyCharAt = function(key, i) {
   return key.charCodeAt(Math.floor(i % key.length));
-}
+};
 
 module.exports = {
   encrypt: function(id) {

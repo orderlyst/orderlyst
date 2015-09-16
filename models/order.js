@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true,
       get: function() {
-        return idTransform.encrypt(this.getDataValue('orderId'))
+        return idTransform.encrypt(this.getDataValue('orderId'));
       }
     },
     "code": {
