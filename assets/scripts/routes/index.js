@@ -34,14 +34,13 @@ module.exports = function(app) {
                 controller: "CreateOrderController"
             }
             ).state('view', {
-                url: "/orders/:orderCode",
+                url: "/orders/:orderId",
                 controller: "ViewOrderController",
                 templateUrl: "/partials/view",
                 resolve: {
                     loadOrder:  function($http, $stateParams){
-                        return $http.post(
-                            '/api/orders/search',
-                            {code: $stateParams.orderCode}
+                        return $http.get(
+                            '/api/orders/' + $stateParams.orderId
                         );
                     }
                 }
