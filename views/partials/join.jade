@@ -5,7 +5,7 @@ ion-view
       ion-content.has-header.text-center
         .spacer
           h3.vertical-aligned Join an Order
-        h4 Enter the code of the order to join.
+        h4.text-left.has-side-margin Get Started!
         form(ng-submit="submit()")
           .list
             label.item.item-divider.item-input.item-floating-label
@@ -16,4 +16,4 @@ ion-view
               input(type='text', placeholder='Your Name', ng-model="joinOrder.name")
           .row
             .col-80.col-offset-10
-              input.button.button-balanced.button-block(type="submit", value="Join Order")
+              input.button.button-filled.button-block(type="submit", value="Join Order")

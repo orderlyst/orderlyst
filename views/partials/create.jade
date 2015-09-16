@@ -5,7 +5,7 @@ ion-view
       ion-content.has-header.text-center
         .spacer
           h3.vertical-aligned Create a new order
-        h4 Get started by filling up the form
+        h4.text-left.has-side-margin Get Started!
         form.join-order-form(ng-submit="submit()")
           .list
             label.item.item-divider.item-input.item-floating-label
@@ -13,4 +13,4 @@ ion-view
               input(type='text', placeholder='Your Name', ng-model="createOrder.name")
           .row
             .col-80.col-offset-10
-              input.button.button-balanced.button-block(type="submit", value="Create Order")
+              input.button.button-blank.button-block(type="submit", value="Create Order")
