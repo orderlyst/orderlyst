@@ -52,13 +52,6 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                 name: name
               }
           ));
-          /*
-          .success(function (data) {
-                    // Save uid in local storage
-                    $store.set('_orderlyst_uid', data.userId);
-                    $location.url('/orders/' + orderCode);
-            });
-          */
         }
 
         $q.all(promises).then(function(result){
@@ -81,9 +74,11 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     if (hasAccount) {
         $http.post(
             '/api/orders',
-            {hostUserId: uid}
+            {
+              hostUserId: uid
+            }
         ).success(function (data) {
-            $location.url('/orders/' + data.code);
+            $location.url('/orders/' + data.orderId);
         });
     }
     $scope.submit = function() {
@@ -93,22 +88,29 @@ var createOrder = ['$scope', '$http', '$location', '$store',
         if (hasAccount) {
             $http.post(
                 '/api/orders',
-                {hostUserId: uid}
+                {
+                  hostUserId: uid
+                }
             ).success(function (data) {
-                    $location.url('/orders/' + data.code);
+                $location.url('/orders/' + data.orderId);
             });
         } else {
             $http.post(
                 '/api/users',
-                {name: name}
+                {
+                  name: name
+                }
             ).then(function (response) {
                 // Save uid in local storage
                 $store.set('_orderlyst_uid', response.data.userId);
                 return $http.post(
-                    '/api/orders',
-                    {hostUserId: response.data.userId});
+                  '/api/orders',
+                  {
+                    hostUserId: response.data.userId
+                  }
+                );
             }).then(function (response) {
-                $location.url('/orders/' + response.data.code);
+              $location.url('/orders/' + response.data.orderId);
             });
         }
     };
