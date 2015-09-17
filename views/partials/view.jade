@@ -18,7 +18,7 @@ ion-view
                                             .col.col-60
                                                 | {{name}}
                                             .col.col-30.text-right
-                                                | {{price * groupedItems.length | currency}}
+                                                | S{{price * groupedItems.length | currency}}
                                             ion-option-button.button-positive.ion-plus(ng-if="order.isOpen", \
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
@@ -37,18 +37,18 @@ ion-view
                                         .col.col-60
                                             | {{name}}
                                         .col.col-30.text-right
-                                            | {{price * groupedItems.length | currency}}
+                                            | S{{price * groupedItems.length | currency}}
                             .order-fee
                                 .row.item
                                     .col.col-60.col-offset-10 Subtotal:
-                                    .col.col-30.text-right {{totalFee() | currency}}
+                                    .col.col-30.text-right S{{totalFee() | currency}}
                                 .row.item
                                     .col.col-60.col-offset-10 Delivery Fee:
-                                    .col.col-30.text-right $0.00
+                                    .col.col-30.text-right S$0.00
                                 hr
                                 .row.item
                                     .col.col-60.col-offset-10 Total:
-                                    .col.col-30.text-right {{totalFee() | currency}}
+                                    .col.col-30.text-right S{{totalFee() | currency}}
 
                         div(ng-if="!items.length")
                             .row.item.text-center
@@ -56,14 +56,14 @@ ion-view
                             .order-fee
                                 .row.item
                                     .col.col-60.col-offset-10 Subtotal:
-                                    .col.col-30.text-right {{totalFee() | currency}}
+                                    .col.col-30.text-right S{{totalFee() | currency}}
                                 .row.item
                                     .col.col-60.col-offset-10 Delivery Fee:
-                                    .col.col-30.text-right $0.00
+                                    .col.col-30.text-right S$0.00
                                 hr
                                 .row.item
                                     .col.col-60.col-offset-10 Total:
-                                    .col.col-30.text-right {{totalFee() | currency}}
+                                    .col.col-30.text-right S{{totalFee() | currency}}
 
                     ion-footer-bar.bar-stable()(ng-if="isOwner")
                         button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="toggleLocked()") <i class="icon ion-ios-unlocked"></i> Lock Order
