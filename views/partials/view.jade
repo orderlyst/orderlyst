@@ -22,7 +22,7 @@ ion-view
                                             ion-option-button.button-positive.ion-plus(ng-if="order.isOpen", \
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
-                            .vertical-aligned Be the first one to order
+                            .vertical-aligned Tap "Add Item" to start<br>adding to your order.
 
                         bar.bar-footer.button-bar.row.buttons-with-side-margin
                             .button.button.button-filled.button-block(ng-if="order.isOpen", ng-click="openModal()") Add Item
@@ -70,4 +70,3 @@ ion-view
                         bar.bar-footer.button-bar.row.buttons-with-side-margin(ng-if="isOwner")
                             .button.button.button-filled.button-block(ng-if="order.isOpen",ng-click="toggleLocked()") Lock Order
                             .button.button.button-filled.button-block(ng-if="!order.isOpen", ng-click="toggleLocked()") Unlock Order
-
