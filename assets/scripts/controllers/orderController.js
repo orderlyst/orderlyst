@@ -128,9 +128,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal',
+    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicActionSheet',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicActionSheet) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -147,6 +147,24 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         animation: 'slide-in-up',
         hardwareBackButtonClose: false
     });
+
+
+    $scope.showActionSheet = function(){
+     var sheet = $ionicActionSheet.show({
+       buttons: [
+         { text: '<i class="icon ion-ios-copy-outline"></i> Copy Link' }
+       ],
+       titleText: "Order Code: " + $scope.order.code,
+       cancelText: 'Cancel',
+       cancel: function() {
+         sheet();
+       },
+       buttonClicked: function(index) {
+         return true;
+       }
+     });
+    };
+
 
     $scope.openModal = function() {
         $scope.modal.show();

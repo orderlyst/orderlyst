@@ -1,3 +1,7 @@
-ion-header-bar.bar-stable.text-center
-    .row
-        a.col-80.col-offset-10.navbar-brand(href="/", nav-direction="back")
+ion-header-bar.bar-stable
+  ion-nav-bar
+    ion-nav-title
+      a.navbar-brand
+    ion-nav-buttons(side="right")
+      button.button.button-icon.icon.ion-android-more-vertical(menu-toggle="right", ng-click="showActionSheet()")
+              
