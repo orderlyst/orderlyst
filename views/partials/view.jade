@@ -65,6 +65,6 @@ ion-view
                                     .col.col-60.col-offset-10 Total:
                                     .col.col-30.text-right {{totalFee() | currency}}
 
-                        bar.bar-footer.button-bar.row.buttons-with-side-margin(ng-if="isOwner")
-                            .button.button.button-filled.button-block(ng-if="order.isOpen",ng-click="toggleLocked()") Lock Order
-                            .button.button.button-filled.button-block(ng-if="!order.isOpen", ng-click="toggleLocked()") Unlock Order
+                    ion-footer-bar.bar-stable()(ng-if="isOwner")
+                        button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="toggleLocked()") <i class="icon ion-ios-unlocked"></i> Lock Order
+                        button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
