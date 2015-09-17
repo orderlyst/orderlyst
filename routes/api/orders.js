@@ -76,7 +76,7 @@ router.post('/:id', function(req, res, next) {
       values,
       {
         "where": {
-          orderId: orderId;
+          orderId: orderId
         }
       }
     )
