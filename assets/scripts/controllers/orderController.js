@@ -88,6 +88,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
 var createOrder = ['$scope', '$http', '$location', '$store',
     function($scope, $http, $location, $store) {
     $scope.createOrder = {};
+    $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     if (hasAccount) {
@@ -102,7 +103,8 @@ var createOrder = ['$scope', '$http', '$location', '$store',
     }
     $scope.submit = function() {
         var name = $scope.createOrder.name;
-        if (name === "") return;
+        $scope.submitted = true;
+        if (name === undefined) return;
         // First create user and go to order page
         if (hasAccount) {
             $http.post(

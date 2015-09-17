@@ -6,11 +6,16 @@ ion-view
         .spacer
           h3.vertical-aligned Create a new order
         h4.text-left.has-side-margin Get Started!
-        form.join-order-form(ng-submit="submit()")
+        form.join-order-form(name="createOrderForm")
           .list
-            label.item.item-divider.item-input.item-floating-label
+            label.item.item-divider.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
+                    && submitted, 'valid': createOrderForm.name.$valid && submitted }" )
               span.input-label Your Name
-              input(type='text', placeholder='Your Name', ng-model="createOrder.name")
+              input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
+            .form-errors(ng-show="createOrderForm.name.$error && submitted", ng-messages="createOrderForm.name.$error")
+              .form-error(ng-message="required") Name is required
+
+
           .row
             .col-80.col-offset-10
-              input.button.button-blank.button-block(type="submit", value="Create Order")
+              input.button.button-blank.button-block(ng-click="submit()", value="Create Order")
