@@ -19,6 +19,11 @@ html {
   margin-right: 1pc;
 }
 
+.has-vertical-margin {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
 .bar.bar-header {
   background-color: $color-primary-blue;
   color: white;
@@ -28,9 +33,21 @@ html {
 }
 
 .bar-filled {
+  border: 1px solid $color-primary-blue;
   background-color: $color-primary-blue;
+  background-image: none;
   button.button, button.button.button-clear {
     color: white ;
+    font-weight: 900;
+  }
+}
+
+.bar-blank {
+  border: 1px solid $color-primary-blue;
+  background-color: white;
+  background-image: none;
+  button.button, button.button.button-clear {
+    color: $color-primary-blue ;
     font-weight: 900;
   }
 }
@@ -193,6 +210,6 @@ html {
 }
 
 .central-block {
-  display: inline-block;
-  margin: auto;
+  left: 50%;
+  transform: translateX(-50%)
 }
