@@ -175,8 +175,9 @@ html {
 .navbar-brand {
   position: absolute;
   width: 100%;
-  background: url('/assets/images/logo_text.png');
-  background-size: cover;
+  background: url('/assets/images/logo_text_white.png') no-repeat;
+  background-position: center bottom;
+  background-size: 70% auto;
   height: 43px;
   top: -4px;
   min-width: 30px;
