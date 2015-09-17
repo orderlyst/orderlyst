@@ -2,7 +2,7 @@ ion-modal-view
     ion-header-bar.bar-stable
         h2.title Add Item
     ion-content.has-header
-        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="newItemForm", ng-submit="createOrderItem()", novalidate="")
+        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="newItemForm", novalidate="")
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.name.$invalid && itemFormData.submitted, \
                     'valid': newItemForm.name.$valid && itemFormData.submitted && newItemForm.name.$dirty }")
                 span.input-label Item Name
@@ -35,5 +35,5 @@ ion-modal-view
                 .form-error.text-center(ng-message="pattern") Quantity must be numeric
                 
     ion-footer-bar.bar-stable()
-        button.button.button-clear <i class="icon ion-ios-plus-empty"></i> Add To Order
+        button.button.button-clear(ng-click="createOrderItem()") <i class="icon ion-ios-plus-empty"></i> Add To Order
         button.button.button-clear(ng-click="closeModal()") Cancel
