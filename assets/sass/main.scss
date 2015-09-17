@@ -27,6 +27,14 @@ html {
   }
 }
 
+.bar-filled {
+  background-color: $color-primary-blue;
+  button.button, button.button.button-clear {
+    color: white ;
+    font-weight: 900;
+  }
+}
+
 .tab-item {
   color: $color-primary-grey !important;
 }
@@ -182,4 +190,9 @@ html {
   min-width: 30px;
   height: 43px;
   left: 0;
+}
+
+.central-block {
+  display: inline-block;
+  margin: auto;
 }

@@ -23,8 +23,8 @@ ion-view
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
-                    ion-footer-bar.bar-stable()
-                        button.button.button-filled.button-clear(ng-if="order.isOpen", ng-click="openModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
+                    ion-footer-bar.bar-filled()
+                        button.central-block.button.button-clear(ng-if="order.isOpen", ng-click="openModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
             ion-tab(title="Receipt")
                 ion-view
                     ion-content
