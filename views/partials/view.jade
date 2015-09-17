@@ -22,13 +22,13 @@ ion-view
                                             ion-option-button.button-positive.ion-plus(ng-if="order.isOpen", \
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
-                            .vertical-aligned Tap "Add Item" to start<br>adding to your order.
+                            .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
                     ion-footer-bar.bar-stable()
                         button.button.button-filled.button-clear(ng-if="order.isOpen", ng-click="openModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
             ion-tab(title="Receipt")
                 ion-view
-                    ion-content.main-container
-                        div(ng-if="items.length")
+                    ion-content
+                        ion-list(ng-if="items.length")
                             ul(ng-repeat="(name, prices) in items | groupBy: 'name'")
                                 div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                     li.row.item
