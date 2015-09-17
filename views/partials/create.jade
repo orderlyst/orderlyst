@@ -13,7 +13,7 @@ ion-view
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
             .form-errors(ng-show="createOrderForm.name.$error && submitted", ng-messages="createOrderForm.name.$error")
-              .form-error(ng-message="required") Name is required
+              .form-error(ng-message="required") We need your name.
 
 
           .row
