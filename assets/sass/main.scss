@@ -27,6 +27,9 @@ html {
 .bar.bar-header {
   background-color: $color-primary-blue;
   color: white;
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
   a {
     text-decoration: none;
   }
@@ -49,6 +52,22 @@ html {
   button.button, button.button.button-clear {
     color: $color-primary-blue ;
     font-weight: 900;
+  }
+}
+
+.bar-orderlyst {
+  button {
+    width: 48%;
+  }
+  button.button-filled, button.button-filled.button-clear {
+    color: white;
+    background-color: $color-primary-blue;
+    border: 1px solid $color-primary-blue;
+  }
+  button.button-blank, button.button-blank.button-clear {
+    color: $color-primary-blue;
+    background-color: white;
+    border: 1px solid $color-primary-blue;
   }
 }
 

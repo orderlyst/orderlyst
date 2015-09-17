@@ -1,5 +1,5 @@
 ion-modal-view
-    ion-header-bar.bar-stable
+    ion-header-bar
         h2.title Add Item
     ion-content.has-header
         form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="newItemForm", novalidate="")
@@ -33,7 +33,7 @@ ion-modal-view
             .form-errors(ng-show="newItemForm.quantity.$error && itemFormData.submitted", ng-messages="newItemForm.quantity.$error")
                 .form-error.text-center(ng-message="required") Item quantity is required
                 .form-error.text-center(ng-message="pattern") Quantity must be numeric
-                
-    ion-footer-bar.bar-stable()
-        button.button.button-clear(ng-click="createOrderItem()") <i class="icon ion-ios-plus-empty"></i> Add To Order
-        button.button.button-clear(ng-click="closeModal()") Cancel
+
+    ion-footer-bar.bar-orderlyst()
+        button.button.button-clear.button-filled(ng-click="createOrderItem()") <i class="icon ion-ios-plus-empty"></i> Add To Order
+        button.button.button-clear.button-blank(ng-click="closeModal()") Cancel
