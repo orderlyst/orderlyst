@@ -30,11 +30,6 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     $scope.hasAccount = (uid !== -1);
     $scope.codeNotAvailable = false;
 
-    $scope.updatingCode = function() {
-      $scope.codeNotAvailable = false;
-      $scope.submitted = false;
-    };
-
     if ($scope.hasAccount) {
       $scope.joinOrder.name = uid;
     }
