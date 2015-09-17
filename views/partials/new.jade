@@ -12,8 +12,8 @@ ion-modal-view
 
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.price.$invalid && itemFormData.submitted, \
                     'valid': newItemForm.price.$valid && itemFormData.submitted && newItemForm.price.$dirty }")
-                span.input-label Item Price
-                input(type="tel",placeholder="Item Price",ng-model="itemFormData.price", ng-required="true", \
+                span.input-label Item Price (S$)
+                input(type="number",placeholder="Item Price",ng-model="itemFormData.price", ng-required="true", \
                     ng-pattern="/^[1-9][0-9]*(\.[0-9][05])?$/", name="price")
             .form-errors(ng-show="newItemForm.price.$error && itemFormData.submitted", ng-messages="newItemForm.price.$error")
                 .form-error(ng-message="required") Item price is required
