@@ -79,9 +79,9 @@ html {
 }
 
 .button-blank {
-  color: $color-primary-blue;
+  color: $color-primary-blue !important;
   background-color: white;
-  border: 1px solid $color-primary-blue;
+  border: 1px solid $color-primary-blue !important;
 }
 
 .button-filled {
