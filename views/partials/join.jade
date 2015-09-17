@@ -10,7 +10,7 @@ ion-view
           .list
             label.item.item-input.item-floating-label(ng-class="{'has-error': submitted && (joinOrderForm.code.$invalid || codeNotAvailable)}")
               span.input-label Order Code
-              input(type='text', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-required="true", name="code")
+              input(type='tel', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-required="true", name="code")
             .form-errors(ng-hide="!submitted", ng-messages="joinOrderForm.code.$error")
               .form-error(ng-message="required") You need to enter an order code.
               .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
