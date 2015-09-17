@@ -51,8 +51,21 @@ ion-view
                                     .col.col-60.col-offset-10 Total:
                                     .col.col-30.text-right {{totalFee() | currency}}
 
-                        .spacer(ng-if="!items.length")
-                            .vertical-aligned Be the first one to order
+                        div(ng-if="!items.length")
+                            .row.item.text-center
+                                .col No items
+                            .order-fee
+                                .row.item
+                                    .col.col-60.col-offset-10 Subtotal:
+                                    .col.col-30.text-right {{totalFee() | currency}}
+                                .row.item
+                                    .col.col-60.col-offset-10 Delivery Fee:
+                                    .col.col-30.text-right $0.00
+                                hr
+                                .row.item
+                                    .col.col-60.col-offset-10 Total:
+                                    .col.col-30.text-right {{totalFee() | currency}}
+
                         bar.bar-footer.button-bar.row.buttons-with-side-margin(ng-if="isOwner")
                             .button.button.button-filled.button-block(ng-if="order.isOpen",ng-click="toggleLocked()") Lock Order
                             .button.button.button-filled.button-block(ng-if="!order.isOpen", ng-click="toggleLocked()") Unlock Order
