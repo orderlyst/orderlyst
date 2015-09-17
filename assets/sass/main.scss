@@ -40,6 +40,27 @@ html {
   background-color: $color-primary-cream;
 }
 
+/** Styling for validation errors **/
+
+.item.has-error {
+  border-bottom: 2px solid red;
+}
+
+.item.valid {
+  border-bottom: 2px solid green;
+}
+
+.form-errors {
+  margin: 5px 0
+}
+
+.form-error {
+  padding: 2px 16px 2px 16px;
+  color: red;
+}
+
+/** Styling for buttons **/
+
 .button {
   text-transform: capitalize;
   letter-spacing: 1px;
@@ -68,9 +89,7 @@ html {
   background-color: $color-primary-blue;
 }
 
-.panel {
-  border: none;
-}
+/** Misc. **/
 
 .slider-slide {
   .box {
