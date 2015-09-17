@@ -80,9 +80,19 @@ router.post('/:id', function(req, res, next) {
         }
       }
     )
-    .then(function(count, rows){
+    .then(function(result){
+      var count = result[0];
+      console.log(result);
       if (count === 1) {
-        res.json(rows[0]);
+        req.models.Order
+          .find({
+            "where": {
+              orderId: orderId
+            }
+          })
+          .then(function(order){
+            res.json(order);
+          });
       } else {
         next();
       }
