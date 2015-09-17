@@ -2,18 +2,20 @@ ion-view
   include ./header
   ion-view
     ion-view
-      ion-content.has-header.text-center
+      ion-content.has-header(padding=true)
         .spacer
-          h3.vertical-aligned Join an Order
-        h4.text-left.has-side-margin Get Started!
+          h3.vertical-aligned.text-center Join an Order
+        h4.text-center Enter the order code<span ng-hide="hasAccount"> and your name</span> to get started!
         form(ng-submit="submit()")
           .list
-            label.item.item-divider.item-input.item-floating-label
+            label.item.item-input.item-floating-label(ng-class="{'has-error': codeNotAvailable}")
               span.input-label Order Code
-              input(type='text', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-change="updatingCode()")
-              .form-errors
-                .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
-            label.item.item-divider.item-input.item-floating-label(ng-if="!hasAccount")
+              input(type='text', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-keypress="updatingCode()")
+                
+            .form-errors
+              .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
+              
+            label.item.item-input.item-floating-label(ng-if="!hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="joinOrder.name")
           .row
