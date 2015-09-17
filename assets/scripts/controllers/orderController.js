@@ -207,15 +207,23 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.incrementFormDataQuantity = function() {
         // Cast the quantity to numeric first
         $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
-        if ($scope.itemFormData.quantity < 1) $scope.itemFormData.quantity = 1;
-        else $scope.itemFormData.quantity++;
+        if ($scope.itemFormData.quantity < 1) {
+          $scope.itemFormData.quantity = 1;
+        } else {
+          console.log('add one');
+          $scope.itemFormData.quantity++;
+        }
     };
 
     $scope.decrementFormDataQuantity = function() {
         // Cast the quantity to numeric first
         $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
-        if ($scope.itemFormData.quantity > 1) $scope.itemFormData.quantity--;
-        else $scope.itemFormData.quantity = 1;
+        if ($scope.itemFormData.quantity > 1) {
+          console.log('sub one');
+          $scope.itemFormData.quantity--;
+        } else {
+          $scope.itemFormData.quantity = 1;
+        }
     };
     $scope.createAdHocOrderItem = function(name, price) {
         $scope.isLoading = true;

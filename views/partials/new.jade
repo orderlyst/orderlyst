@@ -3,28 +3,33 @@ ion-modal-view
         h2.title Add Item
     ion-content.has-header
         form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="newItemForm", ng-submit="createOrderItem()", novalidate="")
-            label.item.item-input(ng-class="{ 'has-error': newItemForm.name.$invalid && itemFormData.submitted, \
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.name.$invalid && itemFormData.submitted, \
                     'valid': newItemForm.name.$valid && itemFormData.submitted && newItemForm.name.$dirty }")
-                input(type="text",placeholder="Item",ng-model="itemFormData.name", ng-required="true", name="name")
+                span.input-label Item Name
+                input(type="text",placeholder="Item Name",ng-model="itemFormData.name", ng-required="true", name="name")
             .form-errors(ng-show="newItemForm.name.$error && itemFormData.submitted", ng-messages="newItemForm.name.$error")
                 .form-error(ng-message="required") Item name is required
 
-            label.item.item-input(ng-class="{ 'has-error': newItemForm.price.$invalid && itemFormData.submitted, \
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.price.$invalid && itemFormData.submitted, \
                     'valid': newItemForm.price.$valid && itemFormData.submitted && newItemForm.price.$dirty }")
-                input(type="tel",placeholder="Price",ng-model="itemFormData.price", ng-required="true", \
+                span.input-label Item Price
+                input(type="tel",placeholder="Item Price",ng-model="itemFormData.price", ng-required="true", \
                     ng-pattern="/^[1-9][0-9]*(\.[0-9][05])?$/", name="price")
             .form-errors(ng-show="newItemForm.price.$error && itemFormData.submitted", ng-messages="newItemForm.price.$error")
                 .form-error(ng-message="required") Item price is required
                 .form-error(ng-message="pattern") Price must be valid
 
-            .item.row(ng-class="{ 'has-error': newItemForm.quantity.$invalid && itemFormData.submitted, \
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.quantity.$invalid && itemFormData.submitted, \
                     'valid': newItemForm.quantity.$valid && itemFormData.submitted && newItemForm.quantity.$dirty }")
-                .col-20.text-center.col-offset-20 Quantity&nbsp
-                .col-20.text-right.ion-minus(ng-click="decrementFormDataQuantity()")
-                .col-20
-                    input.item.text-center.full-width(type="tel", value="{{itemFormData.quantity}}", \
-                        ng-required="true", ng-pattern="/^[1-9][0-9]*$/", name="quantity", ng-model="itemFormData.quantity")
-                .col-20.text-left.ion-plus(ng-click="incrementFormDataQuantity()")
+                .row
+                  .col-20.text-center.col-offset-20 Quantity
+                  .col-20.text-right(ng-click="decrementFormDataQuantity()")
+                    i.ion-minus.icon
+                  .col-20
+                      input.item.text-center.full-width(type="tel", ng-model="itemFormData.quantity", \
+                          ng-required="true", ng-pattern="/^[1-9][0-9]*$/", name="quantity", style="padding: 0; height: 24px;")
+                  .col-20.text-left(ng-click="incrementFormDataQuantity()")
+                    i.icon.ion-plus
             .form-errors(ng-show="newItemForm.quantity.$error && itemFormData.submitted", ng-messages="newItemForm.quantity.$error")
                 .form-error.text-center(ng-message="required") Item quantity is required
                 .form-error.text-center(ng-message="pattern") Quantity must be numeric
