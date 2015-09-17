@@ -62,22 +62,30 @@ router.post('/', function(req, res, next) {
 router.post('/:id', function(req, res, next) {
   var orderId = idTransform.decrypt(req.params.id);
 
+  var values = {};
+  if (req.body.surcharge) {
+    values.surcharge = req.body.surcharge;
+  }
+  if (req.body.tax) {
+    values.tax = req.body.tax;
+  }
+  values.isOpen = req.body.isOpen;
+
   req.models.Order
-    .find({
-      "where": {
-        orderId: orderId
+    .update(
+      values,
+      {
+        "where": {
+          orderId: orderId;
+        }
       }
-    })
-    .then(function(order){
-      if (req.body.surcharge) {
-        order.surcharge = req.body.surcharge;
+    )
+    .then(function(count, rows){
+      if (count === 1) {
+        res.json(rows[0]);
+      } else {
+        next();
       }
-      if (req.body.tax) {
-        order.tax = req.body.tax;
-      }
-      order.isOpen = req.body.isOpen;
-      order.save();
-      res.json(order);
     });
 });
 
