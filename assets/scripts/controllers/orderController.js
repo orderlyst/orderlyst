@@ -279,6 +279,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             return a + parseFloat(b.price);
         }, 0);
     };
+    $scope.toggleLocked = function() {
+      $scope.order.isOpen = !$scope.order.isOpen;
+      $http.post(
+          '/api/orders/' + $scope.order.orderId,
+          $scope.order
+      ).success(function(data) {
+      });
+    };
 }];
 
 

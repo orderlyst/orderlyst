@@ -24,7 +24,7 @@ ion-view
                             .vertical-aligned Be the first one to order
 
                         bar.bar-footer.button-bar.row.buttons-with-side-margin
-                            .button.button.button-filled.button-block(ng-click="openModal()") Add Item
+                            .button.button.button-filled.button-block(ng-if="order.isOpen", ng-click="openModal()") Add Item
                             .button.button.button-blank.button-block  My Order
             ion-tab(title="Total Orders")
                 ion-view
@@ -53,4 +53,7 @@ ion-view
 
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Be the first one to order
+                        bar.bar-footer.button-bar.row.buttons-with-side-margin(ng-if="isOwner")
+                            .button.button.button-filled.button-block(ng-if="order.isOpen",ng-click="toggleLocked()") Lock Order
+                            .button.button.button-filled.button-block(ng-if="!order.isOpen", ng-click="toggleLocked()") Unlock Order
 
