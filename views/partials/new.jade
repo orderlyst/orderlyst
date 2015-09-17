@@ -26,7 +26,7 @@ ion-modal-view
                   .col-20.text-right(ng-click="decrementFormDataQuantity()")
                     i.ion-minus.icon
                   .col-20
-                      input.item.text-center.full-width(type="tel", ng-model="itemFormData.quantity", \
+                      input.item.text-center.full-width.special-height(type="tel", ng-model="itemFormData.quantity", \
                           ng-required="true", ng-pattern="/^[1-9][0-9]*$/", name="quantity", style="padding: 0; height: 24px;")
                   .col-20.text-left(ng-click="incrementFormDataQuantity()")
                     i.icon.ion-plus
