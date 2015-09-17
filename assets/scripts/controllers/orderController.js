@@ -239,10 +239,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
     };
     $scope.createOrderItem = function() {
+        // HACK
+        $scope.newItemForm.$submitted = true;
         var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||
             orderItemData.price === '' ||
-            isNaN(+orderItemData.price) ||
+            !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
             +orderItemData.quantity < 1) return;
         $scope.isLoading = true;
         // Hide modal
@@ -261,6 +263,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items.push(data);
             });
         }
+        $scope.newItemForm.$submitted = false;
         notifyItemAdded(pluralize(orderItemData.quantity, orderItemData.name) + ' added');
     };
     $scope.removeOrderItem = function(item) {

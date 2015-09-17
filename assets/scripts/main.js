@@ -1,6 +1,7 @@
 require('angular');
 require('./helpers/google-analytics');
 require('angular-animate');
+require('angular-messages');
 require('angular-filter');
 
 var OrderController = require('./controllers/orderController');
@@ -9,6 +10,7 @@ var OrderController = require('./controllers/orderController');
 var app = angular.module('orderlyst', [
         'ionic',
         'ngAnimate',
+        'ngMessages',
         'angular.filter',
         'analytics'
     ]);
