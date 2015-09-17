@@ -28,6 +28,7 @@ ion-modal-view
             .form-errors(ng-show="newItemForm.quantity.$error && itemFormData.submitted", ng-messages="newItemForm.quantity.$error")
                 .form-error.text-center(ng-message="required") Item quantity is required
                 .form-error.text-center(ng-message="pattern") Quantity must be numeric
-
-            button.button.button-block.button-filled Add To Order
-            button.button.button-full.button-blank(ng-click="closeModal()") Cancel
+                
+    ion-footer-bar.bar-stable()
+        button.button.button-clear <i class="icon ion-ios-plus-empty"></i> Add To Order
+        button.button.button-clear(ng-click="closeModal()") Cancel
