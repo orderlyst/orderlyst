@@ -181,6 +181,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = true;
+    $scope.scrolling = false;
     $scope.isOwner = uid === $scope.order.UserUserId;
     $scope.orderFormData = {};
     $scope.itemFormData = {'user': uid, 'quantity': 1,  'submitted': false};
@@ -307,6 +308,17 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           $scope.order
       ).success(function(data) {
       });
+    };
+    $scope.scroll = function() {
+        $timeout(function () {
+            $scope.scrolling = true;
+        }, 0);
+    };
+
+    $scope.scrollb = function() {
+        $timeout(function () {
+            $scope.scrolling = false;
+        }, 0);
     };
 }];
 

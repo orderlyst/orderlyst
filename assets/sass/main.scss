@@ -24,6 +24,15 @@ html {
   margin-bottom: 2px;
 }
 
+ion-footer-bar.ng-enter {
+  animation: slideInUp 0.5s;
+}
+
+ion-footer-bar.ng-leave {
+  animation: slideOutDown 0.5s;
+}
+
+
 .bar.bar-header {
   background-color: $color-primary-blue;
   color: white;

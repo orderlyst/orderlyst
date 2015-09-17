@@ -5,7 +5,7 @@ ion-view
         ion-tabs.tabs-striped.tabs-top.tabs-color-assertive(has-header="true")
             ion-tab(title="User Orders")
                 ion-view
-                    ion-content
+                    ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
                         ion-list(ng-if="items.length")
                             div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
                                 .list.card
@@ -23,11 +23,11 @@ ion-view
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
-                    ion-footer-bar.bar-filled(ng-if="order.isOpen")
+                    ion-footer-bar.bar-filled(ng-if="order.isOpen && !scrolling")
                         button.central-block.button.button-clear(ng-click="openModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
             ion-tab(title="Receipt")
                 ion-view
-                    ion-content
+                    ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
                         ion-list(ng-if="items.length")
                             ul(ng-repeat="(name, prices) in items | groupBy: 'name'")
                                 div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
@@ -65,7 +65,7 @@ ion-view
                                     .col.col-60.col-offset-10 Total:
                                     .col.col-30.text-right S{{totalFee() | currency}}
 
-                    ion-footer-bar.bar-orderlyst(ng-if="isOwner")
+                    ion-footer-bar.bar-orderlyst(ng-if="isOwner && !scrolling")
                         button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="toggleLocked()") <i class="icon ion-ios-unlocked"></i> Lock Order
                         button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
                         button.button.button.button-blank.button-clear Additional Fees
