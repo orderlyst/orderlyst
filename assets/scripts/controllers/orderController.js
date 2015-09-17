@@ -175,7 +175,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.isLoading = true;
     $scope.isOwner = uid === $scope.order.UserUserId;
     $scope.orderFormData = {};
-    $scope.itemFormData = {'user': uid, 'quantity': 1};
+    $scope.itemFormData = {'user': uid, 'quantity': 1,  'submitted': false};
     $scope.userDictionary = {};
     $scope.items = [];
 
@@ -242,7 +242,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     };
     $scope.createOrderItem = function() {
         // HACK
-        $scope.newItemForm.$submitted = true;
+        $scope.itemFormData.submitted = true;
         var orderItemData = angular.copy($scope.itemFormData);
         if (orderItemData.name === '' ||
             orderItemData.price === '' ||
@@ -252,6 +252,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         // Hide modal
         $scope.modal.hide();
         // Clear formData
+        $scope.itemFormData.submitted = false;
         $scope.itemFormData.name = '';
         $scope.itemFormData.price = '';
         $scope.itemFormData.quantity = 1;
@@ -265,7 +266,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items.push(data);
             });
         }
-        $scope.newItemForm.$submitted = false;
         notifyItemAdded(pluralize(orderItemData.quantity, orderItemData.name) + ' added');
     };
     $scope.removeOrderItem = function(item) {
