@@ -27,17 +27,10 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     $scope.joinOrder.code = $stateParams.orderCode;
     var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
+    $scope.codeNotAvailable = false;
 
-    $ionicModal.fromTemplateUrl('/partials/orderNotFound', function(modal) {
-        $scope.modal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up',
-        hardwareBackButtonClose: true
-    });
-
-    $scope.closeModal = function() {
-        $scope.modal.hide();
+    $scope.updatingCode = function() {
+      $scope.codeNotAvailable = false;
     };
 
     $scope.submit = function() {
@@ -79,7 +72,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
           if (order) {
             $location.url('/orders/' + order.orderId);
           } else {
-            $scope.modal.show();
+            // order is not found or no longer available.
+            $scope.codeNotAvailable = true;
           }
         });
     };

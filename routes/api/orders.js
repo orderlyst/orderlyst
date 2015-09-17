@@ -12,7 +12,7 @@ router.post('/search', function(req, res, next) {
   req.models.Order
     .find({
       "where": {
-        "code": code
+        "code": code,
         "isOpen": true
       }
     })
