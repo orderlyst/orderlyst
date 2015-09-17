@@ -6,18 +6,23 @@ ion-view
         .spacer
           h3.vertical-aligned.text-center Join an Order
         h4.text-center Enter the order code<span ng-hide="hasAccount"> and your name</span> to get started!
-        form(ng-submit="submit()")
+        form.join-order-form(name="joinOrderForm")
           .list
             label.item.item-input.item-floating-label(ng-class="{'has-error': codeNotAvailable}")
               span.input-label Order Code
-              input(type='text', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-keypress="updatingCode()")
-                
-            .form-errors
+              input(type='text', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-required=true, ng-keypress="updatingCode()", name="code")
+            .form-errors(ng-messages="joinOrderForm.code.$error")
+              .form-error(ng-message="required") The order code you have entered is invalid or no longer available.
               .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
               
-            label.item.item-input.item-floating-label(ng-if="!hasAccount")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': joinOrderForm.name.$invalid \
+                    && submitted, 'valid': joinOrderForm.name.$valid && submitted }", ng-hide="hasAccount")
               span.input-label Your Name
-              input(type='text', placeholder='Your Name', ng-model="joinOrder.name")
+              input(type='text', placeholder='Your Name', ng-model="joinOrder.name", ng-required="true", ng-minlength="2", ng-maxlength="20", name="name")
+            .form-errors(ng-hide="hasAcount", ng-messages="joinOrderForm.name.$error")
+              .form-error(ng-message="required") We need your name.
+              .form-error(ng-message="maxlength") Your name is a little long (more than 20 characters). Do you have a nickname instead?
+              .form-error(ng-message="minlength") Your name is a little short (less than 3 characters). It'll be hard for others to recognise you.
           .row
             .col-80.col-offset-10
-              input.button.button-filled.button-block(type="submit", value="Join Order")
+              button.button.button-filled.button-block(ng-click="submit(joinOrderForm)") Join Order

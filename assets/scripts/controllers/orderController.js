@@ -24,6 +24,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal',
     function($scope, $http, $location, $store, $stateParams, $q, $ionicModal) {
     $scope.joinOrder = {};
+    $scope.submitted = false;
     $scope.joinOrder.code = $stateParams.orderCode;
     var uid = $store.get('_orderlyst_uid');
     $scope.hasAccount = (uid !== -1);
@@ -31,51 +32,51 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
 
     $scope.updatingCode = function() {
       $scope.codeNotAvailable = false;
+      $scope.submitted = false;
     };
 
-    $scope.submit = function() {
-        var name, orderCode;
-        if ($scope.hasAccount) {
-            name = uid;
-        } else {
-            name = $scope.joinOrder.name;
-        }
-        orderCode = $scope.joinOrder.code;
-        if (name === "" || orderCode === "") return;
-        var promises = [];
+    if ($scope.hasAccount) {
+      $scope.joinOrder.name = uid;
+    }
 
-        promises.push($http.post(
-          '/api/orders/search',
-          {
-            code: orderCode
-          }
-        ));
+    $scope.submit = function(form) {
+        $scope.submitted = true;
+        if (form.$valid) {
+          var promises = [];
 
-        if (!$scope.hasAccount) {
-          console.log('creating user');
           promises.push($http.post(
-              '/api/users',
-              {
-                name: name
-              }
+            '/api/orders/search',
+            {
+              code: $scope.joinOrder.code
+            }
           ));
-        }
 
-        $q.all(promises).then(function(result){
-          var order = result[0].data;
-          if (result[1]) {
-            // user created
-            $scope.hasAccount = true;
-            var user = result[1].data;
-            $store.set('_orderlyst_uid', user.userId);
+          if (!$scope.hasAccount) {
+            console.log('creating user');
+            promises.push($http.post(
+                '/api/users',
+                {
+                  name: $scope.joinOrder.name
+                }
+            ));
           }
-          if (order) {
-            $location.url('/orders/' + order.orderId);
-          } else {
-            // order is not found or no longer available.
-            $scope.codeNotAvailable = true;
-          }
-        });
+
+          $q.all(promises).then(function(result){
+            var order = result[0].data;
+            if (result[1]) {
+              // user created
+              $scope.hasAccount = true;
+              var user = result[1].data;
+              $store.set('_orderlyst_uid', user.userId);
+            }
+            if (order) {
+              $location.url('/orders/' + order.orderId);
+            } else {
+              // order is not found or no longer available.
+              $scope.codeNotAvailable = true;
+            }
+          });
+        }
     };
 }];
 
