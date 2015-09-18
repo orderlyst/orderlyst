@@ -39,6 +39,22 @@ module.exports = function(sequelize, DataTypes) {
       "OrderOrderId": function() {
         return idTransform.encrypt(this.getDataValue('OrderOrderId'));
       }
+    },
+    "setterMethods": {
+      "name": function(value) {
+        this.setDataValue(
+          "name",
+          value.split(" ")
+               .map(function(word) {
+                 if (word.length === 0) {
+                   return "";
+                 } else {
+                   return word[0].toUpperCase() + word.substring(1, word.length).toLowerCase();
+                 }
+               })
+               .join(" ")
+        );
+      }
     }
   });
 
