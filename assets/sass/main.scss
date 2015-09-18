@@ -49,6 +49,8 @@ ion-footer-bar.ng-leave {
   background-color: $color-primary-blue;
   background-image: none;
   button.button, button.button.button-clear {
+    padding: 0;
+    width: 100%;
     color: white ;
     font-weight: 900;
   }
@@ -59,6 +61,8 @@ ion-footer-bar.ng-leave {
   background-color: white;
   background-image: none;
   button.button, button.button.button-clear {
+    padding: 0;
+    width: 100%;
     color: $color-primary-blue ;
     font-weight: 900;
   }
