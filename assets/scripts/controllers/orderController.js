@@ -258,7 +258,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         return ($scope.items.filter(function(i) {
             return i.UserUserId == $scope.uid;
         }).length > 0);
-    }
+    };
 
     // Fetch order item
     $http.get('/api/orders/' + $scope.order.orderId + '/items')
@@ -344,6 +344,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items = $scope.items.filter(function(i) {
                     return i.itemId !== item.itemId;
                 });
+                notifyItemAdded(pluralize(1, data.name) + ' removed');
             });
     };
 

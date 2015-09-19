@@ -20,8 +20,10 @@ ion-view
                                                 | {{name}}
                                             .col.col-30.text-right
                                                 | S{{price * groupedItems.length | currency}}
-                                            ion-option-button.button-dark(ng-if="order.isOpen && groupItems.length > 1") -1
-                                            ion-option-button.button-filled(ng-if="order.isOpen") +1
+                                            ion-option-button.button-dark(ng-if="order.isOpen && groupedItems.length > 1", \
+                                                ng-click="removeOrderItem(groupedItems[0])") -1
+                                            ion-option-button.button-filled(ng-if="order.isOpen", \
+                                                ng-click="createAdHocOrderItem(name, price)") +1
                             // Otherwise
                             .list.card.card-personal(ng-if="!hasOrderItems()")
                                 .item.item-divider
