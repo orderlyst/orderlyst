@@ -163,6 +163,11 @@ ion-footer-bar.ng-leave {
   }
 }
 
+.item.annotation {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
 .main-container {
   height: 100%;
 }
@@ -244,4 +249,8 @@ ion-footer-bar.ng-leave {
 .central-block {
   left: 50%;
   transform: translateX(-50%)
+}
+
+.annotation {
+  color: #AAA;
 }
