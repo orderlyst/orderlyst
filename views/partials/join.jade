@@ -11,7 +11,7 @@ ion-view
             label.item.item-input.item-floating-label(ng-class="{'has-error': submitted && (joinOrderForm.code.$invalid || codeNotAvailable)}")
               span.input-label Order Code
               input(type='tel', placeholder='Your order code, e.g.: 71945', ng-model="joinOrder.code", ng-required="true", name="code")
-            .form-errors(ng-hide="!submitted", ng-messages="joinOrderForm.code.$error")
+            .form-errors(ng-if="submitted && joinOrderForm.code.$error", ng-messages="joinOrderForm.code.$error")
               .form-error(ng-message="required") You need to enter an order code.
               .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
               
@@ -19,7 +19,7 @@ ion-view
                     && submitted, 'valid': joinOrderForm.name.$valid && submitted }", ng-hide="hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="joinOrder.name", ng-required="true", ng-minlength="2", ng-maxlength="20", name="name")
-            .form-errors(ng-hide="!submitted || hasAcount", ng-messages="joinOrderForm.name.$error")
+            .form-errors(ng-if="submitted && !hasAcount && joinOrderForm.name.$error", ng-messages="joinOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
               .form-error(ng-message="maxlength") Your name is a little long (more than 20 characters). Do you have a nickname instead?
               .form-error(ng-message="minlength") Your name is a little short (less than 3 characters). It'll be hard for others to recognise you.
