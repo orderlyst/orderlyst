@@ -16,7 +16,7 @@ ion-view
               .form-error(ng-show="codeNotAvailable") The order code you have entered is invalid or no longer available.
               
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': joinOrderForm.name.$invalid \
-                    && submitted, 'valid': joinOrderForm.name.$valid && submitted }", ng-hide="hasAccount")
+                    && submitted, 'valid': joinOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="joinOrder.name", ng-required="true", ng-minlength="2", ng-maxlength="20", name="name")
             .form-errors(ng-if="submitted && !hasAcount && joinOrderForm.name.$error", ng-messages="joinOrderForm.name.$error")
