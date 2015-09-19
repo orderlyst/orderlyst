@@ -14,10 +14,10 @@ ion-view
                                         b {{userDictionary[user].name}}
                                     ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                         ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                            .col.col-10
-                                                span.orderlyst-badge {{groupedItems.length}}
-                                            .col.col-60
+                                            .col.col-70
                                                 | {{name}}
+                                                b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
+                                                span.orderlyst-badge {{groupedItems.length}}
                                             .col.col-30.text-right
                                                 | S{{price * groupedItems.length | currency}}
                                             ion-option-button.button-dark(ng-if="order.isOpen && groupedItems.length > 1", \
@@ -37,10 +37,10 @@ ion-view
                                         b {{userDictionary[user].name}}
                                     ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                         ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                            .col.col-10
-                                                span.orderlyst-badge {{groupedItems.length}}
-                                            .col.col-60
+                                            .col.col-70
                                                 | {{name}}
+                                                b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
+                                                span.orderlyst-badge {{groupedItems.length}}
                                             .col.col-30.text-right
                                                 | S{{price * groupedItems.length | currency}}
                                             ion-option-button.button-filled.ion-android-cart(ng-if="order.isOpen", \
@@ -48,20 +48,20 @@ ion-view
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
                     ion-footer-bar.bar-filled(ng-if="!scrolling && order.isOpen")
-                        button.button.button-clear(ng-if="order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
+                        button.button.button-clear(ng-if="order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item <i class="icon ion-android-cart"></i>
                     ion-footer-bar.bar-disabled(ng-if="!scrolling && !order.isOpen")
                         button.button.button-clear(ng-if="!order.isOpen" ng-disabled=true) <i class="icon ion-ios-locked"></i> Order Locked
-            ion-tab(title="Receipt")
+            ion-tab(title="Total Orders")
                 ion-view
                     ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
                         ion-list(ng-if="items.length")
                             ul(ng-repeat="(name, prices) in items | groupBy: 'name'")
                                 div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                     li.row.item
-                                        .col.col-10
-                                            span.orderlyst-badge {{groupedItems.length}}
-                                        .col.col-60
+                                        .col.col-70
                                             | {{name}}
+                                            b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
+                                            span.orderlyst-badge {{groupedItems.length}}
                                         .col.col-30.text-right
                                             | S{{price * groupedItems.length | currency}}
                             .order-fee
@@ -81,7 +81,7 @@ ion-view
 
                         div(ng-if="!items.length")
                             .row.item.text-center
-                                .col No items
+                                .col No items yet. Start adding in User Orders tab!
                             .order-fee
                                 .row.item
                                     .col.col-60.col-offset-10 Subtotal:
@@ -95,6 +95,6 @@ ion-view
                                     .col.col-30.text-right S{{totalFee() | currency}}
 
                     ion-footer-bar.bar-orderlyst(ng-if="isOwner && !scrolling")
-                        button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
-                        button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
-                        button.button.button.button-blank.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees
+                        button.button.button.button-filled.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees
+                        button.button.button.button-blank.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
+                        button.button.button.button-blank.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
