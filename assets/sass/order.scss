@@ -34,3 +34,9 @@
 input.special-height {
   height: 18px !important;
 }
+
+.card-personal {
+  .item-divider {
+    background-color: $color-primary-yellow;
+  }
+}

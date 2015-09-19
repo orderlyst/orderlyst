@@ -128,9 +128,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicActionSheet',
+    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicActionSheet', '$q',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicActionSheet) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicActionSheet, $) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -215,13 +215,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
      });
     };
 
-    var uid              = $store.get('_orderlyst_uid');
-    var hasAccount       = (uid !== -1);
+    $scope.uid              = $store.get('_orderlyst_uid');
+    var hasAccount       = ($scope.uid !== -1);
     $scope.isLoading = true;
     $scope.scrolling = false;
-    $scope.isOwner = uid === $scope.order.UserUserId;
+    $scope.isOwner = $scope.uid === $scope.order.UserUserId;
     $scope.orderFormData = {};
-    $scope.itemFormData = {'user': uid, 'quantity': 1, 'submitted': false};
+    $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
     $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
     $scope.userDictionary = {};
     $scope.items = [];
@@ -245,7 +245,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     };
 
     // Authenticate user
-    fetchUserDetail(uid);
+    fetchUserDetail($scope.uid);
     if (!hasAccount) {
         $location.url('/join/' + $scope.order.code);
     }
@@ -257,6 +257,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.items = data;
         $scope.items.map(function(datum) {
             fetchUserDetail(datum.UserUserId);
+
+
         });
     });
 
@@ -286,7 +288,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.isLoading = true;
         $http.post(
             '/api/orders/' + $scope.order.orderId + '/items',
-            {name:name, price:price, user:uid}
+            {name:name, price:price, user:$scope.uid}
         ).success(function (data) {
             $scope.isLoading = false;
             $scope.items.push(data);
@@ -335,6 +337,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             });
     };
 
+    // Aditional Fees scope methods
+
     $scope.updateOrderAdditionalFee = function() {
         var fees = $scope.additionalFee;
         fees.submitted = true;
@@ -355,6 +359,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
     };
 
+    // Fee aggregate scope methods
+
     $scope.subtotalFee = function() {
         return $scope.items.reduce(function(a, b) {
             return a + parseFloat(b.price);
@@ -364,6 +370,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.totalFee = function() {
         return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
     };
+
+    // To toggle isOpen status of order
 
     $scope.toggleLocked = function() {
       $scope.order.isOpen = !$scope.order.isOpen;
