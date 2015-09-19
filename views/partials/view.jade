@@ -7,7 +7,21 @@ ion-view
                 ion-view
                     ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
                         ion-list(ng-if="items.length")
-                            div(ng-repeat="(user, groupedByUserItems) in items | groupBy: 'UserUserId'")
+                            div(ng-repeat="(user, groupedByUserItems) in items | where: { UserUserId: uid } | groupBy: 'UserUserId'")
+                                .list.card.card-personal
+                                    .item.item-divider
+                                        b {{userDictionary[user].name}}
+                                    ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
+                                        ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                            .col.col-10
+                                                span.orderlyst-badge {{groupedItems.length}}
+                                            .col.col-60
+                                                | {{name}}
+                                            .col.col-30.text-right
+                                                | S{{price * groupedItems.length | currency}}
+                                            ion-option-button.button-positive.ion-plus(ng-if="order.isOpen", \
+                                                ng-click="createAdHocOrderItem(name, price)")
+                            div(ng-repeat="(user, groupedByUserItems) in items | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
                                 .list.card
                                     .item.item-divider
                                         b {{userDictionary[user].name}}
