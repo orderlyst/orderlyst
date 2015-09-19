@@ -230,11 +230,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.items = [];
 
     // For showing new item added message
-    var notifyItemAdded = function(message) {
-        $scope.newItemAdded = true;
+    var notify = function(message, type) {
+        $scope.alertOn = true;
         $scope.alertMessage = message;
+        $scope.alertType = type;
         $timeout(function() {
-            $scope.newItemAdded = false;
+            $scope.alertOn = false;
         }, 1000);
     };
 
@@ -258,7 +259,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         return ($scope.items.filter(function(i) {
             return i.UserUserId == $scope.uid;
         }).length > 0);
-    }
+    };
 
     // Fetch order item
     $http.get('/api/orders/' + $scope.order.orderId + '/items')
@@ -304,7 +305,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.items.push(data);
             $scope.newItemAdded = true;
             $scope.alertMessage = "New item added";
-            notifyItemAdded(pluralize(1, name) + ' added');
+                notify(pluralize(1, name) + ' added', 'success');
         });
     };
     $scope.createOrderItem = function() {
@@ -333,7 +334,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items.push(data);
             });
         }
-        notifyItemAdded(pluralize(orderItemData.quantity, orderItemData.name) + ' added');
+        notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
     };
     $scope.removeOrderItem = function(item) {
         $scope.isLoading = true;
@@ -344,6 +345,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.items = $scope.items.filter(function(i) {
                     return i.itemId !== item.itemId;
                 });
+                notify(pluralize(1, item.name) + ' removed', 'warning');
             });
     };
 
