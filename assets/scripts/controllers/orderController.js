@@ -141,7 +141,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     // Setup new order item modal form
     $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
-        $scope.modal = modal;
+        $scope.addItemModal = modal;
     }, {
         scope: $scope,
         animation: 'slide-in-up',
@@ -165,17 +165,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
      });
     };
 
-
-    $scope.openModal = function() {
-        $scope.modal.show();
+    $scope.openAddItemModal = function() {
+        $scope.addItemModal.show();
     };
 
-    $scope.closeModal = function() {
-        $scope.modal.hide();
+    $scope.closeAddItemModal = function() {
+        $scope.addItemModal.hide();
     };
 
     $scope.$on('$destroy', function() {
-        $scope.modal.remove();
+        $scope.addItemModal.remove();
     });
 
     var uid              = $store.get('_orderlyst_uid');
@@ -318,7 +317,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $timeout.cancel(promise);
         });
         $scope.scrollingPromises = [];
-    }
+    };
 
     $scope.scroll = function() {
         clearScrollingPromises();

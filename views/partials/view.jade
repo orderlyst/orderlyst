@@ -24,7 +24,7 @@ ion-view
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
                     ion-footer-bar.bar-filled(ng-if="order.isOpen && !scrolling")
-                        button.button.button-clear(ng-click="openModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
+                        button.button.button-clear(ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
             ion-tab(title="Receipt")
                 ion-view
                     ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
