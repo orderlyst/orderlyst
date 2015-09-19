@@ -1,5 +1,5 @@
 ion-view
-    .alert.alert-green(ng-if="newItemAdded") {{alertMessage}}
+    .alert(ng-if="alertOn", ng-class="alertType") {{alertMessage}}
     include ./header
     ion-view
         ion-tabs.tabs-striped.tabs-top.tabs-color-assertive(has-header="true")
