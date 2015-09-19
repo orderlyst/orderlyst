@@ -176,6 +176,12 @@ ion-footer-bar.ng-leave {
   background-color: $color-primary-blue;
 }
 
+.header-item .button.button-icon.button-filled {
+  color: white;
+  background-color: $color-primary-blue;
+  border: 0;
+}
+
 /** Misc. **/
 
 .slider-slide {
