@@ -68,4 +68,4 @@ ion-view
                     ion-footer-bar.bar-orderlyst(ng-if="isOwner && !scrolling")
                         button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="toggleLocked()") <i class="icon ion-ios-unlocked"></i> Lock Order
                         button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
-                        button.button.button.button-blank.button-clear Additional Fees
+                        button.button.button.button-blank.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees

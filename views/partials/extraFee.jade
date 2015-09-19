@@ -1,0 +1,26 @@
+ion-modal-view
+    ion-header-bar
+        h2.title Edit Order's Additional Fees
+    ion-content.has-header
+        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="additionalFeeForm", novalidate="")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': additionalFeeForm.surcharge.$invalid && additionalFee.submitted, \
+                    'valid': additionalFeeForm.surcharge.$valid && additionalFee.submitted && newItemForm.surcharge.$dirty }")
+                span.input-label Surcharges (S$)
+                input(type="number",placeholder="Surcharge (S$)",ng-model="additionalFee.surcharge", ng-required="true", name="surcharge", \
+                ng-pattern="/^[0-9]+(\.[0-9][05])?$/")
+            .form-errors(ng-show="additionalFeeForm.surcharge.$error && additionalFee.submitted", ng-messages="additionalFeeForm.surcharge.$error")
+                .form-error(ng-message="required") Surcharge is required
+                .form-error(ng-message="pattern") Surcharge must be valid
+
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': additionalFeeForm.tax.$invalid && additionalFee.submitted, \
+                    'valid': additionalFeeForm.tax.$valid && additionalFee.submitted && additionalFeeForm.tax.$dirty }")
+                span.input-label Taxes (%)
+                input(type="number",placeholder="Taxes (%)",ng-model="additionalFee.tax", ng-required="true", \
+                ng-pattern="/^[0-9]+(\.[0-9]+)?$/", name="tax")
+            .form-errors(ng-show="additionalFeeForm.tax.$error && additionalFee.submitted", ng-messages="additionalFeeForm.tax.$error")
+                .form-error(ng-message="required") Tax is required
+                .form-error(ng-message="pattern") Tax must be valid
+
+    ion-footer-bar.bar-orderlyst()
+        button.button.button-clear.button-filled(ng-click="updateOrderAdditionalFee()") Update Fees
+        button.button.button-clear.button-blank(ng-click="closeAdditionalFeeModal()") Cancel

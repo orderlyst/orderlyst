@@ -148,6 +148,39 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         hardwareBackButtonClose: false
     });
 
+    $scope.openAddItemModal = function() {
+        $scope.addItemModal.show();
+    };
+
+    $scope.closeAddItemModal = function() {
+        $scope.addItemModal.hide();
+    };
+
+
+    // Setup additional fee modal form
+
+    $ionicModal.fromTemplateUrl('/partials/extraFee', function(modal) {
+        $scope.additionalFeeModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up',
+        hardwareBackButtonClose: false
+    });
+
+    $scope.openAdditionalFeeModal = function() {
+        $scope.additionalFeeModal.show();
+    };
+
+    $scope.closeAdditionalFeeModal = function() {
+        $scope.additionalFeeModal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+        $scope.addItemModal.remove();
+        $scope.additionalFeeModal.remove();
+    });
+
+
 
     $scope.showActionSheet = function(){
      var sheet = $ionicActionSheet.show({
@@ -165,25 +198,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
      });
     };
 
-    $scope.openAddItemModal = function() {
-        $scope.addItemModal.show();
-    };
-
-    $scope.closeAddItemModal = function() {
-        $scope.addItemModal.hide();
-    };
-
-    $scope.$on('$destroy', function() {
-        $scope.addItemModal.remove();
-    });
-
     var uid              = $store.get('_orderlyst_uid');
     var hasAccount       = (uid !== -1);
     $scope.isLoading = true;
     $scope.scrolling = false;
     $scope.isOwner = uid === $scope.order.UserUserId;
     $scope.orderFormData = {};
-    $scope.itemFormData = {'user': uid, 'quantity': 1,  'submitted': false};
+    $scope.itemFormData = {'user': uid, 'quantity': 1, 'submitted': false};
+    $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
     $scope.userDictionary = {};
     $scope.items = [];
 
@@ -260,13 +282,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         // HACK
         $scope.itemFormData.submitted = true;
         var orderItemData = angular.copy($scope.itemFormData);
-        if (orderItemData.name === '' ||
-            orderItemData.price === '' ||
+        if (orderItemData.name === '' || orderItemData.name === undefined ||
+            orderItemData.price === '' || orderItemData.price === undefined ||
             !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
             +orderItemData.quantity < 1) return;
         $scope.isLoading = true;
         // Hide modal
-        $scope.modal.hide();
+        $scope.closeAddItemModal();
         // Clear formData
         $scope.itemFormData.submitted = false;
         $scope.itemFormData.name = '';
@@ -295,6 +317,27 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
             });
     };
+
+    $scope.updateOrderAdditionalFee = function() {
+        var fees = $scope.additionalFee;
+        fees.submitted = true;
+        if (fees.surcharge === '' || fees.surcharge === undefined ||
+            fees.tax === '' || fees.surcharge === undefined ||
+            !(/^[0-9]+(\.[0-9][05])?$/.test(fees.surcharge)) ||
+            !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax)) ) return;
+        $scope.isLoading = true;
+        // Hide modal
+        $scope.closeAdditionalFeeModal();
+        fees.submitted = false;
+        $http.post(
+            '/api/orders/' + $scope.order.orderId,
+            fees
+        ).success(function(data) {
+            $scope.isLoading = false;
+            $scope.order = data;
+        });
+    };
+
     $scope.totalFee = function() {
         return $scope.items.reduce(function(a, b) {
             return a + parseFloat(b.price);
