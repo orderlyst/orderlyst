@@ -1,6 +1,6 @@
 var config = require('config');
-var WebSocket = require('ws');
-var ws = new WebSocket(config.get('ws.url'));
+var WebSocketServer = require('ws').Server;
+var wss = new WebSocketServer({port: config.get('ws.port')});
 
 var clients = [];
 
@@ -9,7 +9,7 @@ wss.on('connection', function connection(ws) {
     console.log('WS Client registered for ' + code);
     ws.code = code;
   });
-  clients.push(client)
+  clients.push(client);
 });
 
 module.exports = function(req, res, next) {
@@ -22,7 +22,7 @@ module.exports = function(req, res, next) {
     participants.forEach(function() {
       client.send('update');
     });
-  }
+  };
 
   req.wsClose = function(code) {
     console.log('Close requested for ' + code);
@@ -30,7 +30,7 @@ module.exports = function(req, res, next) {
     clients = clients.filter(function(client){
       return '' + client.code !== '' + code;
     });
-  }
+  };
 
   next();
 };
