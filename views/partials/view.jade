@@ -41,7 +41,7 @@ ion-view
                                                 | {{name}}
                                             .col.col-30.text-right
                                                 | S{{price * groupedItems.length | currency}}
-                                            ion-option-button.button-positive.ion-plus(ng-if="order.isOpen", \
+                                            ion-option-button.button-positive.ion-android-cart(ng-if="order.isOpen", \
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
