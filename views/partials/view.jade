@@ -41,14 +41,17 @@ ion-view
                             .order-fee
                                 .row.item
                                     .col.col-60.col-offset-10 Subtotal:
-                                    .col.col-30.text-right S{{totalFee() | currency}}
+                                    .col.col-30.text-right S{{subtotalFee() | currency}}
                                 .row.item
-                                    .col.col-60.col-offset-10 Delivery Fee:
-                                    .col.col-30.text-right S$0.00
+                                    .col.col-60.col-offset-10 Surcharges:
+                                    .col.col-30.text-right S{{order.surcharge | currency}}
+                                .row.item
+                                    .col.col-60.col-offset-10 Taxes:
+                                    .col.col-30.text-right {{order.tax}}%
                                 hr
                                 .row.item
                                     .col.col-60.col-offset-10 Total:
-                                    .col.col-30.text-right S{{totalFee() | currency}}
+                                    .col.col-30.text-right S{{ totalFee() | currency}}
 
                         div(ng-if="!items.length")
                             .row.item.text-center

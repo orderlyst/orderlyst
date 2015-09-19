@@ -338,11 +338,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
     };
 
-    $scope.totalFee = function() {
+    $scope.subtotalFee = function() {
         return $scope.items.reduce(function(a, b) {
             return a + parseFloat(b.price);
         }, 0);
     };
+
+    $scope.totalFee = function() {
+        return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
+    };
+
     $scope.toggleLocked = function() {
       $scope.order.isOpen = !$scope.order.isOpen;
       $http.post(
