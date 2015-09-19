@@ -1,0 +1,8 @@
+ion-modal-view
+    ion-header-bar
+        h2.title Lock Order
+    ion-content.has-header.padding
+        div Are you sure that you want to lock this order? Once you lock the order, people will not be able to add more item to the order.
+    ion-footer-bar.bar-orderlyst
+        button.button.button-clear.button-blank(ng-click="toggleLocked();closeLockOrderModal()") <i class="icon ion-ios-unlocked"></i> Lock
+        button.button.button-clear.button-blank(ng-click="closeLockOrderModal()") Cancel

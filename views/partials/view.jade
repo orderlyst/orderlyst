@@ -23,8 +23,9 @@ ion-view
                                                 ng-click="createAdHocOrderItem(name, price)")
                         .spacer(ng-if="!items.length")
                             .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
-                    ion-footer-bar.bar-filled(ng-if="order.isOpen && !scrolling")
-                        button.button.button-clear(ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
+                    ion-footer-bar.bar-filled(ng-if="!scrolling")
+                        button.button.button-clear(ng-if="order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item
+                        button.button.button-clear(ng-if="!order.isOpen" ng-disabled=true) <i class="icon ion-ios-locked"></i> Order Locked
             ion-tab(title="Receipt")
                 ion-view
                     ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
@@ -69,6 +70,6 @@ ion-view
                                     .col.col-30.text-right S{{totalFee() | currency}}
 
                     ion-footer-bar.bar-orderlyst(ng-if="isOwner && !scrolling")
-                        button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="toggleLocked()") <i class="icon ion-ios-unlocked"></i> Lock Order
+                        button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="openLockOrderModal()") <i class="icon ion-ios-unlocked"></i> Lock Order
                         button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
                         button.button.button.button-blank.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees

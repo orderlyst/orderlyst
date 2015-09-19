@@ -148,6 +148,23 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         hardwareBackButtonClose: false
     });
 
+    // Setup lock item modal form
+    $ionicModal.fromTemplateUrl('/partials/lock', function(modal) {
+        $scope.lockOrderModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up',
+        hardwareBackButtonClose: false
+    });
+
+    $scope.openLockOrderModal = function() {
+      $scope.lockOrderModal.show();
+    };
+
+    $scope.closeLockOrderModal = function() {
+      $scope.lockOrderModal.hide();
+    };
+
     $scope.openAddItemModal = function() {
         $scope.addItemModal.show();
     };
