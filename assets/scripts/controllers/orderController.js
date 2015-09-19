@@ -148,6 +148,39 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         hardwareBackButtonClose: false
     });
 
+    $scope.showChangeNamePopup = function() {
+      $scope.changeNameData = {};
+      var popup = $ionicPopup.show({
+        template: '<input type="text" ng-model="changeNameData.newName"/>',
+        title: 'Change Your Name',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: '<b>Save</b>',
+            type: 'button-filled',
+            onTap: function(e) {
+              if ($scope.changeNameData.newName === '') {
+                e.preventDefault();
+              } else {
+                return $scope.changeNameData.newName;
+              }
+            }
+          }
+        ]
+      });
+      popup.then(function(name) {
+        $http.post(
+          '/api/users/' + $scope.uid,
+          {
+            name: name
+          }
+        ).success(function(data) {
+          $scope.userDictionary[$scope.uid].name = name;
+        });
+      });
+    };
+
     $scope.showLockOrderPopup = function() {
 
       var popup = $ionicPopup.show({
@@ -200,12 +233,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.additionalFeeModal.remove();
     });
 
-
-
     $scope.showActionSheet = function(){
      var sheet = $ionicActionSheet.show({
        buttons: [
-         { text: '<i class="icon ion-ios-copy-outline"></i> Copy Link' }
+         { text: '<i class="icon ion-ios-copy-outline"></i> Copy Link' },
+         { text: 'Change Your Name' }
        ],
        titleText: "Order Code: " + $scope.order.code,
        cancelText: 'Cancel',
@@ -213,7 +245,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
          sheet();
        },
        buttonClicked: function(index) {
-         return true;
+         if (index === 0) {
+             return true;
+         } else {
+             $scope.showChangeNamePopup();
+             return true;
+         }
        }
      });
     };
