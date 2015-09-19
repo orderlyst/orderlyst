@@ -128,9 +128,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicActionSheet', '$q',
+    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicActionSheet', '$q',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicActionSheet, $) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicActionSheet, $) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -148,21 +148,24 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         hardwareBackButtonClose: false
     });
 
-    // Setup lock item modal form
-    $ionicModal.fromTemplateUrl('/partials/lock', function(modal) {
-        $scope.lockOrderModal = modal;
-    }, {
+    $scope.showLockOrderPopup = function() {
+
+      var popup = $ionicPopup.show({
+        template: "Are you sure that you want to lock the order? " +
+          "After you lock the order, people will not be able to add more item tothe order.",
+        title: "Lock Order",
         scope: $scope,
-        animation: 'slide-in-up',
-        hardwareBackButtonClose: false
-    });
-
-    $scope.openLockOrderModal = function() {
-      $scope.lockOrderModal.show();
-    };
-
-    $scope.closeLockOrderModal = function() {
-      $scope.lockOrderModal.hide();
+        buttons: [
+          {text: 'Cancel'},
+          {
+            text: "Confirm" ,
+            type: "button-filled",
+            onTap: function(e) {
+              $scope.toggleLocked();
+            }
+          }
+        ]
+      });
     };
 
     $scope.openAddItemModal = function() {
