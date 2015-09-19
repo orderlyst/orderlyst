@@ -250,6 +250,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $location.url('/join/' + $scope.order.code);
     }
 
+    // To check if user has any order items
+    $scope.hasOrderItems = function() {
+        return ($scope.items.filter(function(i) {
+            return i.UserUserId == $scope.uid;
+        }).length > 0);
+    }
+
     // Fetch order item
     $http.get('/api/orders/' + $scope.order.orderId + '/items')
     .success(function (data) {
