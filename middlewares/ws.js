@@ -5,18 +5,18 @@ var wss = new WebSocketServer({port: config.get('ws.port')});
 var clients = [];
 
 wss.on('connection', function connection(ws) {
-  ws.on('message', function(code){
-    console.log('WS Client registered for ' + code);
-    ws.code = code;
+  ws.on('message', function(orderId){
+    console.log('WS Client registered for ' + orderId);
+    ws.orderId = orderId;
   });
   clients.push(client);
 });
 
 module.exports = function(req, res, next) {
-  req.wsUpdate = function(code) {
-    console.log('Update requested for ' + code);
+  req.wsUpdate = function(orderId) {
+    console.log('Update requested for ' + orderId);
     var participants = clients.filter(function(client){
-      return '' + client.code === '' + code;
+      return '' + client.orderId === '' + orderId;
     });
 
     participants.forEach(function() {
@@ -24,11 +24,11 @@ module.exports = function(req, res, next) {
     });
   };
 
-  req.wsClose = function(code) {
-    console.log('Close requested for ' + code);
+  req.wsClose = function(orderId) {
+    console.log('Close requested for ' + orderId);
 
     clients = clients.filter(function(client){
-      return '' + client.code !== '' + code;
+      return '' + client.orderId !== '' + orderId;
     });
   };
 
