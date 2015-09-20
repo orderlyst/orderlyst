@@ -1,7 +1,7 @@
 ion-popover-view
     ion-content.text-center
         .item.metadata Order Code: {{order.code}}
-        input.item(value="{{joinLink}}", id="joinLink", ng-if="showJoinLink")
+        input.item(value="{{joinLink}}", id="joinLink", ng-if="showJoinLink", on-tap="selectJoinLink()")
         .item(ng-click="showLink()", ng-if="!showJoinLink")
             | <i class="icon ion-link"></i> Get Link
         .item(ng-click="showChangeNamePopup()")

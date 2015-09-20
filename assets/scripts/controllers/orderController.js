@@ -245,6 +245,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
     $scope.showLink = function() {
         $scope.showJoinLink = true;
+        $scope.selectJoinLink();
+    };
+
+    $scope.selectJoinLink = function() {
         $timeout(function() {
             window.document.getElementById('joinLink').select();
         });
