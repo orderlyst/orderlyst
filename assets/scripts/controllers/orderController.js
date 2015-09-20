@@ -1,7 +1,7 @@
 var pluralize = require('../helpers/pluralize.js');
 
-var startOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var startOrder = ['$scope', '$http', '$location', '$store', '$order',
+    function($scope, $http, $location, $store, $order) {
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     $scope.createOrder = function() {
@@ -12,7 +12,8 @@ var startOrder = ['$scope', '$http', '$location', '$store',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $location.url('/orders/' + data.orderId + '?new=true');
+              $order.register(data.orderId);
+              $location.url('/orders/' + data.orderId + '?new = true');
             });
         } else {
             $location.url('/create');
@@ -21,8 +22,8 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$order',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $order) {
     $scope.joinOrder = {};
     $scope.submitted = false;
     $scope.joinOrder.code = $stateParams.orderCode;
@@ -65,6 +66,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
               $store.set('_orderlyst_uid', user.userId);
             }
             if (order) {
+              $order.register(order.orderId);
               $location.url('/orders/' + order.orderId);
             } else {
               // order is not found or no longer available.
@@ -75,8 +77,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     };
 }];
 
-var createOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var createOrder = ['$scope', '$http', '$location', '$store', '$order',
+    function($scope, $http, $location, $store, $order) {
     $scope.createOrder = {};
     $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
@@ -121,6 +123,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                   }
                 );
             }).then(function (response) {
+              $order.register(response.data.orderId);
               $location.url('/orders/' + response.data.orderId + '?new=true');
             });
         }
