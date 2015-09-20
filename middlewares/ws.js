@@ -4,10 +4,10 @@ var wss = new WebSocketServer({port: config.get('ws.port')});
 
 var clients = [];
 
-wss.on('connection', function connection(ws) {
-  ws.on('message', function(orderId){
+wss.on('connection', function connection(client) {
+  client.on('message', function(orderId){
     console.log('WS Client registered for ' + orderId);
-    ws.orderId = orderId;
+    client.orderId = orderId;
   });
   clients.push(client);
 });
