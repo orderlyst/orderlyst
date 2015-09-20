@@ -241,6 +241,15 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     // Setup popover
 
+    $scope.showJoinLink = false;
+    $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
+    $scope.showLink = function() {
+        $scope.showJoinLink = true;
+        $timeout(function() {
+            window.document.getElementById('joinLink').select();
+        });
+    };
+
     $ionicPopover.fromTemplateUrl('partials/orderPopover', {
         scope: $scope
     }).then(function(popover) {
@@ -250,6 +259,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $scope.openPopover = function($event) {
         $scope.popover.show($event);
     };
+
+    $scope.$on('popover.hidden', function() {
+        // Execute action
+        $scope.showJoinLink = false;
+    });
 
     $scope.$on('$destroy', function() {
         $scope.addItemModal.remove();
