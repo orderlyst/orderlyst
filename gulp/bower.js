@@ -36,9 +36,6 @@ var $ = require('gulp-load-plugins')({
     return gulp.src($.mainBowerFiles())
       .pipe($.filter('**/*.css'))
       .pipe($.flatten())
-      .pipe($.minifyCss({
-        processImport: false
-      }))
       .pipe(gulp.dest('.tmp'));
   });
 
@@ -50,6 +47,9 @@ var $ = require('gulp-load-plugins')({
     )
       .pipe($.concat('vendor.css'))
       .pipe($.replace('../font/', '../fonts/'))
+      .pipe($.minifyCss({
+        processImport: false
+      }))
       .pipe(gulp.dest("public/assets/css"));
   });
 
