@@ -3,7 +3,7 @@ require('./helpers/google-analytics');
 require('angular-animate');
 require('angular-messages');
 require('angular-filter');
-require('angular-websocket')
+require('angular-websocket');
 
 var OrderController = require('./controllers/orderController');
 
