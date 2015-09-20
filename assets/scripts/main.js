@@ -3,6 +3,7 @@ require('./helpers/google-analytics');
 require('angular-animate');
 require('angular-messages');
 require('angular-filter');
+require('angular-websocket')
 
 var OrderController = require('./controllers/orderController');
 
@@ -11,6 +12,7 @@ var app = angular.module('orderlyst', [
         'ionic',
         'ngAnimate',
         'ngMessages',
+        'ngWebSocket',
         'angular.filter',
         'analytics'
     ]);
