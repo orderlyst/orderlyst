@@ -4,6 +4,9 @@ block content
         ion-tab(title="User Orders")
             ion-view
                 ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
+                    .item.item-divider
+                        | {{userDictionary[order.UserUserId].name}}'s McDonalds Order
+                        span.pull-right <i class="icon ion-android-alarm-clock"></i>11.30pm
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | where: { UserUserId: uid } | groupBy: 'UserUserId'")

@@ -333,6 +333,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     // Authenticate user
     fetchUserDetail($scope.uid);
+    fetchUserDetail($scope.order.UserUserId);
     if (!hasAccount) {
         $location.url('/join/' + $scope.order.code);
     }
