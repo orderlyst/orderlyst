@@ -1,13 +1,25 @@
 // Import partials and utilities
 @import 'mixins/variables';
 
+@mixin carousel-logo {
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
 #homeLogo {
   height: 100%;
-  .carousel-logo {
-    background: url('/assets/images/logo.png');
-    background-size: auto $home-logo-height-percent;
-    background-repeat: no-repeat;
-    background-position: center top;
+  .tut1 {
+    background: url('/assets/images/tut1.png');
+    @include carousel-logo;
+  }
+  .tut2 {
+    background: url('/assets/images/tut2.png');
+    @include carousel-logo;
+  }
+  .tut3 {
+    background: url('/assets/images/tut3.png');
+    @include carousel-logo;
   }
   .carousel-logo-spacer {
     height: 65%;
