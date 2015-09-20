@@ -157,18 +157,21 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         buttons: [
           { text: 'Cancel',
             onTap: function(e) {
-              if ($scope.changeNameData.name === '') {
+              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
                 $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
               }
+              return false;
             }
           },
           {
             text: '<b>Save</b>',
             type: 'button-filled',
             onTap: function(e) {
-              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
+              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
                 $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
                 e.preventDefault();
+              } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
+                  return false;
               } else {
                 return $scope.changeNameData.newName;
               }
@@ -177,6 +180,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         ]
       });
       popup.then(function(name) {
+        if (name === false) return;
         $http.post(
           '/api/users/' + $scope.uid,
           {
