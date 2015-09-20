@@ -12,7 +12,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $location.url('/orders/' + data.orderId);
+                $location.url('/orders/' + data.orderId + '?new=true');
             });
         } else {
             $location.url('/create');
@@ -103,7 +103,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $location.url('/orders/' + data.orderId);
+                $location.url('/orders/' + data.orderId + '?new=true');
             });
         } else {
             $http.post(
@@ -121,7 +121,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                   }
                 );
             }).then(function (response) {
-              $location.url('/orders/' + response.data.orderId);
+              $location.url('/orders/' + response.data.orderId + '?new=true');
             });
         }
     };
@@ -137,6 +137,25 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $location.url('/');
     } else {
         $scope.order = loadOrder.data;
+    }
+
+    // Check if the order was newly created
+    if ($stateParams.new) {
+        var newOrderPopup = function () {
+
+            var popup = $ionicPopup.show({
+                template: '<div class="spacer text-center">{{order.code}}</div>',
+                title: "<h3>Got 'yer Code!</h3>",
+                scope: $scope,
+                buttons: [
+                    {
+                        text: 'Get to Order',
+                        type: 'button-filled'
+                    }
+                ]
+            });
+        };
+        newOrderPopup();
     }
 
     // Setup new order item modal form
@@ -250,7 +269,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     $scope.selectJoinLink = function() {
         $timeout(function() {
-            setSelectionRange(0, this.value.length)
             var elem = indow.document.getElementById('joinLink');
             elem.setSelectionRange(0, elem.value.length);
         });

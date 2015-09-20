@@ -34,7 +34,7 @@ module.exports = function(app) {
                 controller: "CreateOrderController"
             }
             ).state('view', {
-                url: "/orders/:orderId",
+                url: "/orders/:orderId?new",
                 controller: "ViewOrderController",
                 templateUrl: "/partials/view",
                 resolve: {
