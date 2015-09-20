@@ -1,7 +1,7 @@
 var pluralize = require('../helpers/pluralize.js');
 
-var startOrder = ['$scope', '$http', '$window', '$store', '$location',
-    function($scope, $http, $window, $store, $location) {
+var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
+    function($scope, $http, $window, $store, $location, $order) {
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     $scope.createOrder = function() {
@@ -12,7 +12,8 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $window.location.href = '/orders/' + data.orderId + '?new=true';
+              $order.register(data.orderId);
+              $window.location.href = '/orders/' + data.orderId + '?new=true';
             });
         } else {
             $location.url('/create');
@@ -20,9 +21,8 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location',
     };
 }];
 
-
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order) {
     $scope.joinOrder = {};
     $scope.submitted = false;
     $scope.joinOrder.code = $stateParams.orderCode;
@@ -65,6 +65,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
               $store.set('_orderlyst_uid', user.userId);
             }
             if (order) {
+                $order.register(order.orderId);
                 $window.location.href = '/orders/' + order.orderId;
             } else {
               // order is not found or no longer available.
@@ -75,8 +76,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     };
 }];
 
-var createOrder = ['$scope', '$http', '$location', '$store', '$window',
-    function($scope, $http, $location, $store, $window) {
+var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order',
+    function($scope, $http, $location, $store, $window, $order) {
     $scope.createOrder = {};
     $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
@@ -121,6 +122,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window',
                   }
                 );
             }).then(function (response) {
+                $order.register(response.data.orderId);
                 $window.location.href = '/orders/' + response.data.orderId + '?new=true';
             });
         }
