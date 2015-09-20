@@ -10,14 +10,8 @@ module.exports = function(module) {
     var items;
     var userDictionary = {};
 
-    var callbacks = [];
-
     var fetchUserDetail = function (uid) {
       var deferred = $q.defer();
-      if (userDictionary[uid] !== undefined) {
-        deferred.reject();
-        return deferred.promise;
-      }
       $http.get('/api/users/' + uid)
         .success(function (data) {
           userDictionary[uid] = data;
