@@ -185,9 +185,6 @@ ion-footer-bar.ng-leave {
 /** Popover override **/
 .popover {
   height: auto !important;
-  .popover-arrow:after {
-    left: 0;
-  }
   ion-header-bar {
     position: relative;
   }
