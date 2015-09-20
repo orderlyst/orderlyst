@@ -1,7 +1,12 @@
 var pluralize = require('../helpers/pluralize.js');
 
+<<<<<<< HEAD
 var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
+=======
+var startOrder = ['$scope', '$http', '$location', '$store', '$order',
+    function($scope, $http, $location, $store, $order) {
+>>>>>>> added order registration
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     $scope.createOrder = function() {
