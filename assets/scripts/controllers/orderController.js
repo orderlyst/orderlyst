@@ -129,8 +129,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
+    '$ionicSideMenuDelegate',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -157,6 +158,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         };
         newOrderPopup();
     }
+
+    // For toggling sideMenu
+    $scope.toggleSideMenu = function() {
+        $ionicSideMenuDelegate.toggleLeft();
+    };
 
     // Setup new order item modal form
     $ionicModal.fromTemplateUrl('/partials/new', function(modal) {

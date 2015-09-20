@@ -33,14 +33,19 @@ ion-footer-bar.ng-leave {
 }
 
 
-.bar.bar-header {
-  background-color: $color-primary-blue;
-  color: white;
-  h1, h2, h3, h4, h5, h6 {
+.bar-orderlyst {
+  .button-icon {
     color: white;
   }
-  a {
-    text-decoration: none;
+  .bar.bar-header {
+    background-color: $color-primary-blue;
+    color: white;
+    h1, h2, h3, h4, h5, h6 {
+      color: white;
+    }
+    a {
+      text-decoration: none;
+    }
   }
 }
 
@@ -284,7 +289,7 @@ ion-footer-bar.ng-leave {
   width: 100%;
   background: url('/assets/images/logo_text_white.png') no-repeat;
   background-position: center center;
-  background-size: 60% auto;
+  background-size: 204px auto;
   height: 43px;
   min-width: 30px;
   height: 43px;
