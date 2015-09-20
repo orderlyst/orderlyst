@@ -362,14 +362,15 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.itemFormData.price = '';
         $scope.itemFormData.quantity = 1;
         // Add items quantity times
+        var createItemResponse = function (data) {
+            $scope.isLoading = false;
+            $scope.items.push(data);
+        };
         for (var i = 0; i < orderItemData.quantity; i++) {
             $http.post(
                 '/api/orders/' + $scope.order.orderId + '/items',
                 orderItemData
-            ).success(function (data) {
-                $scope.isLoading = false;
-                $scope.items.push(data);
-            });
+            ).success(createItemResponse);
         }
         notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
     };
