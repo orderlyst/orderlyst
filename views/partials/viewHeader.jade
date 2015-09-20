@@ -13,11 +13,11 @@ ion-view
       ion-view
         block content
 
-    ion-side-menu(side="left")
-      header.bar.bar-header.bar-dark Yi
+    ion-side-menu#sideMenu(side="left")
       ion-content(has-header="true")
         .list
-          a.item Home
-          a.item New Order
+          .bar.bar-header.bar-dark.item.item-divider {{userDictionary[uid].name}}
+          a.item(ui-sref='index') <i class="icon ion-ios-home"></i> Home
+          a.item(ui-sref='create') New Order
 
               
