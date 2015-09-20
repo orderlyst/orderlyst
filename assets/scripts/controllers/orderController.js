@@ -149,18 +149,25 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     });
 
     $scope.showChangeNamePopup = function() {
-      $scope.changeNameData = {};
+      $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
       var popup = $ionicPopup.show({
-        template: '<input type="text" ng-model="changeNameData.newName"/>',
+        template: '<input type="text" ng-model="changeNameData.name"/>',
         title: 'Change Your Name',
         scope: $scope,
         buttons: [
-          { text: 'Cancel' },
+          { text: 'Cancel',
+            onTap: function(e) {
+              if ($scope.changeNameData.name === '') {
+                $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+              }
+            }
+          },
           {
             text: '<b>Save</b>',
             type: 'button-filled',
             onTap: function(e) {
-              if ($scope.changeNameData.newName === '') {
+              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
+                $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
                 e.preventDefault();
               } else {
                 return $scope.changeNameData.newName;
@@ -238,9 +245,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     $scope.openPopover = function($event) {
         $scope.popover.show($event);
-    };
-    $scope.closePopover = function() {
-        $scope.popover.hide();
     };
 
     $scope.$on('$destroy', function() {
