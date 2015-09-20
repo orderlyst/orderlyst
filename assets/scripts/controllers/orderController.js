@@ -250,7 +250,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
     $scope.selectJoinLink = function() {
         $timeout(function() {
-            window.document.getElementById('joinLink').select();
+            setSelectionRange(0, this.value.length)
+            var elem = indow.document.getElementById('joinLink');
+            elem.setSelectionRange(0, elem.value.length);
         });
     };
 
