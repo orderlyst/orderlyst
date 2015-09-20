@@ -40,3 +40,7 @@ input.special-height {
     background-color: $color-primary-yellow;
   }
 }
+
+#joinLink {
+  -webkit-user-modify: read-write;
+}
