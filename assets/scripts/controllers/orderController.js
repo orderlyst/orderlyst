@@ -128,9 +128,9 @@ var createOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicActionSheet', '$q',
+    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicActionSheet, $) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q) {
     // Firstly check if order exists
     if (loadOrder.data === null) {
         // Redirect to home in this case
@@ -228,32 +228,26 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.additionalFeeModal.hide();
     };
 
+    // Setup popover
+
+    $ionicPopover.fromTemplateUrl('partials/orderPopover', {
+        scope: $scope
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
+
+    $scope.openPopover = function($event) {
+        $scope.popover.show($event);
+    };
+    $scope.closePopover = function() {
+        $scope.popover.hide();
+    };
+
     $scope.$on('$destroy', function() {
         $scope.addItemModal.remove();
         $scope.additionalFeeModal.remove();
+        $scope.popover.remove();
     });
-
-    $scope.showActionSheet = function(){
-     var sheet = $ionicActionSheet.show({
-       buttons: [
-         { text: '<i class="icon ion-ios-copy-outline"></i> Copy Link' },
-         { text: 'Change Your Name' }
-       ],
-       titleText: "Order Code: " + $scope.order.code,
-       cancelText: 'Cancel',
-       cancel: function() {
-         sheet();
-       },
-       buttonClicked: function(index) {
-         if (index === 0) {
-             return true;
-         } else {
-             $scope.showChangeNamePopup();
-             return true;
-         }
-       }
-     });
-    };
 
     $scope.uid              = $store.get('_orderlyst_uid');
     var hasAccount       = ($scope.uid !== -1);

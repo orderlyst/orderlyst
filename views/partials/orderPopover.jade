@@ -1,0 +1,7 @@
+ion-popover-view
+    ion-content.text-center
+        .item.metadata Order Code: {{order.code}}
+        .item
+            | <i class="icon ion-ios-copy-outline"></i> Copy Link
+        .item(ng-click="showChangeNamePopup()")
+            | Change Your Name
