@@ -6,18 +6,19 @@ module.exports = function(module) {
   var orderId;
   var order;
   var items;
+  var userDictionary = {};
 
   var callbacks = [];
 
   var fetchUserDetail = function (uid) {
     var deferred = $q.defer();
-    if ($scope.userDictionary[uid] !== undefined) {
+    if (userDictionary[uid] !== undefined) {
       deferred.reject();
       return deferred.promise;
     }
     $http.get('/api/users/' + uid)
       .success(function (data) {
-        $scope.userDictionary[uid] = data;
+        userDictionary[uid] = data;
         deferred.resolve(data);
       });
     return deferred.promise;
@@ -83,6 +84,9 @@ module.exports = function(module) {
       },
       "getItems": function() {
         return items;
+      },
+      "getUser": function(uid) {
+        return userDictionary[uid];
       },
       "reset": function() {
         callbacks = [];
