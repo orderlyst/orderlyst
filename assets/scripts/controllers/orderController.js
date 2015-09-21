@@ -132,394 +132,401 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$order',
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
-    '$ionicSideMenuDelegate',
+    '$ionicSideMenuDelegate', '$order',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate) {
-    // Firstly check if order exists
-    if (loadOrder.data === null) {
-        // Redirect to home in this case
-        $location.url('/');
-    } else {
-        $scope.order = loadOrder.data;
-    }
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order) {
 
-    // Check if the order was newly created
-    if ($stateParams.new) {
-        var newOrderPopup = function () {
+    $order.register($stateParams.orderId);
 
-            var popup = $ionicPopup.show({
-                template: '<div class="spacer text-center">{{order.code}}</div>',
-                title: "<h3>Got 'yer Code!</h3>",
-                scope: $scope,
-                buttons: [
-                    {
-                        text: 'Get to Order',
-                        type: 'button-filled'
-                    }
-                ]
-            });
-        };
-        newOrderPopup();
-    }
-
-    // For toggling sideMenu
-    $scope.toggleSideMenu = function() {
-        $ionicSideMenuDelegate.toggleLeft();
-    };
-
-    // Setup new order item modal form
-    $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
-        $scope.addItemModal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up',
-        hardwareBackButtonClose: false
+    $order.getItems(function(items){
+      $scope.items = items;
+      $scope.isLoading = false;
     });
 
-    $scope.showChangeNamePopup = function() {
-      $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-      var popup = $ionicPopup.show({
-        template: '<input type="text" ng-model="changeNameData.name"/>',
-        title: 'Change Your Name',
-        scope: $scope,
-        buttons: [
-          { text: 'Cancel',
-            onTap: function(e) {
-              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+    var renderPage = function(order) {
+      $scope.order = order;
+      // Check if the order was newly created
+      if ($stateParams.new) {
+          var newOrderPopup = function () {
+
+              var popup = $ionicPopup.show({
+                  template: '<div class="spacer text-center">{{order.code}}</div>',
+                  title: "<h3>Got 'yer Code!</h3>",
+                  scope: $scope,
+                  buttons: [
+                      {
+                          text: 'Get to Order',
+                          type: 'button-filled'
+                      }
+                  ]
+              });
+          };
+          newOrderPopup();
+      }
+
+      // For toggling sideMenu
+      $scope.toggleSideMenu = function() {
+          $ionicSideMenuDelegate.toggleLeft();
+      };
+
+      // Setup new order item modal form
+      $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
+          $scope.addItemModal = modal;
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',
+          hardwareBackButtonClose: false
+      });
+
+      $scope.showChangeNamePopup = function() {
+        $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+        var popup = $ionicPopup.show({
+          template: '<input type="text" ng-model="changeNameData.name"/>',
+          title: 'Change Your Name',
+          scope: $scope,
+          buttons: [
+            { text: 'Cancel',
+              onTap: function(e) {
+                if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
+                  $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+                }
+                return false;
               }
-              return false;
-            }
-          },
-          {
-            text: '<b>Save</b>',
-            type: 'button-filled',
-            onTap: function(e) {
-              if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-                e.preventDefault();
-              } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
-                  return false;
-              } else {
-                return $scope.changeNameData.newName;
+            },
+            {
+              text: '<b>Save</b>',
+              type: 'button-filled',
+              onTap: function(e) {
+                if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
+                  $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+                  e.preventDefault();
+                } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
+                    return false;
+                } else {
+                  return $scope.changeNameData.newName;
+                }
               }
             }
-          }
-        ]
-      });
-      popup.then(function(name) {
-        if (name === false) return;
-        $http.post(
-          '/api/users/' + $scope.uid,
-          {
-            name: name
-          }
-        ).success(function(data) {
-          $scope.userDictionary[$scope.uid].name = name;
+          ]
         });
-      });
-    };
-
-    $scope.showLockOrderPopup = function() {
-
-      var popup = $ionicPopup.show({
-        template: "Are you sure that you want to lock the order? " +
-          "After you lock the order, people will not be able to add more item tothe order.",
-        title: "Lock Order",
-        scope: $scope,
-        buttons: [
-          {text: 'Cancel'},
-          {
-            text: "Confirm" ,
-            type: "button-filled",
-            onTap: function(e) {
-              $scope.toggleLocked();
+        popup.then(function(name) {
+          if (name === false) return;
+          $http.post(
+            '/api/users/' + $scope.uid,
+            {
+              name: name
             }
-          }
-        ]
+          ).success(function(data) {
+            $scope.userDictionary[$scope.uid].name = name;
+          });
+        });
+      };
+
+      $scope.showLockOrderPopup = function() {
+
+        var popup = $ionicPopup.show({
+          template: "Are you sure that you want to lock the order? " +
+            "After you lock the order, people will not be able to add more item tothe order.",
+          title: "Lock Order",
+          scope: $scope,
+          buttons: [
+            {text: 'Cancel'},
+            {
+              text: "Confirm" ,
+              type: "button-filled",
+              onTap: function(e) {
+                $scope.toggleLocked();
+              }
+            }
+          ]
+        });
+      };
+
+      $scope.openAddItemModal = function() {
+          $scope.addItemModal.show();
+      };
+
+      $scope.closeAddItemModal = function() {
+          $scope.addItemModal.hide();
+      };
+
+
+      // Setup additional fee modal form
+
+      $ionicModal.fromTemplateUrl('/partials/extraFee', function(modal) {
+          $scope.additionalFeeModal = modal;
+      }, {
+          scope: $scope,
+          animation: 'slide-in-up',
+          hardwareBackButtonClose: false
       });
-    };
 
-    $scope.openAddItemModal = function() {
-        $scope.addItemModal.show();
-    };
+      $scope.openAdditionalFeeModal = function() {
+          $scope.additionalFeeModal.show();
+      };
 
-    $scope.closeAddItemModal = function() {
-        $scope.addItemModal.hide();
-    };
+      $scope.closeAdditionalFeeModal = function() {
+          $scope.additionalFeeModal.hide();
+      };
 
+      // Setup popover
 
-    // Setup additional fee modal form
+      $scope.showJoinLink = false;
+      $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
+      $scope.showLink = function() {
+          $scope.showJoinLink = true;
+          $scope.selectJoinLink();
+      };
 
-    $ionicModal.fromTemplateUrl('/partials/extraFee', function(modal) {
-        $scope.additionalFeeModal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up',
-        hardwareBackButtonClose: false
-    });
+      $scope.selectJoinLink = function() {
+          $timeout(function() {
+              var elem = indow.document.getElementById('joinLink');
+              elem.setSelectionRange(0, elem.value.length);
+          });
+      };
 
-    $scope.openAdditionalFeeModal = function() {
-        $scope.additionalFeeModal.show();
-    };
+      $ionicPopover.fromTemplateUrl('partials/orderPopover', {
+          scope: $scope
+      }).then(function(popover) {
+          $scope.popover = popover;
+      });
 
-    $scope.closeAdditionalFeeModal = function() {
-        $scope.additionalFeeModal.hide();
-    };
+      $scope.openPopover = function($event) {
+          $scope.popover.show($event);
+      };
 
-    // Setup popover
+      $scope.$on('popover.hidden', function() {
+          // Execute action
+          $scope.showJoinLink = false;
+      });
 
-    $scope.showJoinLink = false;
-    $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
-    $scope.showLink = function() {
-        $scope.showJoinLink = true;
-        $scope.selectJoinLink();
-    };
+      $scope.$on('$destroy', function() {
+          $scope.addItemModal.remove();
+          $scope.additionalFeeModal.remove();
+          $scope.popover.remove();
+      });
 
-    $scope.selectJoinLink = function() {
-        $timeout(function() {
-            var elem = indow.document.getElementById('joinLink');
-            elem.setSelectionRange(0, elem.value.length);
-        });
-    };
+      $scope.uid              = $store.get('_orderlyst_uid');
+      var hasAccount       = ($scope.uid !== -1);
+      $scope.isLoading = true;
+      $scope.scrolling = false;
+      $scope.isOwner = $scope.uid === $scope.order.UserUserId;
+      $scope.orderFormData = {};
+      $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
+      $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
+      $scope.userDictionary = {};
+      $scope.items = [];
 
-    $ionicPopover.fromTemplateUrl('partials/orderPopover', {
-        scope: $scope
-    }).then(function(popover) {
-        $scope.popover = popover;
-    });
+      // For showing new item added message
+      var notify = function(message, type) {
+          $scope.alertOn = true;
+          $scope.alertMessage = message;
+          $scope.alertType = type;
+          $timeout(function() {
+              $scope.alertOn = false;
+          }, 1000);
+      };
 
-    $scope.openPopover = function($event) {
-        $scope.popover.show($event);
-    };
+      // Get user details method
+      var fetchUserDetail = function (uid) {
+          if ($scope.userDictionary[uid] !== undefined) return;
+          $http.get('/api/users/' + uid)
+              .success(function (data) {
+                  $scope.userDictionary[uid] = data;
+              });
+      };
 
-    $scope.$on('popover.hidden', function() {
-        // Execute action
-        $scope.showJoinLink = false;
-    });
+      // Authenticate user
+      fetchUserDetail($scope.uid);
+      fetchUserDetail($scope.order.UserUserId);
+      if (!hasAccount) {
+          $location.url('/join/' + $scope.order.code);
+      }
 
-    $scope.$on('$destroy', function() {
-        $scope.addItemModal.remove();
-        $scope.additionalFeeModal.remove();
-        $scope.popover.remove();
-    });
+      // To check if user has any order items
+      $scope.hasOrderItems = function() {
+          return ($scope.items.filter(function(i) {
+              return i.UserUserId == $scope.uid;
+          }).length > 0);
+      };
 
-    $scope.uid              = $store.get('_orderlyst_uid');
-    var hasAccount       = ($scope.uid !== -1);
-    $scope.isLoading = true;
-    $scope.scrolling = false;
-    $scope.isOwner = $scope.uid === $scope.order.UserUserId;
-    $scope.orderFormData = {};
-    $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
-    $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
-    $scope.userDictionary = {};
-    $scope.items = [];
-
-    // For showing new item added message
-    var notify = function(message, type) {
-        $scope.alertOn = true;
-        $scope.alertMessage = message;
-        $scope.alertType = type;
-        $timeout(function() {
-            $scope.alertOn = false;
-        }, 1000);
-    };
-
-    // Get user details method
-    var fetchUserDetail = function (uid) {
-        if ($scope.userDictionary[uid] !== undefined) return;
-        $http.get('/api/users/' + uid)
-            .success(function (data) {
-                $scope.userDictionary[uid] = data;
-            });
-    };
-
-    // Authenticate user
-    fetchUserDetail($scope.uid);
-    fetchUserDetail($scope.order.UserUserId);
-    if (!hasAccount) {
-        $location.url('/join/' + $scope.order.code);
-    }
-
-    // To check if user has any order items
-    $scope.hasOrderItems = function() {
-        return ($scope.items.filter(function(i) {
-            return i.UserUserId == $scope.uid;
-        }).length > 0);
-    };
-
-    // Fetch order item
-    $http.get('/api/orders/' + $scope.order.orderId + '/items')
-    .success(function (data) {
-        $scope.isLoading = false;
-        $scope.items = data;
-        $scope.items.map(function(datum) {
-            fetchUserDetail(datum.UserUserId);
+      // Fetch order item
+      $http.get('/api/orders/' + $scope.order.orderId + '/items')
+      .success(function (data) {
+          $scope.isLoading = false;
+          $scope.items = data;
+          $scope.items.map(function(datum) {
+              fetchUserDetail(datum.UserUserId);
 
 
-        });
-    });
+          });
+      });
 
-    // Item Form scope methods
-    $scope.incrementFormDataQuantity = function() {
-        // Cast the quantity to numeric first
-        $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
-        if ($scope.itemFormData.quantity < 1) {
+      // Item Form scope methods
+      $scope.incrementFormDataQuantity = function() {
+          // Cast the quantity to numeric first
+          $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
+          if ($scope.itemFormData.quantity < 1) {
+            $scope.itemFormData.quantity = 1;
+          } else {
+            console.log('add one');
+            $scope.itemFormData.quantity++;
+          }
+      };
+
+      $scope.decrementFormDataQuantity = function() {
+          // Cast the quantity to numeric first
+          $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
+          if ($scope.itemFormData.quantity > 1) {
+            console.log('sub one');
+            $scope.itemFormData.quantity--;
+          } else {
+            $scope.itemFormData.quantity = 1;
+          }
+      };
+      $scope.createAdHocOrderItem = function(name, price) {
+          $scope.isLoading = true;
+          $http.post(
+              '/api/orders/' + $scope.order.orderId + '/items',
+              {name:name, price:price, user:$scope.uid}
+          ).success(function (data) {
+              $scope.isLoading = false;
+              $scope.items.push(data);
+              $scope.newItemAdded = true;
+              $scope.alertMessage = "New item added";
+                  notify(pluralize(1, name) + ' added', 'success');
+          });
+      };
+      $scope.createOrderItem = function() {
+          // HACK
+          $scope.itemFormData.submitted = true;
+          var orderItemData = angular.copy($scope.itemFormData);
+          if (orderItemData.name === '' || orderItemData.name === undefined ||
+              orderItemData.price === '' || orderItemData.price === undefined ||
+              !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
+              +orderItemData.quantity < 1) return;
+          $scope.isLoading = true;
+          // Hide modal
+          $scope.closeAddItemModal();
+          // Clear formData
+          $scope.itemFormData.submitted = false;
+          $scope.itemFormData.name = '';
+          $scope.itemFormData.price = '';
           $scope.itemFormData.quantity = 1;
-        } else {
-          console.log('add one');
-          $scope.itemFormData.quantity++;
-        }
-    };
+          // Add items quantity times
+          var createItemResponse = function (data) {
+              $scope.isLoading = false;
+              $scope.items.push(data);
+          };
+          for (var i = 0; i < orderItemData.quantity; i++) {
+              $http.post(
+                  '/api/orders/' + $scope.order.orderId + '/items',
+                  orderItemData
+              ).success(createItemResponse);
+          }
+          notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
+      };
+      $scope.removeOrderItem = function(item) {
+          $scope.isLoading = true;
+          $http.delete(
+              '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId
+          ).success(function(data) {
+                  $scope.isLoading = false;
+                  $scope.items = $scope.items.filter(function(i) {
+                      return i.itemId !== item.itemId;
+                  });
+                  notify(pluralize(1, item.name) + ' removed', 'warning');
+              });
+      };
 
-    $scope.decrementFormDataQuantity = function() {
-        // Cast the quantity to numeric first
-        $scope.itemFormData.quantity = +$scope.itemFormData.quantity;
-        if ($scope.itemFormData.quantity > 1) {
-          console.log('sub one');
-          $scope.itemFormData.quantity--;
-        } else {
-          $scope.itemFormData.quantity = 1;
-        }
-    };
-    $scope.createAdHocOrderItem = function(name, price) {
-        $scope.isLoading = true;
-        $http.post(
-            '/api/orders/' + $scope.order.orderId + '/items',
-            {name:name, price:price, user:$scope.uid}
-        ).success(function (data) {
-            $scope.isLoading = false;
-            $scope.items.push(data);
-            $scope.newItemAdded = true;
-            $scope.alertMessage = "New item added";
-                notify(pluralize(1, name) + ' added', 'success');
-        });
-    };
-    $scope.createOrderItem = function() {
-        // HACK
-        $scope.itemFormData.submitted = true;
-        var orderItemData = angular.copy($scope.itemFormData);
-        if (orderItemData.name === '' || orderItemData.name === undefined ||
-            orderItemData.price === '' || orderItemData.price === undefined ||
-            !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
-            +orderItemData.quantity < 1) return;
-        $scope.isLoading = true;
-        // Hide modal
-        $scope.closeAddItemModal();
-        // Clear formData
-        $scope.itemFormData.submitted = false;
-        $scope.itemFormData.name = '';
-        $scope.itemFormData.price = '';
-        $scope.itemFormData.quantity = 1;
-        // Add items quantity times
-        var createItemResponse = function (data) {
-            $scope.isLoading = false;
-            $scope.items.push(data);
-        };
-        for (var i = 0; i < orderItemData.quantity; i++) {
-            $http.post(
-                '/api/orders/' + $scope.order.orderId + '/items',
-                orderItemData
-            ).success(createItemResponse);
-        }
-        notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
-    };
-    $scope.removeOrderItem = function(item) {
-        $scope.isLoading = true;
-        $http.delete(
-            '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId
-        ).success(function(data) {
-                $scope.isLoading = false;
-                $scope.items = $scope.items.filter(function(i) {
-                    return i.itemId !== item.itemId;
-                });
-                notify(pluralize(1, item.name) + ' removed', 'warning');
-            });
-    };
+      // Aditional Fees scope methods
 
-    // Aditional Fees scope methods
+      $scope.updateOrderAdditionalFee = function() {
+          var fees = $scope.additionalFee;
+          fees.submitted = true;
+          if (fees.surcharge === '' || fees.surcharge === undefined ||
+              fees.tax === '' || fees.surcharge === undefined ||
+              !(/^[0-9]+(\.[0-9][05])?$/.test(fees.surcharge)) ||
+              !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax)) ) return;
+          $scope.isLoading = true;
+          // Hide modal
+          $scope.closeAdditionalFeeModal();
+          fees.submitted = false;
+          $http.post(
+              '/api/orders/' + $scope.order.orderId,
+              fees
+          ).success(function(data) {
+              $scope.isLoading = false;
+              $scope.order = data;
+          });
+      };
 
-    $scope.updateOrderAdditionalFee = function() {
-        var fees = $scope.additionalFee;
-        fees.submitted = true;
-        if (fees.surcharge === '' || fees.surcharge === undefined ||
-            fees.tax === '' || fees.surcharge === undefined ||
-            !(/^[0-9]+(\.[0-9][05])?$/.test(fees.surcharge)) ||
-            !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax)) ) return;
-        $scope.isLoading = true;
-        // Hide modal
-        $scope.closeAdditionalFeeModal();
-        fees.submitted = false;
+      $scope.getSurcharge = function() {
+          return $scope.order.surcharge;
+      };
+
+      $scope.getTax = function() {
+          return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
+      };
+
+      // Fee aggregate scope methods
+
+      $scope.subtotalFee = function() {
+          return $scope.items.reduce(function(a, b) {
+              return a + parseFloat(b.price);
+          }, 0);
+      };
+
+      $scope.totalFee = function() {
+          return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
+      };
+
+      // To toggle isOpen status of order
+
+      $scope.toggleLocked = function() {
+        $scope.order.isOpen = !$scope.order.isOpen;
         $http.post(
             '/api/orders/' + $scope.order.orderId,
-            fees
+            $scope.order
         ).success(function(data) {
-            $scope.isLoading = false;
-            $scope.order = data;
         });
-    };
+      };
 
-    $scope.getSurcharge = function() {
-        return $scope.order.surcharge;
-    };
+      // For scrolling
+      $scope.scrollingPromises = [];
 
-    $scope.getTax = function() {
-        return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
-    };
+      var clearScrollingPromises = function() {
+          $scope.scrollingPromises.map(function(promise) {
+              $timeout.cancel(promise);
+          });
+          $scope.scrollingPromises = [];
+      };
 
-    // Fee aggregate scope methods
+      $scope.scroll = function() {
+          clearScrollingPromises();
+          var p = $timeout(function () {
+              $scope.scrolling = true;
+              // In case scrollb timeout get cleared first
+              var p2 = $timeout(function () {
+                  $scope.scrolling = false;
+              }, 800);
+              $scope.scrollingPromises.push(p2);
+          }, 0);
+          $scope.scrollingPromises.push(p);
+      };
 
-    $scope.subtotalFee = function() {
-        return $scope.items.reduce(function(a, b) {
-            return a + parseFloat(b.price);
-        }, 0);
-    };
+      $scope.scrollb = function() {
+          clearScrollingPromises();
+          var p = $timeout(function () {
+              $scope.scrolling = false;
+          }, 0);
+          $scope.scrollingPromises.push(p);
+      };
 
-    $scope.totalFee = function() {
-        return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
-    };
+  };
 
-    // To toggle isOpen status of order
 
-    $scope.toggleLocked = function() {
-      $scope.order.isOpen = !$scope.order.isOpen;
-      $http.post(
-          '/api/orders/' + $scope.order.orderId,
-          $scope.order
-      ).success(function(data) {
-      });
-    };
-
-    // For scrolling
-    $scope.scrollingPromises = [];
-
-    var clearScrollingPromises = function() {
-        $scope.scrollingPromises.map(function(promise) {
-            $timeout.cancel(promise);
-        });
-        $scope.scrollingPromises = [];
-    };
-
-    $scope.scroll = function() {
-        clearScrollingPromises();
-        var p = $timeout(function () {
-            $scope.scrolling = true;
-            // In case scrollb timeout get cleared first
-            var p2 = $timeout(function () {
-                $scope.scrolling = false;
-            }, 800);
-            $scope.scrollingPromises.push(p2);
-        }, 0);
-        $scope.scrollingPromises.push(p);
-    };
-
-    $scope.scrollb = function() {
-        clearScrollingPromises();
-        var p = $timeout(function () {
-            $scope.scrolling = false;
-        }, 0);
-        $scope.scrollingPromises.push(p);
-    };
+  $order.getOrder(renderPage);
 }];
 
 
