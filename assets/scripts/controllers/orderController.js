@@ -136,15 +136,35 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
               $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order) {
 
+    $scope.uid              = $store.get('_orderlyst_uid');
+    var hasAccount       = ($scope.uid !== -1);
+    $scope.isLoading = true;
+    $scope.scrolling = false;
+    $scope.isOwner = false;
+    $scope.orderFormData = {};
+    $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
+    $scope.additionalFee = { 'surcharge': 0, 'tax': 0, 'submitted': false};
+    $scope.items = [];
+    $scope.userDictionary = {};
+
     $order.register($stateParams.orderId);
 
-    $order.getItems(function(items){
-      $scope.items = items;
-      $scope.isLoading = false;
-    });
+    $order
+      .getItems()
+      .then(function(items){
+        $scope.items = items;
+        $scope.isLoading = false;
+      });
 
     var renderPage = function(order) {
       $scope.order = order;
+      $scope.isOwner = $scope.uid === $scope.order.UserUserId;
+      $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
+
+      if (!hasAccount) {
+        $location.url('/join/' + $scope.order.code);
+      }
+
       // Check if the order was newly created
       if ($stateParams.new) {
           var newOrderPopup = function () {
@@ -163,6 +183,19 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           };
           newOrderPopup();
       }
+
+      $order
+        .getUser($scope.uid)
+        .then(function(user){
+          $scope.userDictionary[user.userId] = user;
+        });
+
+
+      $order
+        .getUser($scope.order.UserUserId)
+        .then(function(user){
+          $scope.userDictionary[user.userId] = user;
+        });
 
       // For toggling sideMenu
       $scope.toggleSideMenu = function() {
@@ -306,16 +339,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           $scope.popover.remove();
       });
 
-      $scope.uid              = $store.get('_orderlyst_uid');
-      var hasAccount       = ($scope.uid !== -1);
-      $scope.isLoading = true;
-      $scope.scrolling = false;
-      $scope.isOwner = $scope.uid === $scope.order.UserUserId;
-      $scope.orderFormData = {};
-      $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
-      $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
       $scope.userDictionary = {};
-      $scope.items = [];
 
       // For showing new item added message
       var notify = function(message, type) {
@@ -336,31 +360,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
               });
       };
 
-      // Authenticate user
-      fetchUserDetail($scope.uid);
-      fetchUserDetail($scope.order.UserUserId);
-      if (!hasAccount) {
-          $location.url('/join/' + $scope.order.code);
-      }
-
       // To check if user has any order items
       $scope.hasOrderItems = function() {
           return ($scope.items.filter(function(i) {
               return i.UserUserId == $scope.uid;
           }).length > 0);
       };
-
-      // Fetch order item
-      $http.get('/api/orders/' + $scope.order.orderId + '/items')
-      .success(function (data) {
-          $scope.isLoading = false;
-          $scope.items = data;
-          $scope.items.map(function(datum) {
-              fetchUserDetail(datum.UserUserId);
-
-
-          });
-      });
 
       // Item Form scope methods
       $scope.incrementFormDataQuantity = function() {
@@ -526,7 +531,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
   };
 
 
-  $order.getOrder(renderPage);
+  $order
+    .getOrder()
+    .then(renderPage);
 }];
 
 
