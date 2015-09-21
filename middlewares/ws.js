@@ -13,14 +13,17 @@ wss.on('connection', function connection(client) {
 });
 
 module.exports = function(req, res, next) {
-  req.wsUpdate = function(orderId) {
+  req.wsUpdate = function(orderId, type, data) {
     console.log('Update requested for ' + orderId);
     var participants = clients.filter(function(client){
       return '' + client.orderId === '' + orderId;
     });
 
     participants.forEach(function() {
-      client.send('update');
+      client.send(JSON.stringify({
+        type: type,
+        data: data
+      }));
     });
   };
 
