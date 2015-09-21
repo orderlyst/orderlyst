@@ -1,12 +1,7 @@
 var pluralize = require('../helpers/pluralize.js');
 
-<<<<<<< HEAD
 var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
-=======
-var startOrder = ['$scope', '$http', '$location', '$store', '$order',
-    function($scope, $http, $location, $store, $order) {
->>>>>>> added order registration
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     $scope.createOrder = function() {
@@ -18,7 +13,7 @@ var startOrder = ['$scope', '$http', '$location', '$store', '$order',
                 }
             ).success(function (data) {
               $order.register(data.orderId);
-              $window.location.href = '/orders/' + data.orderId + '?new=true';
+              $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
             });
         } else {
             $location.url('/create');
@@ -71,7 +66,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
             }
             if (order) {
                 $order.register(order.orderId);
-                $window.location.href = '/orders/' + order.orderId;
+                $window.location.href = '/orders/' + encodeURIComponent(order.orderId);
             } else {
               // order is not found or no longer available.
               $scope.codeNotAvailable = true;
@@ -109,7 +104,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $window.location.href = '/orders/' + data.orderId + '?new=true';
+                $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
             });
         } else {
             $http.post(
@@ -128,7 +123,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                 );
             }).then(function (response) {
                 $order.register(response.data.orderId);
-                $window.location.href = '/orders/' + response.data.orderId + '?new=true';
+                $window.location.href = '/orders/' + encodeURIComponent(response.data.orderId) + '?new=true';
             });
         }
     };

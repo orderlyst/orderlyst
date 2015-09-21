@@ -12,10 +12,10 @@ module.exports = function(module) {
 
     var fetchUser = function (uid) {
       var deferred = $q.defer();
-      $http.get('/api/users/' + uid)
-        .success(function (data) {
-          userDictionary[uid] = data;
-          deferred.resolve(data);
+      $http.get('/api/users/' + encodeURIComponent(uid))
+        .then(function (response) {
+          userDictionary[uid] = response.data;
+          deferred.resolve(response.data);
         });
       return deferred.promise;
     };
@@ -23,9 +23,10 @@ module.exports = function(module) {
     var fetchItems = function(orderId) {
       var deferred = $q.defer();
       var promises = [];
-      $http.get('/api/orders/' + orderId + '/items')
-        .success(function (data) {
-          items = data;
+      $http.get('/api/orders/' + encodeURIComponent(orderId) + '/items')
+        .then(function (response) {
+          items = response.data;
+          items = Array.prototype.slice.call(items, 0);
           items.map(function(item) {
             promises.push(fetchUser(item.UserUserId));
           });
@@ -42,9 +43,9 @@ module.exports = function(module) {
       $http.get(
           '/api/orders/' + orderId
         )
-        .then(function(data) {
-          order = data;
-          deferred.resolve(data);
+        .then(function(response) {
+          order = response.data;
+          deferred.resolve(order);
         });
       return deferred.promise;
     };
