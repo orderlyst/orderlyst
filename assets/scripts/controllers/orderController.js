@@ -1,7 +1,7 @@
 var pluralize = require('../helpers/pluralize.js');
 
-var startOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var startOrder = ['$scope', '$http', '$window', '$store', '$location',
+    function($scope, $http, $window, $store, $location) {
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
     $scope.createOrder = function() {
@@ -12,7 +12,7 @@ var startOrder = ['$scope', '$http', '$location', '$store',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $location.url('/orders/' + data.orderId + '?new=true');
+                $window.location.href = '/orders/' + data.orderId + '?new=true';
             });
         } else {
             $location.url('/create');
@@ -21,8 +21,8 @@ var startOrder = ['$scope', '$http', '$location', '$store',
 }];
 
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window) {
     $scope.joinOrder = {};
     $scope.submitted = false;
     $scope.joinOrder.code = $stateParams.orderCode;
@@ -65,7 +65,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
               $store.set('_orderlyst_uid', user.userId);
             }
             if (order) {
-              $location.url('/orders/' + order.orderId);
+                $window.location.href = '/orders/' + order.orderId;
             } else {
               // order is not found or no longer available.
               $scope.codeNotAvailable = true;
@@ -75,8 +75,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     };
 }];
 
-var createOrder = ['$scope', '$http', '$location', '$store',
-    function($scope, $http, $location, $store) {
+var createOrder = ['$scope', '$http', '$location', '$store', '$window',
+    function($scope, $http, $location, $store, $window) {
     $scope.createOrder = {};
     $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
@@ -88,7 +88,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
               hostUserId: uid
             }
         ).success(function (data) {
-            $location.url('/orders/' + data.orderId);
+            $window.location.href = '/orders/' + data.orderId + '?new=true';
         });
     }
     $scope.submit = function() {
@@ -103,7 +103,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                   hostUserId: uid
                 }
             ).success(function (data) {
-                $location.url('/orders/' + data.orderId + '?new=true');
+                $window.location.href = '/orders/' + data.orderId + '?new=true';
             });
         } else {
             $http.post(
@@ -121,7 +121,7 @@ var createOrder = ['$scope', '$http', '$location', '$store',
                   }
                 );
             }).then(function (response) {
-              $location.url('/orders/' + response.data.orderId + '?new=true');
+                $window.location.href = '/orders/' + response.data.orderId + '?new=true';
             });
         }
     };
@@ -139,6 +139,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     } else {
         $scope.order = loadOrder.data;
     }
+
+    $timeout(function() {
+        $scope.$digest();
+    });
 
     // Check if the order was newly created
     if ($stateParams.new) {
