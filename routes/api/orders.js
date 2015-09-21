@@ -92,6 +92,7 @@ router.post('/:id', function(req, res, next) {
             }
           })
           .then(function(order){
+            req.wsUpdate(order.orderId, 'order', order);
             res.json(order);
           });
       } else {
@@ -153,6 +154,13 @@ router.post('/:id/items', function(req, res, next) {
           "OrderOrderId": order.getDataValue('orderId')
         })
         .then(function(item){
+          req.models.Item
+            .find({
+              "OrderOrderId": orderId
+            })
+            .then(function(items){
+              req.wsUpdate(order.orderId, 'items', items);
+            });
           res.json(item);
         });
     } else {
@@ -174,6 +182,15 @@ router.delete('/:id/items/:itemId', function(req, res, next){
         "itemId": itemId,
         "OrderOrderId": orderId
       }
+    })
+    .then(function() {
+      req.models.Item
+        .find({
+          "OrderOrderId": orderId
+        })
+        .then(function(items){
+          req.wsUpdate(order.orderId, 'items', items);
+        });
     });
 
   res.json({status: "200 OK"});
