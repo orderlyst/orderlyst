@@ -10,9 +10,7 @@ module.exports = function(module) {
     var items;
     var userDictionary = {};
 
-    var callbacks = [];
-
-    var fetchUserDetail = function (uid) {
+    var fetchUser = function (uid) {
       var deferred = $q.defer();
       if (userDictionary[uid] !== undefined) {
         deferred.reject();
@@ -33,7 +31,7 @@ module.exports = function(module) {
         .success(function (data) {
           items = data;
           items.map(function(item) {
-            promises.push(fetchUserDetail(item.UserUserId));
+            promises.push(fetchUser(item.UserUserId));
           });
         });
 
@@ -50,23 +48,20 @@ module.exports = function(module) {
         )
         .then(function(data) {
           order = data;
-          deferred.resolve();
+          deferred.resolve(data);
         });
       return deferred.promise;
     };
 
     stream.onMessage(function(message) {
-      if (message === 'update') {
-        var promises = [];
-        promises.push(fetchOrder(orderId));
-        promises.push(fetchItems(orderId));
-        $q.all(promises).then(function(){
-          callbacks.forEach(function(callback) {
-            if (callback) {
-              callback();
-            }
-          });
-        });
+      var oMessage = JSON.parse(message);
+      var data = oMessage.data;
+      if (oMessage.type === 'user') {
+        userDictionary[data.userId] = data;
+      } else if (oMessage.type === 'items') {
+        items = data;
+      } else if (oMessage.type === 'order') {
+        order = data;
       }
     });
 
@@ -76,26 +71,34 @@ module.exports = function(module) {
         orderId = oid;
         stream.send(orderId);
       },
-      "bind": function(callback) {
-        if (callback) {
-          callbacks.push(callback);
+      "getOrder": function(callback){
+        if (order) {
+          callback(order);
+        } else {
+          fetchOrder(orderId).then(function() {
+            callback(order);
+          });
         }
       },
-      "getOrder": function(){
-        return order;
+      "getItems": function(callback) {
+        if (items) {
+          callback(items);
+        } else {
+          fetchItems(orderId).then(function(){
+            callback(items);
+          });
+        }
       },
-      "getItems": function() {
-        return items;
-      },
-      "getUser": function(uid) {
-        return userDictionary[uid];
-      },
-      "reset": function() {
-        callbacks = [];
+      "getUser": function(uid, callback) {
+        if (userDictionary[uid]) {
+          callback(userDictionary[uid]);
+        } else {
+          fetchUser(uid).then(function(){
+            callback(userDictionary[uid]);
+          });
+        }
       }
     };
-
-    $rootScope.$on('$viewContentLoaded', methods.reset);
 
     return methods;
   });
