@@ -2,13 +2,19 @@
 @import 'mixins/variables';
 
 @mixin carousel-logo {
-  background-size: 100% auto;
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center center;
 }
 
 #homeLogo {
   height: 100%;
+  .box {
+    height: 100%;
+  }
+  .tutorial {
+    height: $home-logo-height-percent;
+  }
   .tut1 {
     background: url('/assets/images/tut1.png');
     @include carousel-logo;
