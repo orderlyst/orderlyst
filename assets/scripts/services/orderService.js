@@ -12,11 +12,8 @@ module.exports = function(module) {
 
     var fetchUser = function (uid) {
       var deferred = $q.defer();
-      if (userDictionary[uid] !== undefined) {
-        deferred.reject();
-        return deferred.promise;
-      }
-      $http.get('/api/users/' + encodeURIComponent(uid))
+      $http
+        .get('/api/users/' + encodeURIComponent(uid))
         .then(function (response) {
           userDictionary[uid] = response.data;
           deferred.resolve(response.data);
@@ -26,25 +23,19 @@ module.exports = function(module) {
 
     var fetchItems = function(orderId) {
       var deferred = $q.defer();
-      var promises = [];
-      $http.get('/api/orders/' + encodeURIComponent(orderId) + '/items')
+      $http
+        .get('/api/orders/' + encodeURIComponent(orderId) + '/items')
         .then(function (response) {
-          items = response.data;
-          items = Array.prototype.slice.call(items, 0);
-          items.map(function(item) {
-            promises.push(fetchUser(item.UserUserId));
-          });
+          items = Array.prototype.slice.call(response.data, 0);
+          deferred.resolve(items);
         });
-
-      $q.all(promises).then(function() {
-        deferred.resolve(items);
-      });
       return deferred.promise;
     };
 
     var fetchOrder = function(orderId) {
       var deferred = $q.defer();
-      $http.get(
+      $http
+        .get(
           '/api/orders/' + orderId
         )
         .then(function(response) {
