@@ -164,6 +164,10 @@ ion-footer-bar.ng-leave {
   }
 }
 
+.button-icon {
+  z-index: 50;
+}
+
 .button-filled {
   color: white;
   background-color: $color-primary-blue;
