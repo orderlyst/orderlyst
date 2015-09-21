@@ -151,6 +151,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     $order
       .getItems()
       .then(function(items){
+        items.forEach(function(item) {
+          $order.getUser(item.UserUserId, function(user){
+            $scope.userDictionary[user.userId] = user;
+          });
+        });
         $scope.items = items;
         $scope.isLoading = false;
       });
