@@ -69,31 +69,37 @@ module.exports = function(module) {
         stream.send(orderId);
       },
       "getOrder": function(callback){
+        var deferred = $q.defer();
         if (order) {
-          callback(order);
+          deferred.resolve(order);
         } else {
           fetchOrder(orderId).then(function() {
-            callback(order);
+            deferred.resolve(order);
           });
         }
+        return deferred.promise;
       },
       "getItems": function(callback) {
+        var deferred = $q.defer();
         if (items) {
           callback(items);
         } else {
           fetchItems(orderId).then(function(){
-            callback(items);
+            deferred.resolve(items);
           });
         }
+        return deferred.promise;
       },
       "getUser": function(uid, callback) {
+        var deferred = $q.defer();
         if (userDictionary[uid]) {
           callback(userDictionary[uid]);
         } else {
           fetchUser(uid).then(function(){
-            callback(userDictionary[uid]);
+            deferred.resolve(userDictionary[uid]);
           });
         }
+        return deferred.promise;
       }
     };
 
