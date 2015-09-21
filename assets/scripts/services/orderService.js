@@ -1,7 +1,7 @@
 module.exports = function(module) {
   'use strict';
 
-  module.factory("$order", function ($websocket, $q, $rootScope) {
+  module.factory("$order", function ($websocket, $q, $rootScope, $http) {
 
     var stream = $websocket('ws://localhost:8080/wsctrl');
 
