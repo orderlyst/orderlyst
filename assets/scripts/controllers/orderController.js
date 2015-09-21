@@ -455,6 +455,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
     };
 
+    $scope.getSurcharge = function() {
+        return $scope.order.surcharge;
+    };
+
+    $scope.getTax = function() {
+        return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
+    };
+
     // Fee aggregate scope methods
 
     $scope.subtotalFee = function() {
