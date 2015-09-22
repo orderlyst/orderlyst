@@ -43,7 +43,7 @@ router.post('/:id', function(req, res, next) {
   req.models.User
     .update(
       {
-        name: name
+        "name": name
       },
       {
         where: {
@@ -53,17 +53,23 @@ router.post('/:id', function(req, res, next) {
     )
     .then(function(user){
       if (user) {
-        req.models.Items
-          .find({
-            UserUserId: user.userId,
-            group: ['OrderOrderId']
+        req.models.User
+          .findOne({
+            userId: user.userId
           })
-          .then(function(items){
-            items.forEach(function(item){
-              req.wsUpdate(item.OrderOrderId, 'user', user);
-            });
+          .then(function(user){
+            req.models.Item
+              .findAll({
+                UserUserId: user.userId,
+                group: ['OrderOrderId']
+              })
+              .then(function(items){
+                items.forEach(function(item){
+                  req.wsUpdate(item.OrderOrderId, 'user', user);
+                });
+              });
+            res.json(user);
           });
-        res.json(user);
       }
     });
 });

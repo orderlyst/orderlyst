@@ -19,7 +19,7 @@ module.exports = function(req, res, next) {
       return '' + client.orderId === '' + orderId;
     });
 
-    participants.forEach(function() {
+    participants.forEach(function(client) {
       client.send(JSON.stringify({
         type: type,
         data: data
