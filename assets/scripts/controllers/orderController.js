@@ -97,6 +97,9 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
 
     $scope.timePickerObject24Hour = {
         inputEpochTime: 86340,
+        setButtonType: 'button-filled',
+        closeButtonType: 'button-blank',
+        titleLabel: 'Choose your order closing time',
         callback: function (val) {    //Mandatory
             timePicker24Callback(val);;
         }
