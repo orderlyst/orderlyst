@@ -68,6 +68,15 @@ router.post('/:id', function(req, res, next) {
                   req.wsUpdate(item.OrderOrderId, 'user', user);
                 });
               });
+            req.models.Order
+              .findAll({
+                UserUserId: user.userId
+              })
+              .then(function(orders){
+                orders.forEach(function(order){
+                  req.wsUpdate(order.orderId, 'user', user);
+                })
+              })
             res.json(user);
           });
       }
