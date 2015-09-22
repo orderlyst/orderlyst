@@ -5,11 +5,12 @@ ion-view
       ion-content.has-header(padding=true)
         .spacer
           h3.text-center.vertical-aligned Create a new order
-        h4.text-center.has-side-margin Get started by entering your name!
+        h4.text-center.has-side-margin(ng-if="!hasAccount") Get started by entering your name!
+        h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
         form.create-order-form(name="createOrderForm")
           .list
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
-                    && submitted, 'valid': createOrderForm.name.$valid && submitted }" )
+                    && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")

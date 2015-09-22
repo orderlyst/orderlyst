@@ -81,17 +81,17 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
     $scope.createOrder = {};
     $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
-    var hasAccount = (uid !== -1);
-    if (hasAccount) {
-        $http.post(
-            '/api/orders',
-            {
-              hostUserId: uid
-            }
-        ).success(function (data) {
-            $window.location.href = '/orders/' + data.orderId + '?new=true';
+    $scope.hasAccount = (uid !== -1);
+
+    // Retrieve name if user has an account
+    if ($scope.hasAccount) {
+        $http
+        .get('/api/users/' + encodeURIComponent(uid))
+        .then(function (response) {
+            $scope.userName = response.data.name;
         });
     }
+
     $scope.submit = function() {
         var name = $scope.createOrder.name;
         $scope.submitted = true;
