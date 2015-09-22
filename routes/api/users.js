@@ -70,7 +70,8 @@ router.post('/:id', function(req, res, next) {
               });
             req.models.Order
               .findAll({
-                UserUserId: user.userId
+                UserUserId: user.userId,
+                isOpen: true
               })
               .then(function(orders){
                 orders.forEach(function(order){
