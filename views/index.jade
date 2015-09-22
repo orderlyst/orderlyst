@@ -21,6 +21,7 @@ html
     link(rel="apple-touch-icon", sizes="180x180", href="/assets/images/icons/apple-icon-180x180.png")
     meta(name="msapplication-TileImage", content="/assets/images/icons/ms-icon-144x144.png")
     meta(name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
+    block meta
   body(ng-app="orderlyst")
     ion-nav-view.main-container
     script(src="/assets/scripts/vendor.js")
@@ -32,4 +33,3 @@ html
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-67609955-1', 'auto');
       ga('send', 'pageview');
-
