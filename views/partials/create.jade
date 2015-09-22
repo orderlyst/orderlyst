@@ -5,8 +5,8 @@ ion-view
       ion-content.has-header(padding=true)
         .spacer
           h3.text-center.vertical-aligned Create a new order
-        h4.text-center.has-side-margin(ng-if="!hasAccount") Get started by entering your name!
-        h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
+        h4.text-center.has-side-margin Get started by entering your order name!
+        //h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
         form.create-order-form(name="createOrderForm")
           .list
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
@@ -15,6 +15,13 @@ ion-view
               input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
+
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
+                    && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
+              span.input-label Your Name
+              input(type='text', placeholder='Your Name', ng-model="createOrder.orderName", ng-required="true", name="orderName")
+            .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
+              .form-error(ng-message="required") We need your order's name.
 
           .row
             .col-80.col-offset-10
