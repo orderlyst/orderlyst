@@ -89,7 +89,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
               hostUserId: uid
             }
         ).success(function (data) {
-            $window.location.href = '/orders/' + data.orderId + '?new=true';
+            $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
         });
     }
     $scope.submit = function() {
