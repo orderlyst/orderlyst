@@ -144,9 +144,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
       $scope.orderFormData = {};
       $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
       $scope.additionalFee = { 'surcharge': 0, 'tax': 0, 'submitted': false};
-      $scope.items = [];
-      $scope.userDictionary = {};
 
+      $order.setScope($scope);
       $order.register($stateParams.orderId);
 
       // Setup new order item modal form
@@ -336,7 +335,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
               {name:name, price:price, user:$scope.uid}
           ).success(function (data) {
               $scope.isLoading = false;
-              $scope.items.push(data);
+              //$scope.items.push(data);
               $scope.newItemAdded = true;
               $scope.alertMessage = "New item added";
                   notify(pluralize(1, name) + ' added', 'success');
@@ -471,17 +470,17 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
       $order
         .getItems()
         .then(function(items){
-          items.forEach(function(item) {
+          console.log($scope.items);
+          console.log(items);
+          $scope.items.forEach(function(item) {
             $order.getUser(item.UserUserId, function(user){
               $scope.userDictionary[user.userId] = user;
             });
           });
-          $scope.items = items;
           $scope.isLoading = false;
         });
 
       var renderPage = function(order) {
-        $scope.order = order;
         $scope.isOwner = $scope.uid === $scope.order.UserUserId;
         $scope.additionalFee = { 'surcharge': $scope.order.surcharge, 'tax': $scope.order.tax, 'submitted': false};
 

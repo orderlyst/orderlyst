@@ -9,6 +9,9 @@ wss.on('connection', function connection(client) {
     console.log('WS Client registered for ' + orderId);
     client.orderId = orderId;
   });
+  client.on('close', function(){
+    client.orderId = null;
+  })
   clients.push(client);
 });
 

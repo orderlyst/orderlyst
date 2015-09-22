@@ -155,8 +155,10 @@ router.post('/:id/items', function(req, res, next) {
         })
         .then(function(item){
           req.models.Item
-            .find({
-              "OrderOrderId": orderId
+            .findAll({
+              "where": {
+                "OrderOrderId": orderId
+              }
             })
             .then(function(items){
               req.wsUpdate(order.orderId, 'items', items);
@@ -185,11 +187,13 @@ router.delete('/:id/items/:itemId', function(req, res, next){
     })
     .then(function() {
       req.models.Item
-        .find({
-          "OrderOrderId": orderId
+        .findAll({
+          "where": {
+            "OrderOrderId": orderId
+          }
         })
         .then(function(items){
-          req.wsUpdate(order.orderId, 'items', items);
+          req.wsUpdate(req.params.id, 'items', items);
         });
     });
 

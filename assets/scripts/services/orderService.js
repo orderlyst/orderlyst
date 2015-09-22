@@ -5,17 +5,15 @@ module.exports = function(module) {
 
     var stream = $websocket('ws://localhost:8080/wsctrl');
 
+    var $currentScope;
     var orderId;
-    var order;
-    var items;
-    var userDictionary = {};
 
     var fetchUser = function (uid) {
       var deferred = $q.defer();
       $http
         .get('/api/users/' + encodeURIComponent(uid))
         .then(function (response) {
-          userDictionary[uid] = response.data;
+          $currentScope.userDictionary[uid] = response.data;
           deferred.resolve(response.data);
         });
       return deferred.promise;
@@ -26,8 +24,8 @@ module.exports = function(module) {
       $http
         .get('/api/orders/' + encodeURIComponent(orderId) + '/items')
         .then(function (response) {
-          items = Array.prototype.slice.call(response.data, 0);
-          deferred.resolve(items);
+          $currentScope.items = Array.prototype.slice.call(response.data, 0);
+          deferred.resolve($currentScope.items);
         });
       return deferred.promise;
     };
@@ -36,24 +34,25 @@ module.exports = function(module) {
       var deferred = $q.defer();
       $http
         .get(
-          '/api/orders/' + orderId
+          '/api/orders/' + encodeURIComponent(orderId)
         )
         .then(function(response) {
-          order = response.data;
-          deferred.resolve(order);
+          $currentScope.order = response.data;
+          deferred.resolve($currentScope.order);
         });
       return deferred.promise;
     };
 
     stream.onMessage(function(response) {
       var message = JSON.parse(response.data);
+      console.log(message);
       var data = message.data;
       if (message.type === 'user') {
-        userDictionary[data.userId] = data;
+        $currentScope.userDictionary[data.userId] = data;
       } else if (message.type === 'items') {
-        items = data;
+        $currentScope.items = data;
       } else if (message.type === 'order') {
-        order = data;
+        $currentScope.order = data;
       }
     });
 
@@ -63,35 +62,41 @@ module.exports = function(module) {
         orderId = oid;
         stream.send(orderId);
       },
-      "getOrder": function(callback){
+      "setScope": function(scope) {
+        $currentScope = scope;
+        $currentScope.items = [];
+        $currentScope.userDictionary = {};
+        $currentScope.order = null;
+      },
+      "getOrder": function(){
         var deferred = $q.defer();
-        if (order) {
-          deferred.resolve(order);
+        if ($currentScope.order) {
+          deferred.resolve($currentScope.order);
         } else {
           fetchOrder(orderId).then(function() {
-            deferred.resolve(order);
+            deferred.resolve($currentScope.order);
           });
         }
         return deferred.promise;
       },
-      "getItems": function(callback) {
+      "getItems": function() {
         var deferred = $q.defer();
-        if (items) {
-          callback(items);
+        if ($currentScope.items.length > 0) {
+          deferred.resolve($currentScope.items);
         } else {
           fetchItems(orderId).then(function(){
-            deferred.resolve(items);
+            deferred.resolve($currentScope.items);
           });
         }
         return deferred.promise;
       },
-      "getUser": function(uid, callback) {
+      "getUser": function(uid) {
         var deferred = $q.defer();
-        if (userDictionary[uid]) {
-          callback(userDictionary[uid]);
+        if ($currentScope.userDictionary[uid]) {
+          deferred.resolve($currentScope.userDictionary[uid]);
         } else {
           fetchUser(uid).then(function(){
-            deferred.resolve(userDictionary[uid]);
+            deferred.resolve($currentScope.userDictionary[uid]);
           });
         }
         return deferred.promise;
