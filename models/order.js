@@ -20,8 +20,8 @@ module.exports = function(sequelize, DataTypes) {
     "name": {
       "type": DataTypes.STRING
     },
-    "close_time": {
-      "type": DataTypes.TIME
+    "closingAt": {
+      "type": DataTypes.DATE
     },
     "code": {
       "type": DataTypes.STRING,
@@ -38,10 +38,6 @@ module.exports = function(sequelize, DataTypes) {
     "isOpen": {
       "type": DataTypes.BOOLEAN,
       "defaultValue": true
-    },
-    "closed": {
-      "type": DataTypes.DATE,
-      allowNull: true
     }
   }, {
     "classMethods": {
