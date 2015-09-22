@@ -240,12 +240,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     // Setup additional fee modal form
 
 
-      $order
-        .getUser($scope.order.UserUserId)
-        .then(function(user){
-          $scope.userDictionary[user.userId] = user;
-        });
-
       // For toggling sideMenu
       $scope.toggleSideMenu = function() {
           $ionicSideMenuDelegate.toggleLeft();
@@ -311,31 +305,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.selectJoinLink();
     };
 
-        var popup = $ionicPopup.show({
-          template: "Are you sure that you want to lock the order? " +
-            "After you lock the order, people will not be able to add more item tothe order.",
-          title: "Lock Order",
-          scope: $scope,
-          buttons: [
-            {text: 'Cancel'},
-            {
-              text: "Confirm" ,
-              type: "button-filled",
-              onTap: function(e) {
-                $scope.toggleLocked();
-              }
-            }
-          ]
-        });
-      };
-
-      $scope.openAddItemModal = function() {
-          $scope.addItemModal.show();
-      };
-
-      $scope.closeAddItemModal = function() {
-          $scope.addItemModal.hide();
-      };
 
     // For showing new item added message
     var notify = function(message, type) {
@@ -458,27 +427,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           $scope.additionalFeeModal.remove();
           $scope.popover.remove();
       });
-
-      $scope.userDictionary = {};
-
-      // For showing new item added message
-      var notify = function(message, type) {
-          $scope.alertOn = true;
-          $scope.alertMessage = message;
-          $scope.alertType = type;
-          $timeout(function() {
-              $scope.alertOn = false;
-          }, 1000);
-      };
-
-      // Get user details method
-      var fetchUserDetail = function (uid) {
-          if ($scope.userDictionary[uid] !== undefined) return;
-          $http.get('/api/users/' + uid)
-              .success(function (data) {
-                  $scope.userDictionary[uid] = data;
-              });
-      };
 
       // To check if user has any order items
       $scope.hasOrderItems = function() {
@@ -617,8 +565,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
       };
 
-      // For scrolling
-      $scope.scrollingPromises = [];
 
     $scope.scrollb = function() {
         clearScrollingPromises();
