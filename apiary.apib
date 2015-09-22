@@ -79,10 +79,12 @@ In this action, you can fetch an order and its information.
         {
           "orderId": 1,
           "code": "3e1D",
+          "name": "McDonalds",
           "surcharge": 0,
           "tax": 0,
           "isOpen": true,
           "closed": null,
+          "closingAt": "2015-09-11T13:32:41.000Z",
           "createdAt": "2015-09-11T13:32:41.000Z",
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
@@ -95,7 +97,9 @@ In this action, you can create a new order.
 + Request (application/json)
 
         {
-            "hostUserId": "1"
+            "hostUserId": "1",
+            "name": "McDonalds",
+            "closingAt": "2015-09-11T13:32:41.000Z"
         }
 
 + Response 200 (application/json)
@@ -103,10 +107,12 @@ In this action, you can create a new order.
         {
           "orderId": 1,
           "code": "3e1D",
+          "name": "McDonalds",
           "surcharge": 0,
           "tax": 0,
           "isOpen": true,
           "closed": null,
+          "closingAt": "2015-09-11T13:32:41.000Z",
           "createdAt": "2015-09-11T13:32:41.000Z",
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
@@ -132,10 +138,12 @@ In this action, you can create a new order.
         {
           "orderId": 1,
           "code": "3e1D",
-          "surcharge": 5,
-          "tax": 0.07,
+          "name": "McDonalds",
+          "surcharge": 0,
+          "tax": 0,
           "isOpen": true,
           "closed": null,
+          "closingAt": "2015-09-11T13:32:41.000Z",
           "createdAt": "2015-09-11T13:32:41.000Z",
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
@@ -155,11 +163,13 @@ In this action, you can search for an order and its information. Only orders wit
 
         {
           "orderId": 1,
-          "code": "2EDc",
+          "code": "3e1D",
+          "name": "McDonalds",
           "surcharge": 0,
           "tax": 0,
           "isOpen": true,
           "closed": null,
+          "closingAt": "2015-09-11T13:32:41.000Z",
           "createdAt": "2015-09-11T13:32:41.000Z",
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
