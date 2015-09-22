@@ -16,12 +16,13 @@
   "dependencies": {
     "angular": "~1.4.5",
     "angular-animate": "~1.4.5",
-    "animate-css": "~3.4.0",
-    "angular-messages": "~1.4.5",
-    "ionic": "~1.1.0",
-    "ionicons": "~2.0.1",
     "angular-filter": "~0.5.5",
-    "font-awesome": "fontawesome#~4.4.0"
+    "angular-messages": "~1.4.5",
+    "angular-websocket": "~1.0.13",
+    "animate-css": "~3.4.0",
+    "font-awesome": "fontawesome#~4.4.0",
+    "ionic": "~1.1.0",
+    "ionicons": "~2.0.1"
   },
   "devDependencies": {},
   "resolutions": {

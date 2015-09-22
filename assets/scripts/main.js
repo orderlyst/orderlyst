@@ -3,6 +3,7 @@ require('./helpers/google-analytics');
 require('angular-animate');
 require('angular-messages');
 require('angular-filter');
+require('angular-websocket');
 
 var OrderController = require('./controllers/orderController');
 
@@ -11,12 +12,14 @@ var app = angular.module('orderlyst', [
         'ionic',
         'ngAnimate',
         'ngMessages',
+        'ngWebSocket',
         'angular.filter',
         'analytics'
     ]);
 
 require('./routes/index')(app);
 require('./services/localStorage')(app);
+require('./services/orderService')(app);
 
 app.controller('JoinOrderController', OrderController.joinOrder).
     controller('CreateOrderController', OrderController.createOrder).
