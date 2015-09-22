@@ -21,7 +21,9 @@ module.exports = function(sequelize, DataTypes) {
       "type": DataTypes.STRING
     },
     "closingAt": {
-      "type": DataTypes.DATE
+      "type": DataTypes.DATE,
+      "defaultValue": null,
+      "allowNull": true
     },
     "code": {
       "type": DataTypes.STRING,
