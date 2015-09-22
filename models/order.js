@@ -17,6 +17,12 @@ module.exports = function(sequelize, DataTypes) {
         return idTransform.encrypt(this.getDataValue('orderId'));
       }
     },
+    "name": {
+      "type": DataTypes.STRING
+    },
+    "close_time": {
+      "type": DataTypes.DATE
+    },
     "code": {
       "type": DataTypes.STRING,
       "defaultValue": randomCodeGenerator
