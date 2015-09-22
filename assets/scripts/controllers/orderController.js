@@ -216,7 +216,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
                     return false;
                 } else {
-                  return $scope.changeNameData.newName;
+                  return $scope.changeNameData.name;
                 }
               }
             }
