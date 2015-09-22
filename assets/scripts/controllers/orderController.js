@@ -93,16 +93,23 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
     }
 
     $scope.submit = function() {
-        var name = $scope.createOrder.name;
+        var createOrder = $scope.createOrder;
         $scope.submitted = true;
-        if (name === undefined) return;
+        if (createOrder.name === undefined || createOrder.orderName === undefined) return;
+        var values = {};
+        values.hostUserId = uid;
+        values.name = createOrder.orderName;
+        // We only care about the time now
+        if (createOrder.closingAt) {
+            var date = new Date();
+            values.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
+                    createOrder.closingAt;
+        }
         // First create user and go to order page
         if (hasAccount) {
             $http.post(
                 '/api/orders',
-                {
-                  hostUserId: uid
-                }
+                values
             ).success(function (data) {
                 $order.register(response.data.orderId);
                 $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
