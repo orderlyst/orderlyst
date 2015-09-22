@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.use('/api', require('./api/index'));
+router.use('/api', require('./api/'));
+router.use('/', require('./orders/'));
 
 // render partials for angular
 router.get('/partials/:filename', function (req, res, next) {
