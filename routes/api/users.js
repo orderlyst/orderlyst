@@ -55,12 +55,16 @@ router.post('/:id', function(req, res, next) {
       if (user) {
         req.models.User
           .findOne({
-            userId: user.userId
+            "where":{
+              userId: userId
+            }
           })
           .then(function(user){
             req.models.Item
               .findAll({
-                UserUserId: user.userId,
+                "where": {
+                  UserUserId: userId
+                },
                 group: ['OrderOrderId']
               })
               .then(function(items){
@@ -70,8 +74,10 @@ router.post('/:id', function(req, res, next) {
               });
             req.models.Order
               .findAll({
-                UserUserId: user.userId,
-                isOpen: true
+                "where": {
+                  UserUserId: userId,
+                  isOpen: true
+                }
               })
               .then(function(orders){
                 orders.forEach(function(order){
