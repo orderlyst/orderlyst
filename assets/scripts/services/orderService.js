@@ -45,14 +45,14 @@ module.exports = function(module) {
       return deferred.promise;
     };
 
-    stream.onMessage(function(message) {
-      var oMessage = JSON.parse(message);
-      var data = oMessage.data;
-      if (oMessage.type === 'user') {
+    stream.onMessage(function(response) {
+      var message = JSON.parse(response.data);
+      var data = message.data;
+      if (message.type === 'user') {
         userDictionary[data.userId] = data;
-      } else if (oMessage.type === 'items') {
+      } else if (message.type === 'items') {
         items = data;
-      } else if (oMessage.type === 'order') {
+      } else if (message.type === 'order') {
         order = data;
       }
     });
