@@ -27,6 +27,10 @@
     background: url('/assets/images/tut3.png');
     @include carousel-logo;
   }
+  .tut4 {
+    background: url('/assets/images/tut4.gif');
+    @include carousel-logo;
+  }
   .carousel-logo-spacer {
     height: 65%;
   }
