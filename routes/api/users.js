@@ -41,19 +41,30 @@ router.post('/:id', function(req, res, next) {
   var userId = idTransform.decrypt(req.params.id);
 
   req.models.User
-    .find({
-      where: {
-        userId: userId
+    .update(
+      {
+        name: name
+      },
+      {
+        where: {
+          userId: userId
+        }
       }
-    })
+    )
     .then(function(user){
-      user
-        .update({
-          name: name
-        })
-        .then(function(user){
-          res.json(user);
-        });
+      if (user) {
+        req.models.Items
+          .find({
+            UserUserId: user.userId,
+            group: ['OrderOrderId']
+          })
+          .then(function(items){
+            items.forEach(function(item){
+              req.wsUpdate(item.OrderOrderId, 'user', user);
+            });
+          });
+        res.json(user);
+      }
     });
 });
 
