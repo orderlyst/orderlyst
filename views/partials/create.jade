@@ -5,15 +5,30 @@ ion-view
       ion-content.has-header(padding=true)
         .spacer
           h3.text-center.vertical-aligned Create a new order
-        h4.text-center.has-side-margin Get started by entering your name!
-        form.create-order-form(name="createOrderForm")
+        h4.text-center.has-side-margin Get started by entering your order name!
+        //h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
+        form.create-order-form(name="createOrderForm", formnovalidate="true")
           .list
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
-                    && submitted, 'valid': createOrderForm.name.$valid && submitted }" )
+                    && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
               span.input-label Your Name
               input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
+
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
+                    && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
+              span.input-label Your Order's Name
+              input(type='text', placeholder='Your Order\'s Name', ng-model="createOrder.orderName", ng-required="true", name="orderName")
+            .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
+              .form-error(ng-message="required") We need your order's name.
+
+            label.item.item-input Your order will close at&nbsp
+              ionic-timepicker(input-obj='timePickerObject24Hour')
+                button.button.button-block.button-filled
+                  standard-time-no-meridian(etime='timePickerObject24Hour.inputEpochTime')
+
+
 
           .row
             .col-80.col-offset-10

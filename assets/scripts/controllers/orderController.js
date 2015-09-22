@@ -81,33 +81,67 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
     $scope.createOrder = {};
     $scope.submitted = false;
     var uid = $store.get('_orderlyst_uid');
-    var hasAccount = (uid !== -1);
-    if (hasAccount) {
-        $http.post(
-            '/api/orders',
-            {
-              hostUserId: uid
-            }
-        ).success(function (data) {
-            $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
+    $scope.hasAccount = (uid !== -1);
+
+    // Retrieve name if user has an account
+    if ($scope.hasAccount) {
+        $http
+        .get('/api/users/' + encodeURIComponent(uid))
+        .then(function (response) {
+            $scope.userName = response.data.name;
         });
     }
+
+    var date = new Date();
+    $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' 23:59';
+
+    $scope.timePickerObject24Hour = {
+        inputEpochTime: 86340,
+        setButtonType: 'button-filled',
+        closeButtonType: 'button-blank',
+        titleLabel: 'Choose your order closing time',
+        callback: function (val) {    //Mandatory
+            timePicker24Callback(val);;
+        }
+    };
+
+    function timePicker24Callback(val) {
+        if (typeof (val) === 'undefined') {
+            console.log('Time not selected');
+        } else {
+            $scope.timePickerObject24Hour.inputEpochTime = val;
+            var selectedTime = new Date(val * 1000);
+            $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
+                selectedTime.getHours() + ':' + selectedTime.getMinutes();
+            console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), ':', selectedTime.getUTCMinutes(), 'in UTC');
+        }
+    }
+
     $scope.submit = function() {
-        var name = $scope.createOrder.name;
+        var createOrder = $scope.createOrder;
         $scope.submitted = true;
-        if (name === undefined) return;
+
+        var values = {};
+        values.name = createOrder.orderName;
+        // We only care about the time now
+        if (createOrder.closingAt) {
+            var date = new Date();
+            values.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
+                    createOrder.closingAt;
+        }
         // First create user and go to order page
-        if (hasAccount) {
+        if ($scope.hasAccount) {
+            if (createOrder.orderName === undefined) return;
+            values.hostUserId = uid;
             $http.post(
                 '/api/orders',
-                {
-                  hostUserId: uid
-                }
+                values
             ).success(function (data) {
                 $order.register(response.data.orderId);
                 $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
             });
         } else {
+            if (createOrder.name === undefined || createOrder.orderName === undefined) return;
             $http.post(
                 '/api/users',
                 {
@@ -116,11 +150,10 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             ).then(function (response) {
                 // Save uid in local storage
                 $store.set('_orderlyst_uid', response.data.userId);
+                values.hostUserId = response.data.userId;
                 return $http.post(
                   '/api/orders',
-                  {
-                    hostUserId: response.data.userId
-                  }
+                  values
                 );
             }).then(function (response) {
                 $order.register(response.data.orderId);
