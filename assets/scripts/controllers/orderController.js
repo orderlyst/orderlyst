@@ -92,6 +92,28 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         });
     }
 
+    var date = new Date();
+    $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' 23:59';
+
+    $scope.timePickerObject24Hour = {
+        inputEpochTime: 86340,
+        callback: function (val) {    //Mandatory
+            timePicker24Callback(val);;
+        }
+    };
+
+    function timePicker24Callback(val) {
+        if (typeof (val) === 'undefined') {
+            console.log('Time not selected');
+        } else {
+            $scope.timePickerObject24Hour.inputEpochTime = val;
+            var selectedTime = new Date(val * 1000);
+            $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
+                selectedTime.getHours() + ':' + selectedTime.getMinutes();
+            console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), ':', selectedTime.getUTCMinutes(), 'in UTC');
+        }
+    }
+
     $scope.submit = function() {
         var createOrder = $scope.createOrder;
         $scope.submitted = true;
