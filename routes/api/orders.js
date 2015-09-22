@@ -74,6 +74,12 @@ router.post('/:id', function(req, res, next) {
   if (req.body.tax) {
     values.tax = req.body.tax;
   }
+  if (req.body.name) {
+    values.name = req.body.name
+  }
+  if (req.body.closingAt) {
+    values.name = new Date(req.body.closingAt);
+  }
   values.isOpen = req.body.isOpen;
 
   req.models.Order
