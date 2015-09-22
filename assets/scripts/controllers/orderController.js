@@ -117,9 +117,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
     $scope.submit = function() {
         var createOrder = $scope.createOrder;
         $scope.submitted = true;
-        if (createOrder.name === undefined || createOrder.orderName === undefined) return;
+
         var values = {};
-        values.hostUserId = uid;
         values.name = createOrder.orderName;
         // We only care about the time now
         if (createOrder.closingAt) {
@@ -128,7 +127,9 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                     createOrder.closingAt;
         }
         // First create user and go to order page
-        if (hasAccount) {
+        if ($scope.hasAccount) {
+            if (createOrder.orderName === undefined) return;
+            values.hostUserId = uid;
             $http.post(
                 '/api/orders',
                 values
@@ -137,6 +138,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                 $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
             });
         } else {
+            if (createOrder.name === undefined || createOrder.orderName === undefined) return;
             $http.post(
                 '/api/users',
                 {
@@ -145,11 +147,10 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             ).then(function (response) {
                 // Save uid in local storage
                 $store.set('_orderlyst_uid', response.data.userId);
+                values.hostUserId = response.data.userId;
                 return $http.post(
                   '/api/orders',
-                  {
-                    hostUserId: response.data.userId
-                  }
+                  values
                 );
             }).then(function (response) {
                 $order.register(response.data.orderId);
