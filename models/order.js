@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       "type": DataTypes.STRING
     },
     "close_time": {
-      "type": DataTypes.DATE
+      "type": DataTypes.TIME
     },
     "code": {
       "type": DataTypes.STRING,
