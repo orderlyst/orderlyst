@@ -43,12 +43,16 @@ router.get('/:id', function(req, res, next) {
  */
 router.post('/', function(req, res, next) {
   var hostId = idTransform.decrypt(req.body.hostUserId);
-  console.log(hostId);
+  var name = req.body.name;
+  var closingAt = req.body.closingAt;
+
   req.models.User
     .findById(hostId)
     .then(function(user){
       req.models.Order
         .create({
+          "name": name,
+          "closingAt": new Date(closingAt),
           "UserUserId": user.getDataValue('userId')
         })
         .then(function(order){
