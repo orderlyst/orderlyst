@@ -13,7 +13,11 @@ module.exports = function(module) {
     var fetchUser = function (uid) {
       var deferred = $q.defer();
       $http
+<<<<<<< HEAD
         .get('/api/users/' + encodeURIComponent(uid))\
+=======
+        .get('/api/users/' + encodeURIComponent(uid))
+>>>>>>> origin/wsimpl
         .then(function (response) {
           userDictionary[uid] = response.data;
           deferred.resolve(response.data);
@@ -45,6 +49,7 @@ module.exports = function(module) {
       return deferred.promise;
     };
 
+<<<<<<< HEAD
     stream.onMessage(function(response) {
       var message = JSON.parse(response.data);
       var data = message.data;
@@ -53,6 +58,16 @@ module.exports = function(module) {
       } else if (message.type === 'items') {
         items = data;
       } else if (message.type === 'order') {
+=======
+    stream.onMessage(function(message) {
+      var oMessage = JSON.parse(message);
+      var data = oMessage.data;
+      if (oMessage.type === 'user') {
+        userDictionary[data.userId] = data;
+      } else if (oMessage.type === 'items') {
+        items = data;
+      } else if (oMessage.type === 'order') {
+>>>>>>> origin/wsimpl
         order = data;
       }
     });

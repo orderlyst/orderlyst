@@ -19,7 +19,11 @@ module.exports = function(req, res, next) {
       return '' + client.orderId === '' + orderId;
     });
 
+<<<<<<< HEAD
     participants.forEach(function(client) {
+=======
+    participants.forEach(function() {
+>>>>>>> origin/wsimpl
       client.send(JSON.stringify({
         type: type,
         data: data
