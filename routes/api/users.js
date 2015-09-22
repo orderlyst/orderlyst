@@ -40,6 +40,33 @@ router.post('/:id', function(req, res, next) {
   var name = req.body.name;
   var userId = idTransform.decrypt(req.params.id);
 
+  var notifyWSClients = function(userId, user) {
+    req.models.Item
+      .findAll({
+        "where": {
+          UserUserId: userId
+        },
+        group: ['OrderOrderId']
+      })
+      .then(function(items){
+        items.forEach(function(item){
+          req.wsUpdate(item.OrderOrderId, 'user', user);
+        });
+      });
+    req.models.Order
+      .findAll({
+        "where": {
+          UserUserId: userId,
+          isOpen: true
+        }
+      })
+      .then(function(orders){
+        orders.forEach(function(order){
+          req.wsUpdate(order.orderId, 'user', user);
+        })
+      });
+  }
+
   req.models.User
     .update(
       {
@@ -60,30 +87,7 @@ router.post('/:id', function(req, res, next) {
             }
           })
           .then(function(user){
-            req.models.Item
-              .findAll({
-                "where": {
-                  UserUserId: userId
-                },
-                group: ['OrderOrderId']
-              })
-              .then(function(items){
-                items.forEach(function(item){
-                  req.wsUpdate(item.OrderOrderId, 'user', user);
-                });
-              });
-            req.models.Order
-              .findAll({
-                "where": {
-                  UserUserId: userId,
-                  isOpen: true
-                }
-              })
-              .then(function(orders){
-                orders.forEach(function(order){
-                  req.wsUpdate(order.orderId, 'user', user);
-                })
-              })
+            notifyWSClients(userId, user);
             res.json(user);
           });
       }
