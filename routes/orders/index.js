@@ -16,7 +16,11 @@ router.get('/join/:code', function(req, res, next){
       })
       .then(function(order){
         if (order) {
+          console.log('loading meta');
           // render page with order
+          res.render('meta', {
+            order: order
+          });
         } else {
           next();
         }
