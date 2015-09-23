@@ -163,9 +163,9 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
-    '$ionicSideMenuDelegate', '$order',
+    '$ionicSideMenuDelegate', '$order', '$window',
     function ($scope, $http, $stateParams, $store, $location, loadOrder,
-              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order) {
+              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
 
       $scope.uid              = $store.get('_orderlyst_uid');
       var hasAccount       = ($scope.uid !== -1);
@@ -219,6 +219,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
       $scope.closeAddItemModal = function() {
           $scope.addItemModal.hide();
+      };
+
+      $scope.openFacebookShareLink = function(code) {
+        $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
       };
 
       $scope.showChangeNamePopup = function() {
