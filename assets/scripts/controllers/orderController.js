@@ -340,11 +340,26 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }, 1000);
         };
 
+        // My order scope methods
+
         // To check if user has any order items
         $scope.hasOrderItems = function() {
             return ($scope.items.filter(function(i) {
                 return i.UserUserId == $scope.uid;
             }).length > 0);
+        };
+
+        $scope.numActiveUsers = function() {
+            return $scope.items.reduce(function(acc, next) {
+                if (acc.ids.indexOf(next.UserUserId) < 0) {
+                    acc.ids.push(next.UserUserId);
+                    acc.count++;
+                }
+                return acc;
+            }, {
+                'count': 0,
+                'ids': []
+            }).count;
         };
 
         // Item Form scope methods
