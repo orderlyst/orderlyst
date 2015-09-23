@@ -6,7 +6,7 @@ block content
                 ion-content
                     .item.item-divider
                         span {{order.name}}
-                         span.pull-right <i class="icon ion-android-alarm-clock"></i>11.30pm
+                         span.pull-right <i class="icon ion-android-alarm-clock"></i>{{getClosingTime()}}
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | where: { UserUserId: uid } | groupBy: 'UserUserId'")

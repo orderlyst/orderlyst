@@ -97,6 +97,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
 
         $scope.timePickerObject24Hour = {
             inputEpochTime: 86340,
+            step: 1,
             setButtonType: 'button-filled',
             closeButtonType: 'button-blank',
             titleLabel: 'Choose your order closing time',
@@ -175,14 +176,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
       $scope.scrolling = false;
       $scope.isOwner = false;
       $scope.orderFormData = {};
-      $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
-      $scope.additionalFee = {		      $scope.additionalFee = { 'surcharge': 0, 'tax': 0, 'submitted': false};
-          'surcharge': $scope.order.surcharge,		
-          'tax': $scope.order.tax,
-          'name': $scope.order.name,
-          'closingAt': $scope.order.closingAt,
-          'submitted': false
-      };
+      $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};;
 
       $order.setScope($scope);
       $order.register($stateParams.orderId);
@@ -457,6 +451,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
       };
 
+      $scope.getClosingTime = function() {
+          var date = new Date($scope.order.closingAt);
+          return date.getHours() + ':' + date.getMinutes();
+      };
+
       // Fee aggregate scope methods
 
       $scope.subtotalFee = function() {
@@ -503,6 +502,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $scope.showJoinLink = false;
         $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
+
+        $scope.additionalFee = {
+          'surcharge': $scope.order.surcharge,
+          'tax': $scope.order.tax,
+          'name': $scope.order.name,
+          'closingAt': $scope.order.closingAt,
+          'submitted': false
+        }
 
         // Check if the order was newly created
         if ($stateParams.new) {
