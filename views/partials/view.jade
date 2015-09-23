@@ -29,7 +29,7 @@ block content
                         .list.card.card-personal(ng-if="!hasOrderItems()")
                             .item.item-divider
                                 b {{userDictionary[uid].name}}
-                            .item.annotation Tap "Add Item" or swipe existing items to start adding to your order.
+                            small.item.annotation Tap "Add Item" or swipe existing items to start adding to your order.
 
 
                         div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
