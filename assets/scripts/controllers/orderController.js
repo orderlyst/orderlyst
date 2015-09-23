@@ -101,7 +101,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             closeButtonType: 'button-blank',
             titleLabel: 'Choose your order closing time',
             callback: function (val) {    //Mandatory
-                timePicker24Callback(val);;
+                timePicker24Callback(val);
             }
         };
 
@@ -127,6 +127,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             if (createOrder.closingAt) {
                 values.closingAt = createOrder.closingAt;
             }
+
             // First create user and go to order page
             if ($scope.hasAccount) {
                 if (createOrder.orderName === undefined) return;
@@ -156,10 +157,11 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                 }).then(function (response) {
                     $order.register(response.data.orderId);
                     $window.location.href = '/orders/' + encodeURIComponent(response.data.orderId) + '?new=true';
-                }
-            };
-        }
-}];
+                });
+            }
+        };
+    }
+];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
