@@ -4,21 +4,21 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
     var uid = $store.get('_orderlyst_uid');
     var hasAccount = (uid !== -1);
-    $scope.createOrder = function() {
-        if (hasAccount) {
-            $http.post(
-                '/api/orders',
-                {
-                  hostUserId: uid
-                }
-            ).success(function (data) {
-              $order.register(data.orderId);
-              $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-            });
-        } else {
-            $location.url('/create');
-        }
-    };
+    //$scope.createOrder = function() {
+    //    if (hasAccount) {
+    //        $http.post(
+    //            '/api/orders',
+    //            {
+    //              hostUserId: uid
+    //            }
+    //        ).success(function (data) {
+    //          $order.register(data.orderId);
+    //          $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
+    //        });
+    //    } else {
+    //        $location.url('/create');
+    //    }
+    //};
 }];
 
 var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order',
