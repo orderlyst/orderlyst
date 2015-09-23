@@ -25,9 +25,9 @@ ion-view
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
               .form-error(ng-message="required") We need your order's name.
 
-            label.item.item-input Your order will close at&nbsp
+            label.item.item-input.item-floating-label Your order will close at&nbsp
               ionic-timepicker(input-obj='timePickerObject24Hour')
-                button.button.button-block.button-filled
+                button.button.button-block
                   standard-time-no-meridian(etime='timePickerObject24Hour.inputEpochTime')
 
           .row
