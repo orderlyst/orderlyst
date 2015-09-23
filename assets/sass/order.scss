@@ -39,10 +39,8 @@ input.special-height {
   height: 18px !important;
 }
 
-.card-personal {
-  .item-divider {
+.item-divider.item-personal-header {
     background-color: $color-primary-yellow;
-  }
 }
 
 #joinLink {
