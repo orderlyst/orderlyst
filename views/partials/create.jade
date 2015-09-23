@@ -11,7 +11,7 @@ ion-view
           .list
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
                     && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
-              span.input-label Your Name
+              span.input-label What is your name?
               input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-minlength="2", ng-maxlength="20", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
@@ -20,7 +20,7 @@ ion-view
 
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
                     && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
-              span.input-label Your Order's Name
+              span.input-label Where are you ordering from?
               input(type='text', placeholder='Your Order\'s Name', ng-model="createOrder.orderName", ng-required="true", name="orderName")
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
               .form-error(ng-message="required") We need your order's name.
