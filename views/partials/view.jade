@@ -5,8 +5,8 @@ block content
             ion-view
                 ion-content(on-scroll="scroll()", on-scroll-complete="scrollb()")
                     .item.item-divider
-                        | McDonalds Order
-                        span.pull-right <i class="icon ion-android-alarm-clock"></i>11.30pm
+                        span {{order.name}}
+                         span.pull-right <i class="icon ion-android-alarm-clock"></i>11.30pm
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | where: { UserUserId: uid } | groupBy: 'UserUserId'")
