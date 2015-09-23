@@ -65,7 +65,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     }
                     if (order) {
                         $order.register(order.orderId);
-                        $location.path('/orders/' + encodeURIComponent(order.orderId));
+                        $location.url('/orders/' + encodeURIComponent(order.orderId));
                     } else {
                         // order is not found or no longer available.
                         $scope.codeNotAvailable = true;
@@ -140,7 +140,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   )
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $location.path('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             } else {
                 if (createOrder.name === undefined || createOrder.orderName === undefined) return;
@@ -161,7 +161,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   })
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $location.path('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             }
         };
