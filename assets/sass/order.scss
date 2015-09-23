@@ -43,6 +43,17 @@ input.special-height {
     background-color: $color-primary-yellow;
 }
 
+.card {
+  .item.item-divider.personal-cost {
+    &:first-child {
+      padding-bottom: 0;
+    }
+    &:last-child {
+      padding-top: 0;
+    }
+  }
+}
+
 #joinLink {
   -webkit-user-modify: read-write;
 }

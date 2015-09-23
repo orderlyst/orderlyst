@@ -16,8 +16,8 @@ block content
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")
-                            .list.card.card-personal
-                                .item.item-divider
+                            .list.card
+                                .item.item-divider.item-personal-header
                                     b {{userDictionary[user].name}}
                                 ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                     ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
@@ -31,6 +31,12 @@ block content
                                             ng-click="removeOrderItem(groupedItems[0])") -1
                                         ion-option-button.button-filled(ng-if="order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)") +1
+                                .item.item-divider.personal-cost <i class="icon ion-cash"></i> Total
+                                .item.item-divider.row.personal-cost
+                                    .col.col-70 $246 + $3.50
+                                    .col.col-30.text-right
+                                        u $249.50
+
                         // Otherwise
                         .list.card.card-personal(ng-if="!hasOrderItems()")
                             .item.item-divider
