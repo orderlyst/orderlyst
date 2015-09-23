@@ -1,9 +1,9 @@
 module.exports = function(module) {
   'use strict';
 
-  module.factory("$order", function ($websocket, $q, $rootScope, $http) {
+  module.factory("$order", function ($websocket, $q, $rootScope, $http, $location) {
 
-    var stream = $websocket('ws://localhost:8080/wsctrl');
+    var stream = $websocket('ws://' + $location.host() + ':8080/wsctrl');
 
     var $currentScope;
     var orderId;
