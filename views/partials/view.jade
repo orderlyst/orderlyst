@@ -9,7 +9,7 @@ block content
                          span.pull-right <i class="icon ion-android-alarm-clock"></i>{{getClosingTime()}}
                     ion-list(ng-if="items.length")
                         // If i have order items
-                        div(ng-repeat="(user, groupedByUserItems) in items | where: { UserUserId: uid } | groupBy: 'UserUserId'")
+                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")
                             .list.card.card-personal
                                 .item.item-divider
                                     b {{userDictionary[user].name}}
@@ -32,7 +32,7 @@ block content
                             .item.annotation Tap "Add Item" or swipe existing items to start adding to your order.
 
 
-                        div(ng-repeat="(user, groupedByUserItems) in items | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
+                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
                             .list.card
                                 .item.item-divider
                                     b {{userDictionary[user].name}}
