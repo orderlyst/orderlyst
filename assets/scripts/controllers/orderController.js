@@ -453,11 +453,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
         };
 
-        $scope.getClosingTime = function() {
-            var date = new Date($scope.order.closingAt);
-            return date.getHours() + ':' + date.getMinutes();
-        };
-
         // Fee aggregate scope methods
 
         $scope.subtotalFee = function() {
@@ -504,6 +499,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             if (!hasAccount) {
                 $location.url('/join/' + $scope.order.code);
             }
+
+            $scope.getClosingTime = function() {
+                var date = new Date($scope.order.closingAt);
+                return date.getHours() + ':' + date.getMinutes();
+            };
 
             $scope.showJoinLink = false;
             $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
