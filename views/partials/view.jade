@@ -5,8 +5,10 @@ block content
             ion-view
                 ion-content
                     .item.item-divider
-                        span {{order.name}}
-                         span.pull-right <i class="icon ion-android-alarm-clock"></i>{{getClosingTime()}}
+                        span.ord-blue {{order.name}}
+                        span.pull-right
+                            | <i class="icon ion-android-alarm-clock"></i>
+                            span.ord-blue {{getClosingTime()}}
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")
