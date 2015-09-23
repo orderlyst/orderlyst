@@ -405,6 +405,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             // Add items quantity times
             var createItemResponse = function(data) {
                 $scope.isLoading = false;
+                if ($scope.items.filter(function(item) {
+                        return item.OrderOrderId === data.OrderOrderId
+                    }).length > 0) return;
                 $scope.items.push(data);
             };
             for (var i = 0; i < orderItemData.quantity; i++) {
