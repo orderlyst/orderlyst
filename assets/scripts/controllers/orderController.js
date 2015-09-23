@@ -472,37 +472,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
       };
 
-      // For scrolling
-      $scope.scrollingPromises = [];
-
-      var clearScrollingPromises = function() {
-          $scope.scrollingPromises.map(function(promise) {
-              $timeout.cancel(promise);
-          });
-          $scope.scrollingPromises = [];
-      };
-
-      $scope.scroll = function() {
-          clearScrollingPromises();
-          var p = $timeout(function () {
-              $scope.scrolling = true;
-              // In case scrollb timeout get cleared first
-              var p2 = $timeout(function () {
-                  $scope.scrolling = false;
-              }, 800);
-              $scope.scrollingPromises.push(p2);
-          }, 0);
-          $scope.scrollingPromises.push(p);
-      };
-
-      $scope.scrollb = function() {
-          clearScrollingPromises();
-          var p = $timeout(function () {
-              $scope.scrolling = false;
-          }, 0);
-          $scope.scrollingPromises.push(p);
-      };
-
       $order
         .getItems()
         .then(function(items){
