@@ -136,9 +136,10 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             $http.post(
                 '/api/orders',
                 values
-            ).success(function (data) {
+            )
+            .then(function (response) {
                 $order.register(response.data.orderId);
-                $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
+                $window.location.href = '/orders/' + encodeURIComponent(response.data.orderId) + '?new=true';
             });
         } else {
             if (createOrder.name === undefined || createOrder.orderName === undefined) return;
@@ -261,7 +262,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             {
               name: name
             }
-          ).success(function(data) {
+          ).then(function(response) {
             $scope.userDictionary[$scope.uid].name = name;
           });
         });
@@ -366,7 +367,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
           $http.post(
               '/api/orders/' + $scope.order.orderId + '/items',
               {name:name, price:price, user:$scope.uid}
-          ).success(function (data) {
+          )
+          .then(function (response) {
               $scope.isLoading = false;
               //$scope.items.push(data);
               $scope.newItemAdded = true;
