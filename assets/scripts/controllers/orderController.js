@@ -93,7 +93,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         }
 
         var date = new Date();
-        $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' 23:59';
+        $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59);
 
         $scope.timePickerObject24Hour = {
             inputEpochTime: 86340,
@@ -112,8 +112,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             } else {
                 $scope.timePickerObject24Hour.inputEpochTime = val;
                 var selectedTime = new Date(val * 1000);
-                $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
-                    selectedTime.getHours() + ':' + selectedTime.getMinutes();
+                $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                    selectedTime.getUTCHours(), selectedTime.getUTCMinutes());
                 console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), ':', selectedTime.getUTCMinutes(), 'in UTC');
             }
         }
@@ -504,7 +504,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }
 
             $scope.getClosingTime = function() {
-                var date = new Date($scope.order.closingAt);
+                var date = new Date($scope.order.closingAt());
                 return date.getHours() + ':' + date.getMinutes();
             };
 
