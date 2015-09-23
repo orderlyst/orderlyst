@@ -176,7 +176,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
       $scope.isOwner = false;
       $scope.orderFormData = {};
       $scope.itemFormData = {'user': $scope.uid, 'quantity': 1, 'submitted': false};
-      $scope.additionalFee = { 'surcharge': 0, 'tax': 0, 'submitted': false};
+      $scope.additionalFee = {		      $scope.additionalFee = { 'surcharge': 0, 'tax': 0, 'submitted': false};
+          'surcharge': $scope.order.surcharge,		
+          'tax': $scope.order.tax,
+          'name': $scope.order.name,
+          'closingAt': $scope.order.closingAt,
+          'submitted': false
+      };
 
       $order.setScope($scope);
       $order.register($stateParams.orderId);
