@@ -4,11 +4,15 @@ block content
         ion-tab(title="User Orders")
             ion-view
                 ion-content
-                    .item.item-divider
+                    .item.item-divider.order-title
                         span.ord-blue {{order.name}}
                         span.pull-right
                             | <i class="icon ion-android-alarm-clock"></i>
                             span.ord-blue {{getClosingTime()}}
+
+                    .line-text
+                        span.text Order Code: {{order.code}}
+
                     ion-list(ng-if="items.length")
                         // If i have order items
                         div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")

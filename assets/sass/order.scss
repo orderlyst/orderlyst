@@ -1,6 +1,10 @@
 // Import partials and utilities
 @import 'mixins/variables';
 
+.order-title {
+  font-weight: bold;
+}
+
 .order-fee {
   margin-top: 5% !important;
   .item {
