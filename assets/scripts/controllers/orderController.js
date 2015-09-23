@@ -144,7 +144,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                 $http.post(
                     '/api/users',
                     {
-                        name: name
+                        name: createOrder.name
                     }
                 ).then(function (response) {
                         // Save uid in local storage
