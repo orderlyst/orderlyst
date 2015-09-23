@@ -49,15 +49,19 @@ router.post('/', function(req, res, next) {
   req.models.User
     .findById(hostId)
     .then(function(user){
-      req.models.Order
-        .create({
-          "name": name,
-          "closingAt": new Date(closingAt),
-          "UserUserId": user.getDataValue('userId')
-        })
-        .then(function(order){
-          res.json(order);
-        });
+      if (user) {
+        req.models.Order
+          .create({
+            "name": name,
+            "closingAt": (closingAt ? new Date(closingAt) : null),
+            "UserUserId": user.getDataValue('userId')
+          })
+          .then(function(order){
+            res.json(order);
+          });
+      } else {
+        // error
+      }
     });
 });
 
