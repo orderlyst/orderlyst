@@ -65,7 +65,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     }
                     if (order) {
                         $order.register(order.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(order.orderId);
+                        $location.path('/orders/' + encodeURIComponent(order.orderId));
                     } else {
                         // order is not found or no longer available.
                         $scope.codeNotAvailable = true;
@@ -133,31 +133,36 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             if ($scope.hasAccount) {
                 if (createOrder.orderName === undefined) return;
                 values.hostUserId = uid;
-                $http.post(
+                $http
+                  .post(
                     '/api/orders',
                     values
-                ).success(function(data) {
-                        $order.register(data.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-                    });
+                  )
+                  .then(function(response) {
+                    $order.register(response.data.orderId);
+                    $location.path('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                  });
             } else {
                 if (createOrder.name === undefined || createOrder.orderName === undefined) return;
-                $http.post(
+                $http
+                  .post(
                     '/api/users', {
                         name: createOrder.name
                     }
-                ).then(function(response) {
-                        // Save uid in local storage
-                        $store.set('_orderlyst_uid', response.data.userId);
-                        values.hostUserId = response.data.userId;
-                        return $http.post(
-                            '/api/orders',
-                            values
-                        );
-                    }).then(function(response) {
-                        $order.register(response.data.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(response.data.orderId) + '?new=true';
-                    });
+                  )
+                  .then(function(response) {
+                    // Save uid in local storage
+                    $store.set('_orderlyst_uid', response.data.userId);
+                    values.hostUserId = response.data.userId;
+                    return $http.post(
+                        '/api/orders',
+                        values
+                    );
+                  })
+                  .then(function(response) {
+                    $order.register(response.data.orderId);
+                    $location.path('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                  });
             }
         };
     }
@@ -478,8 +483,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $order
             .getItems()
             .then(function(items) {
-                console.log($scope.items);
-                console.log(items);
                 $scope.items.forEach(function(item) {
                     $order.getUser(item.UserUserId, function(user) {
                         $scope.userDictionary[user.userId] = user;
