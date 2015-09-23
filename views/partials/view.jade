@@ -56,7 +56,7 @@ block content
             ion-view
                 ion-content
                     ion-list(ng-if="items.length")
-                        ul(ng-repeat="(name, prices) in items | groupBy: 'name'")
+                        ul(ng-repeat="(name, prices) in items | unique: 'OrderOrderId' | groupBy: 'name'")
                             div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                 li.row.item
                                     .col.col-70
