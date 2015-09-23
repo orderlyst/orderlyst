@@ -4,8 +4,8 @@ block content
         ion-tab(title="User Orders")
             ion-view
                 ion-content
-                    .item.item-divider.order-title
-                        span.ord-blue {{order.name}}
+                    .item.item-divider
+                        span.ord-blue.order-title {{order.name}}
                         span.pull-right
                             | <i class="icon ion-android-alarm-clock"></i>
                             span.ord-blue {{getClosingTime()}}
