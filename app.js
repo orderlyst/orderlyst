@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cacheManifest = require('connect-cache-manifest');
 
 var app = express();
 
@@ -18,6 +19,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cacheManifest({
+  manifestPath: '/app.cache',
+  files: [{
+    dir: __dirname + '/views/partials',
+    prefix: '/partials/',
+    replace: function(x) { return x.replace(/\.jade$/, ''); }
+  },{
+    dir: __dirname + '/public/assets',
+    prefix: '/assets/'
+  },{
+    file: __dirname + '/public/assets/fonts/ionicons.ttf',
+    path: '/assets/fonts/ionicons.ttf?v=2.0.0'
+  }],
+  fallbacks: [
+    '/ /index.html'
+  ]
+}));
 
 app.use(require('./middlewares/ws'));
 
