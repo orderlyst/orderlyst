@@ -1,6 +1,9 @@
 ion-popover-view
     ion-content.text-center
-        .item.metadata Order Code: {{order.code}}
+        .item.metadata Your Order Code is <b>{{order.code}}</b>
+        .item(ng-click="openFacebookShareLink()")
+          i.icon.ion-social-facebook
+          | &nbsp;Share on Facebook
         //input.item(value="{{joinLink}}", id="joinLink", ng-if="showJoinLink", on-tap="selectJoinLink()")
         //.item(ng-click="showLink()", ng-if="!showJoinLink")
         //    | <i class="icon ion-link"></i> Get Link
