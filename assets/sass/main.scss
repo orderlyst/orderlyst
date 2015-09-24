@@ -299,11 +299,29 @@ ion-footer-bar.ng-leave {
   transform: translateX(-50%)
 }
 
+.ord-blue {
+  color: $color-primary-blue;
+}
+
 .annotation {
-  color: #AAA;
+  color: #808080;
 }
 
 .metadata {
   color: #8f8f8f;
   font-size: 13px;
+}
+
+.line-text {
+  width:100%;
+  text-align:center;
+  color: $color-primary-blue;
+  border-bottom: 2px solid $color-primary-blue;
+  line-height: 0.1em;
+  margin:25px 0 10px;
+  span.text {
+    font-weight: bold;
+    background:#fff;
+    padding:0 10px;
+  }
 }

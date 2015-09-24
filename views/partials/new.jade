@@ -14,7 +14,7 @@ ion-modal-view
                     'valid': newItemForm.price.$valid && itemFormData.submitted && newItemForm.price.$dirty }")
                 span.input-label Item Price (S$)
                 input(type="number",placeholder="Item Price (S$)",ng-model="itemFormData.price", ng-required="true", \
-                    ng-pattern="/^[1-9][0-9]*(\.[0-9][05])?$/", name="price")
+                    ng-pattern="/^[1-9][0-9]*(\.[0-9]([05])?)?$/", name="price")
             .form-errors(ng-show="newItemForm.price.$error && itemFormData.submitted", ng-messages="newItemForm.price.$error")
                 .form-error(ng-message="required") Item price is required
                 .form-error(ng-message="pattern") Price must be valid

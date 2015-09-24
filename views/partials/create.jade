@@ -11,24 +11,24 @@ ion-view
           .list
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
                     && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
-              span.input-label Your Name
-              input(type='text', placeholder='Your Name', ng-model="createOrder.name", ng-required="true", name="name")
+              span.input-label What is your name?
+              input(type='text', placeholder='What is your name?', ng-model="createOrder.name", ng-minlength="2", ng-maxlength="20", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
+              .form-error(ng-message="maxlength") Your name is a little long (more than 20 characters). Do you have a nickname instead?
+              .form-error(ng-message="minlength") Your name is a little short (less than 3 characters). It'll be hard for others to recognise you.
 
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
                     && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
-              span.input-label Your Order's Name
-              input(type='text', placeholder='Your Order\'s Name', ng-model="createOrder.orderName", ng-required="true", name="orderName")
+              span.input-label Where are you ordering from?
+              input(type='text', placeholder='Where are you ordering from?', ng-model="createOrder.orderName", ng-required="true", name="orderName")
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
               .form-error(ng-message="required") We need your order's name.
 
-            label.item.item-input Your order will close at&nbsp
+            label.item.item-input.item-floating-label Your order will close at&nbsp
               ionic-timepicker(input-obj='timePickerObject24Hour')
-                button.button.button-block.button-filled
+                button.button.button-filled
                   standard-time-no-meridian(etime='timePickerObject24Hour.inputEpochTime')
-
-
 
           .row
             .col-80.col-offset-10

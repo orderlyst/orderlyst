@@ -69,7 +69,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     }
                     if (order) {
                         $order.register(order.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(order.orderId);
+                        $location.url('/orders/' + encodeURIComponent(order.orderId));
                     } else {
                         // order is not found or no longer available.
                         $scope.codeNotAvailable = true;
@@ -97,7 +97,7 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         }
 
         var date = new Date();
-        $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' 23:59';
+        $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59);
 
         $scope.timePickerObject24Hour = {
             inputEpochTime: 86340,
@@ -116,8 +116,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             } else {
                 $scope.timePickerObject24Hour.inputEpochTime = val;
                 var selectedTime = new Date(val * 1000);
-                $scope.createOrder.closingAt = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' +
-                    selectedTime.getHours() + ':' + selectedTime.getMinutes();
+                $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                    selectedTime.getUTCHours(), selectedTime.getUTCMinutes());
                 console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), ':', selectedTime.getUTCMinutes(), 'in UTC');
             }
         }
@@ -137,31 +137,36 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
             if ($scope.hasAccount) {
                 if (createOrder.orderName === undefined) return;
                 values.hostUserId = uid;
-                $http.post(
+                $http
+                  .post(
                     '/api/orders',
                     values
-                ).success(function(data) {
-                        $order.register(data.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-                    });
+                  )
+                  .then(function(response) {
+                    $order.register(response.data.orderId);
+                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                  });
             } else {
                 if (createOrder.name === undefined || createOrder.orderName === undefined) return;
-                $http.post(
+                $http
+                  .post(
                     '/api/users', {
                         name: createOrder.name
                     }
-                ).then(function(response) {
-                        // Save uid in local storage
-                        $store.set('_orderlyst_uid', response.data.userId);
-                        values.hostUserId = response.data.userId;
-                        return $http.post(
-                            '/api/orders',
-                            values
-                        );
-                    }).then(function(response) {
-                        $order.register(response.data.orderId);
-                        $window.location.href = '/orders/' + encodeURIComponent(response.data.orderId) + '?new=true';
-                    });
+                  )
+                  .then(function(response) {
+                    // Save uid in local storage
+                    $store.set('_orderlyst_uid', response.data.userId);
+                    values.hostUserId = response.data.userId;
+                    return $http.post(
+                        '/api/orders',
+                        values
+                    );
+                  })
+                  .then(function(response) {
+                    $order.register(response.data.orderId);
+                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                  });
             }
         };
     }
@@ -343,11 +348,26 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }, 1000);
         };
 
+        // My order scope methods
+
         // To check if user has any order items
         $scope.hasOrderItems = function() {
             return ($scope.items.filter(function(i) {
                 return i.UserUserId == $scope.uid;
             }).length > 0);
+        };
+
+        $scope.numActiveUsers = function() {
+            return $scope.items.reduce(function(acc, next) {
+                if (acc.ids.indexOf(next.UserUserId) < 0) {
+                    acc.ids.push(next.UserUserId);
+                    acc.count++;
+                }
+                return acc;
+            }, {
+                'count': 0,
+                'ids': []
+            }).count;
         };
 
         // Item Form scope methods
@@ -395,7 +415,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             var orderItemData = angular.copy($scope.itemFormData);
             if (orderItemData.name === '' || orderItemData.name === undefined ||
                 orderItemData.price === '' || orderItemData.price === undefined ||
-                !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
+                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price)) ||
                 +orderItemData.quantity < 1) return;
             $scope.isLoading = true;
             // Hide modal
@@ -408,7 +428,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             // Add items quantity times
             var createItemResponse = function(data) {
                 $scope.isLoading = false;
+                if ($scope.items.filter(function(item) {
+                        return item.itemId === data.itemId;
+                    }).length > 0) return;
                 $scope.items.push(data);
+                $store.set('_orderlyst_items_' + data.itemId, data);
+                var idArray = $scope.items.map(function(item) {
+                    return item.itemId;
+                });
+
+                $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
             };
             for (var i = 0; i < orderItemData.quantity; i++) {
                 $http.post(
@@ -432,9 +461,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                         return item.itemId;
                     });
 
-                    $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items');
+                    $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
 
-                    $store.removeItem('_orderlyst_items_' + item.itemId);
+                    $store.remove('_orderlyst_items_' + item.itemId);
 
                     notify(pluralize(1, item.name) + ' removed', 'warning');
                 });
@@ -459,6 +488,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             ).success(function(data) {
                     $scope.isLoading = false;
                     $scope.order = data;
+                    $store.set('_orderlyst_orders_' + $scope.order.orderId, $scope.order);
                 });
         };
 
@@ -489,7 +519,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $http.post(
                 '/api/orders/' + $scope.order.orderId,
                 $scope.order
-            ).success(function(data) {});
+            ).success(function(data) {
+            });
         };
 
         $order
@@ -506,7 +537,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             });
 
         var renderPage = function(order) {
-            $store.set('_orderlyst_order_' + order.orderId, order);
             $scope.isOwner = $scope.uid === $scope.order.UserUserId;
             $scope.additionalFee = {
                 'surcharge': $scope.order.surcharge,
@@ -526,13 +556,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.showJoinLink = false;
             $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
 
-            $scope.additionalFee = {
-                'surcharge': $scope.order.surcharge,
-                'tax': $scope.order.tax,
-                'name': $scope.order.name,
-                'closingAt': $scope.order.closingAt,
-                'submitted': false
-            };
+            //$scope.additionalFee = {
+            //    'surcharge': $scope.order.surcharge,
+            //    'tax': $scope.order.tax,
+            //    'name': $scope.order.name,
+            //    'closingAt': $scope.order.closingAt,
+            //    'submitted': false
+            //}
 
             // Check if the order was newly created
             if ($stateParams.new) {

@@ -1,6 +1,10 @@
 // Import partials and utilities
 @import 'mixins/variables';
 
+.order-title {
+  font-weight: bold;
+}
+
 .order-fee {
   margin-top: 5% !important;
   .item {
@@ -35,9 +39,18 @@ input.special-height {
   height: 18px !important;
 }
 
-.card-personal {
-  .item-divider {
+.item-divider.item-personal-header {
     background-color: $color-primary-yellow;
+}
+
+.card {
+  .item.item-divider.personal-cost {
+    &:first-child {
+      padding-bottom: 0;
+    }
+    &:last-child {
+      padding-top: 0;
+    }
   }
 }
 
