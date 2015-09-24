@@ -27,7 +27,9 @@ block content
                                             span.orderlyst-badge {{groupedItems.length}}
                                         .col.col-30.text-right
                                             .annotation S{{price * groupedItems.length | currency}}
-                                        ion-option-button.button-dark(ng-if="!disconnected && order.isOpen", \
+                                        ion-option-button.ion-edit.button-grey(ng-if="order.isOpen", \
+                                            ng-click="removeOrderItem(groupedItems[0])")
+                                        ion-option-button.button-dark(ng-if="order.isOpen", \
                                             ng-click="removeOrderItem(groupedItems[0])") -1
                                         ion-option-button.button-filled(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)") +1

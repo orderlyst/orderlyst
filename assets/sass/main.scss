@@ -107,6 +107,13 @@ ion-footer-bar.ng-leave {
   }
 }
 
+.button-grey {
+  border-color: $color-primary-grey;
+  color: white;
+  background-color: $color-primary-grey;
+}
+
+
 .tab-item {
   color: $color-primary-grey !important;
   font-weight: bold;
