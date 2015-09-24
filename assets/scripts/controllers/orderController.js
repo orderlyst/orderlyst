@@ -294,22 +294,22 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             });
         };
 
-        // Setup additional fee modal form
+        // Setup order settings modal form
 
-        $ionicModal.fromTemplateUrl('/partials/extraFee', function(modal) {
-            $scope.additionalFeeModal = modal;
+        $ionicModal.fromTemplateUrl('/partials/orderSettings', function(modal) {
+            $scope.orderSettingsModal = modal;
         }, {
             scope: $scope,
             animation: 'slide-in-up',
             hardwareBackButtonClose: false
         });
 
-        $scope.openAdditionalFeeModal = function() {
-            $scope.additionalFeeModal.show();
+        $scope.openOrderSettingsModal = function() {
+            $scope.orderSettingsModal.show();
         };
 
-        $scope.closeAdditionalFeeModal = function() {
-            $scope.additionalFeeModal.hide();
+        $scope.closeOrderSettingsModal = function() {
+            $scope.orderSettingsModal.hide();
         };
 
         // Setup popover
@@ -349,7 +349,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $scope.$on('$destroy', function() {
             $scope.addItemModal.remove();
-            $scope.additionalFeeModal.remove();
+            $scope.orderSettingsModal.remove();
             $scope.popover.remove();
         });
 
@@ -489,21 +489,21 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         // Aditional Fees scope methods
 
-        $scope.updateOrderAdditionalFee = function() {
-            var fees = $scope.additionalFee;
-            fees.submitted = true;
-            if (fees.surcharge === '' || fees.surcharge === undefined ||
-                fees.tax === '' || fees.surcharge === undefined ||
-                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(fees.surcharge)) ||
-                !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax)) ||
-                fees.name === undefined) return;
+        $scope.updateOrderSettings = function() {
+            var settings = $scope.orderSettings;
+            settings.submitted = true;
+            if (settings.surcharge === undefined ||
+                settings.tax === undefined ||
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(settings.surcharge)) ||
+                !(/^[0-9]+(\.[0-9]+)?$/.test(settings.tax)) ||
+                settings.name === undefined) return;
             $scope.isLoading = true;
             // Hide modal
-            $scope.closeAdditionalFeeModal();
-            fees.submitted = false;
+            $scope.closeOrderSettingsModal();
+            settings.submitted = false;
             $http.post(
                 '/api/orders/' + encodeURIComponent($scope.order.orderId),
-                fees,
+                settings,
                 {
                   headers: {
                     "x-access-token": $window.token
@@ -563,7 +563,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         var renderPage = function(order) {
             $scope.isOwner = $scope.uid === $scope.order.UserUserId;
-            $scope.additionalFee = {
+            $scope.orderSettings = {
                 'surcharge': $scope.order.surcharge,
                 'tax': $scope.order.tax,
                 'name': $scope.order.name,

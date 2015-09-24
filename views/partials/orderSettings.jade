@@ -2,32 +2,32 @@ ion-modal-view
     ion-header-bar.bar-orderlyst.bar-filled
         h2.title.text-center Order Setting
     ion-content.has-header
-        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="additionalFeeForm", novalidate="")
-            label.item.item-input.item-floating-label(ng-class="{ 'has-error': additionalFeeForm.name.$invalid && additionalFee.submitted, \
-                    'valid': additionalFeeForm.name.$valid && additionalFee.submitted && additionalFeeForm.name.$dirty }")
+        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="orderSettingsForm", novalidate="")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': orderSettingsForm.name.$invalid && orderSettings.submitted, \
+                    'valid': orderSettingsForm.name.$valid && orderSettings.submitted && orderSettingsForm.name.$dirty }")
                 span.input-label Order Name
-                input(type="text",placeholder="Order Name",ng-model="additionalFee.name", ng-required="true", name="name")
-            .form-errors(ng-show="additionalFeeForm.name.$error && additionalFee.submitted", ng-messages="additionalFeeForm.name.$error")
+                input(type="text",placeholder="Order Name",ng-model="orderSettings.name", ng-required="true", name="name")
+            .form-errors(ng-show="orderSettingsForm.name.$error && orderSettings.submitted", ng-messages="orderSettingsForm.name.$error")
                 .form-error(ng-message="required") Order name is required
 
-            label.item.item-input.item-floating-label(ng-class="{ 'has-error': additionalFeeForm.surcharge.$invalid && additionalFee.submitted, \
-                    'valid': additionalFeeForm.surcharge.$valid && additionalFee.submitted && newItemForm.surcharge.$dirty }")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': orderSettingsForm.surcharge.$invalid && orderSettings.submitted, \
+                    'valid': orderSettingsForm.surcharge.$valid && orderSettings.submitted && orderSettingsForm.surcharge.$dirty }")
                 span.input-label Surcharges (S$)
-                input(type="number",placeholder="Surcharge (S$)",ng-model="additionalFee.surcharge", ng-required="true", name="surcharge", \
+                input(type="number",placeholder="Surcharge (S$)",ng-model="orderSettings.surcharge", ng-required="true", name="surcharge", \
                 ng-pattern="/^[0-9]+(\.[0-9]([05])?)?$/")
-            .form-errors(ng-show="additionalFeeForm.surcharge.$error && additionalFee.submitted", ng-messages="additionalFeeForm.surcharge.$error")
+            .form-errors(ng-show="orderSettingsForm.surcharge.$error && orderSettings.submitted", ng-messages="orderSettingsForm.surcharge.$error")
                 .form-error(ng-message="required") Surcharge is required
                 .form-error(ng-message="pattern") Surcharge must be valid
 
-            label.item.item-input.item-floating-label(ng-class="{ 'has-error': additionalFeeForm.tax.$invalid && additionalFee.submitted, \
-                    'valid': additionalFeeForm.tax.$valid && additionalFee.submitted && additionalFeeForm.tax.$dirty }")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': orderSettingsForm.tax.$invalid && orderSettings.submitted, \
+                    'valid': orderSettingsForm.tax.$valid && orderSettings.submitted && orderSettingsForm.tax.$dirty }")
                 span.input-label Taxes (%)
-                input(type="number",placeholder="Taxes (%)",ng-model="additionalFee.tax", ng-required="true", \
+                input(type="number",placeholder="Taxes (%)",ng-model="orderSettings.tax", ng-required="true", \
                 ng-pattern="/^[0-9]+(\.[0-9]+)?$/", name="tax")
-            .form-errors(ng-show="additionalFeeForm.tax.$error && additionalFee.submitted", ng-messages="additionalFeeForm.tax.$error")
+            .form-errors(ng-show="orderSettingsForm.tax.$error && orderSettings.submitted", ng-messages="orderSettingsForm.tax.$error")
                 .form-error(ng-message="required") Tax is required
                 .form-error(ng-message="pattern") Tax must be valid
 
     ion-footer-bar.bar-orderlyst()
-        button.button.button-clear.button-filled(ng-click="updateOrderAdditionalFee()") Update Order
-        button.button.button-clear.button-blank(ng-click="closeAdditionalFeeModal()") Cancel
+        button.button.button-clear.button-filled(ng-click="updateOrderSettings()") Update Order
+        button.button.button-clear.button-blank(ng-click="closeOrderSettingsModal()") Cancel
