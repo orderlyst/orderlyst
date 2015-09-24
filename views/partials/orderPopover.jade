@@ -1,6 +1,9 @@
 ion-popover-view
     ion-content.text-center
         .item.metadata Your Order Code is <b>{{order.code}}</b>
+        .item(clipboard, text="order.code", on-copied="alert('copied')", on-error="alert('error')", ng-click="")
+          i.icon.ion-ios-copy-outline
+          | &nbsp;Copy Order Code
         .item(ng-click="openFacebookShareLink(order.code)")
           i.icon.ion-social-facebook
           | &nbsp;Share on Facebook
