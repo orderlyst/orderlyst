@@ -4,21 +4,6 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
-        //$scope.createOrder = function() {
-        //    if (hasAccount) {
-        //        $http.post(
-        //            '/api/orders',
-        //            {
-        //              hostUserId: uid
-        //            }
-        //        ).success(function (data) {
-        //          $order.register(data.orderId);
-        //          $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-        //        });
-        //    } else {
-        //        $location.url('/create');
-        //    }
-        //};
     }
 ];
 
@@ -213,7 +198,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'user': $scope.uid,
             'quantity': 1,
             'submitted': false
-        };;
+        };
 
         $order.setScope($scope);
         $order.register($stateParams.orderId);
@@ -295,7 +280,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             popup.then(function(name) {
                 if (name === false) return;
                 $http.post(
-                    '/api/users/' + $scope.uid, {
+                    '/api/users/' + encodeURIComponent($scope.uid), {
                         name: name
                     },
                     {
@@ -421,7 +406,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.createAdHocOrderItem = function(name, price) {
             $scope.isLoading = true;
             $http.post(
-                '/api/orders/' + $scope.order.orderId + '/items', {
+                '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items', {
                     name: name,
                     price: price,
                     user: $scope.uid
@@ -466,7 +451,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             };
             for (var i = 0; i < orderItemData.quantity; i++) {
                 $http.post(
-                    '/api/orders/' + $scope.order.orderId + '/items',
+                    '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items',
                     orderItemData,
                     {
                       headers: {
@@ -480,7 +465,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.removeOrderItem = function(item) {
             $scope.isLoading = true;
             $http.delete(
-                '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId,
+                '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items/' + item.itemId,
                 {
                   headers: {
                     "x-access-token": $window.token
@@ -509,7 +494,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.closeAdditionalFeeModal();
             fees.submitted = false;
             $http.post(
-                '/api/orders/' + $scope.order.orderId,
+                '/api/orders/' + encodeURIComponent($scope.order.orderId),
                 fees,
                 {
                   headers: {
@@ -547,7 +532,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.toggleLocked = function() {
             $scope.order.isOpen = !$scope.order.isOpen;
             $http.post(
-                '/api/orders/' + $scope.order.orderId,
+                '/api/orders/' + encodeURIComponent($scope.order.orderId),
                 $scope.order,
                 {
                   headers: {
@@ -577,7 +562,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             };
 
             if (!hasAccount) {
-                $location.url('/join/' + $scope.order.code);
+                $location.url('/join/' + encodeURIComponent($scope.order.code));
             }
 
             $scope.getClosingTime = function() {
