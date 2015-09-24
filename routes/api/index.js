@@ -9,10 +9,10 @@ var subrouters = [
 
 // default options shown below
 var limiter = RateLimit({
-  windowMs: 120 * 1000,
-  delayAfter: 10,
+  windowMs: 60 * 1000,
+  delayAfter: 50,
   delayMs: 500,
-  max: 20
+  max: 100
 });
 
 // for an API-only web app, you can apply this globally
