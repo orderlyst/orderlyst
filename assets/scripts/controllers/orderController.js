@@ -69,7 +69,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                   text: "Confirm",
                   type: "button-filled",
                   onTap: function(e) {
-                    $store.remove('_orderlyst_uid');
+                    $store.set('_orderlyst_uid', -1);
+                    uid = -1;
                     $scope.hasAccount = false;
                   }
               }]
@@ -159,7 +160,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   text: "Confirm",
                   type: "button-filled",
                   onTap: function(e) {
-                    $store.remove('_orderlyst_uid');
+                    $store.set('_orderlyst_uid', -1);
+                    uid = -1;
                     $scope.hasAccount = false;
                   }
               }]
