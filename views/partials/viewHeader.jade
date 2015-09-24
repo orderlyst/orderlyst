@@ -9,7 +9,7 @@ ion-view
           ion-nav-title
             a.navbar-brand
           ion-nav-buttons(side="right")
-            button.button.button-icon.icon.ion-android-share-alt(ng-click="openPopover($event)")
+            button.button.button-icon.icon.ion-share(ng-click="openPopover($event)")
       ion-view
         block content
 
@@ -19,5 +19,3 @@ ion-view
           .bar.bar-header.bar-dark.item.item-divider {{userDictionary[uid].name}}
           a.item(href='/') <i class="icon ion-ios-home"></i> Home
           a.item(href='/create') New Order
-
-              
