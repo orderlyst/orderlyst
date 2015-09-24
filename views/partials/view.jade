@@ -76,10 +76,10 @@ block content
         ion-tab(title="Summary")
             ion-view
                 ion-content
-                    ion-list(ng-if="items.length")
-                        ul(ng-repeat="(name, prices) in items | unique: 'itemId' | groupBy: 'name'")
-                            div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                li.row.item
+                    ion-list(can-swipe="true", ng-if="items.length")
+                        div(ng-repeat="(name, prices) in items | unique: 'itemId' | groupBy: 'name'")
+                            ion-item.item(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                .row
                                     .col.col-70
                                         | {{name}}
                                         b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
