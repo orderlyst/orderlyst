@@ -64,7 +64,7 @@ block content
                     button.button.button-clear(ng-if="order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item <i class="icon ion-android-cart"></i>
                 ion-footer-bar.bar-disabled(ng-if="!order.isOpen")
                     button.button.button-clear(ng-if="!order.isOpen" ng-disabled=true) <i class="icon ion-ios-locked"></i> Order Locked
-        ion-tab(title="Total Orders")
+        ion-tab(title="Summary")
             ion-view
                 ion-content
                     ion-list(ng-if="items.length")
