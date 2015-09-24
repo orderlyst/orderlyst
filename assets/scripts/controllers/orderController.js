@@ -203,14 +203,18 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $order.setScope($scope);
         $order.register($stateParams.orderId);
 
-        // Setup new order item modal form
-        $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
-            $scope.addItemModal = modal;
-        }, {
-            scope: $scope,
-            animation: 'slide-in-up',
-            hardwareBackButtonClose: false
-        });
+        // Setup notification method
+        var notify = function(message, type) {
+            $scope.closePopover();
+            $scope.alertOn = true;
+            $scope.alertMessage = message;
+            $scope.alertType = type;
+            $timeout(function() {
+                $scope.alertOn = false;
+            }, 1000);
+        };
+
+        $scope.notify = notify;
 
         // For toggling sideMenu
         $scope.toggleSideMenu = function() {
@@ -336,6 +340,34 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }
         }
 
+        // Order Settings scope methods
+
+        $scope.updateOrderSettings = function() {
+            var settings = $scope.orderSettings;
+            settings.submitted = true;
+            if (settings.surcharge === undefined ||
+                settings.tax === undefined ||
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(settings.surcharge)) ||
+                !(/^[0-9]+(\.[0-9]+)?$/.test(settings.tax)) ||
+                settings.name === undefined) return;
+            $scope.isLoading = true;
+            // Hide modal
+            $scope.closeOrderSettingsModal();
+            settings.submitted = false;
+            $http.post(
+                '/api/orders/' + encodeURIComponent($scope.order.orderId),
+                settings,
+                {
+                    headers: {
+                        "x-access-token": $window.token
+                    }
+                }
+            ).success(function(data) {
+                    $scope.isLoading = false;
+                    $scope.order = data;
+                });
+        };
+
         // Setup popover
 
         $scope.showJoinLink = false;
@@ -377,18 +409,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.popover.remove();
         });
 
-        // For showing new item added message
-        var notify = function(message, type) {
-            $scope.closePopover();
-            $scope.alertOn = true;
-            $scope.alertMessage = message;
-            $scope.alertType = type;
-            $timeout(function() {
-                $scope.alertOn = false;
-            }, 1000);
-        };
 
-        $scope.notify = notify;
 
         // My order scope methods
 
@@ -399,18 +420,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }).length > 0);
         };
 
-        $scope.numActiveUsers = function() {
-            return $scope.items.reduce(function(acc, next) {
-                if (acc.ids.indexOf(next.UserUserId) < 0) {
-                    acc.ids.push(next.UserUserId);
-                    acc.count++;
-                }
-                return acc;
-            }, {
-                'count': 0,
-                'ids': []
-            }).count;
-        };
+        // Setup new order item modal form
+        $ionicModal.fromTemplateUrl('/partials/new', function(modal) {
+            $scope.addItemModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up',
+            hardwareBackButtonClose: false
+        });
 
         // Item Form scope methods
         $scope.incrementFormDataQuantity = function() {
@@ -493,6 +510,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }
             notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
         };
+
         $scope.removeOrderItem = function(item) {
             $scope.isLoading = true;
             $http.delete(
@@ -511,33 +529,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
         };
 
-        // Order Settings scope methods
-
-        $scope.updateOrderSettings = function() {
-            var settings = $scope.orderSettings;
-            settings.submitted = true;
-            if (settings.surcharge === undefined ||
-                settings.tax === undefined ||
-                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(settings.surcharge)) ||
-                !(/^[0-9]+(\.[0-9]+)?$/.test(settings.tax)) ||
-                settings.name === undefined) return;
-            $scope.isLoading = true;
-            // Hide modal
-            $scope.closeOrderSettingsModal();
-            settings.submitted = false;
-            $http.post(
-                '/api/orders/' + encodeURIComponent($scope.order.orderId),
-                settings,
-                {
-                  headers: {
-                    "x-access-token": $window.token
-                  }
-                }
-            ).success(function(data) {
-                    $scope.isLoading = false;
-                    $scope.order = data;
-                });
-        };
+        // Fee aggregate scope methods
 
         $scope.getSurcharge = function() {
             return $scope.order.surcharge;
@@ -547,8 +539,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
         };
 
-        // Fee aggregate scope methods
-
         $scope.subtotalFee = function() {
             return $scope.items.reduce(function(a, b) {
                 return a + parseFloat(b.price);
@@ -557,6 +547,19 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $scope.totalFee = function() {
             return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
+        };
+
+        $scope.numActiveUsers = function() {
+            return $scope.items.reduce(function(acc, next) {
+                if (acc.ids.indexOf(next.UserUserId) < 0) {
+                    acc.ids.push(next.UserUserId);
+                    acc.count++;
+                }
+                return acc;
+            }, {
+                'count': 0,
+                'ids': []
+            }).count;
         };
 
         // To toggle isOpen status of order
