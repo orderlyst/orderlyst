@@ -312,6 +312,30 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.orderSettingsModal.hide();
         };
 
+        $scope.timePickerObject24Hour = {
+            inputEpochTime: 0,
+            step: 1,
+            setButtonType: 'button-filled',
+            closeButtonType: 'button-blank',
+            titleLabel: 'Choose your order closing time',
+            callback: function(val) { //Mandatory
+                timePicker24Callback(val);
+            }
+        };
+
+        function timePicker24Callback(val) {
+            if (typeof(val) === 'undefined') {
+                console.log('Time not selected');
+            } else {
+                var date = new Date();
+                $scope.timePickerObject24Hour.inputEpochTime = val;
+                var selectedTime = new Date(val * 1000);
+                $scope.orderSettings.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+                    selectedTime.getUTCHours(), selectedTime.getUTCMinutes());
+                console.log('Selected epoch is : ', val, 'and the time is ', selectedTime.getUTCHours(), ':', selectedTime.getUTCMinutes(), 'in UTC');
+            }
+        }
+
         // Setup popover
 
         $scope.showJoinLink = false;
@@ -487,7 +511,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
         };
 
-        // Aditional Fees scope methods
+        // Order Settings scope methods
 
         $scope.updateOrderSettings = function() {
             var settings = $scope.orderSettings;
@@ -563,6 +587,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         var renderPage = function(order) {
             $scope.isOwner = $scope.uid === $scope.order.UserUserId;
+
+            // Initialize order settings
             $scope.orderSettings = {
                 'surcharge': $scope.order.surcharge,
                 'tax': $scope.order.tax,
@@ -570,6 +596,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 'closingAt': $scope.order.closingAt,
                 'submitted': false
             };
+
+            var date = new Date($scope.order.closingAt);
+            $scope.timePickerObject24Hour.inputEpochTime = date.getHours() * 3600 + date.getMinutes() * 60;
+
 
             if (!hasAccount) {
                 $location.url('/join/' + encodeURIComponent($scope.order.code));
