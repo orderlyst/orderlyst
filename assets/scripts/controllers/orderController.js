@@ -559,6 +559,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     $store.set('_orderlyst_user_' + user.userId, user);
                     $scope.userDictionary[user.userId] = user;
                 }, function(response) {
+                    $scope.disconnected = true;
                     var user = $store.get('_orderlyst_user_' + $scope.uid); 
                     $scope.userDictionary[user.userId] = user;
                 });
@@ -570,6 +571,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     $store.set('_orderlyst_user_' + user.userId, user);
                     $scope.userDictionary[user.userId] = user;
                 }, function(response) {
+                    $scope.disconnected = true;
                     var user = $store.get('_orderlyst_user_' + $scope.order.UserUserId);
                     $scope.userDictionary[user.userId] = user;
                 });
@@ -581,6 +583,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             .getOrder()
             .then(renderPage,
                  function(response) {
+                      $scope.disconnected = true;
                       var order = $store.get('_orderlyst_order_' + $stateParams.orderId);
                       $scope.order = order;
                  });
