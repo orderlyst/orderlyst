@@ -1,0 +1,21 @@
+ion-modal-view
+    ion-header-bar.bar-orderlyst.bar-filled
+        h2.title Edit Items {{ownerItemsFormData.name}}
+    ion-content.has-header
+        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="editOwnerItemsForm", novalidate="")
+            label.item Item Name: {{ownerItemsFormData.name}}
+
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': editOwnerItemsForm.price.$invalid && ownerItemsFormData.submitted, \
+                    'valid': editOwnerItemsForm.price.$valid && ownerItemsFormData.submitted && editOwnerItemsForm.price.$dirty }")
+                span.input-label Item Price (S$)
+                input(type="number",placeholder="Item Price (S$)",ng-model="ownerItemsFormData.price", ng-required="true", \
+                ng-pattern="/^[1-9][0-9]*(\.[0-9]([05])?)?$/", name="price")
+                .form-errors(ng-show="editOwnerItemsForm.price.$error && ownerItemsFormData.submitted", ng-messages="editOwnerItemsForm.price.$error")
+                    .form-error(ng-message="required") Item price is required
+                    .form-error(ng-message="pattern") Price must be valid
+
+            label.item Quantity: {{ownerItemsFormData.quantity}}
+
+    ion-footer-bar.bar-orderlyst()
+        button.button.button-clear.button-blank(ng-click="closeOwnerItemsFormModal()") Cancel
+        button.button.button-clear.button-filled(ng-click="editOwnerItemsForm()") Edit Order Items

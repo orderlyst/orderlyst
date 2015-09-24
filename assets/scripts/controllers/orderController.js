@@ -277,6 +277,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'submitted': false
         };
         $scope.userItemsFormData = { 'submitted': false };
+        $scope.ownerItemsFormData = { 'submitted': false };
 
         $scope.disconnected = false;
 
@@ -712,6 +713,27 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.closeUserItemsFormModal();
                 notify("Items were successfully editted", "success");
             })
+        };
+
+        // Edit order item on Summary page
+        $ionicModal.fromTemplateUrl('/partials/editOwnerItems', function(modal) {
+            $scope.editOwnerItemsModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up',
+            hardwareBackButtonClose: false
+        });
+
+        $scope.openEditOwnerItemsModal = function(items) {
+            $scope.ownerItemsFormData.name = items[0].name;
+            $scope.ownerItemsFormData.price = items[0].price;
+            $scope.ownerItemsFormData.quantity = items.length;
+            $scope.ownerItemsFormData.items = items;
+            $scope.editOwnerItemsModal.show();
+        };
+
+        $scope.closeOwnerItemsFormModal = function() {
+            $scope.editOwnerItemsModal.hide();
         };
 
         // Fee aggregate scope methods

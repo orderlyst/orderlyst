@@ -86,6 +86,8 @@ block content
                                         span.orderlyst-badge {{groupedItems.length}}
                                     .col.col-30.text-right
                                         | S{{price * groupedItems.length | currency}}
+                                    ion-option-button.ion-edit.button-grey(ng-if="isOwner", \
+                                        ng-click="openEditOwnerItemsModal(groupedItems)")
                         .order-fee
                             .row.item
                                 .col.col-60.col-offset-10 Subtotal:
