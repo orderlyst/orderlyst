@@ -5,7 +5,6 @@ require('angular-messages');
 require('angular-filter');
 require('angular-websocket');
 require('ionic-timepicker');
-require('angular-clipboard');
 
 var OrderController = require('./controllers/orderController');
 
@@ -17,7 +16,6 @@ var app = angular.module('orderlyst', [
         'ngMessages',
         'ngWebSocket',
         'angular.filter',
-        'angular-clipboard',
         'analytics'
     ]);
 
