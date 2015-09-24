@@ -4,7 +4,6 @@ var verifier = require('./../middlewares/verifier');
 
 router.use('/api', verifier.middleware);
 router.use('/api', require('./api/'));
-router.use('/', require('./orders/'));
 
 // render partials for angular
 router.get('/partials/:filename', function (req, res, next) {
