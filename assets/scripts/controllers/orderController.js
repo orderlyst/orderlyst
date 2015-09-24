@@ -565,6 +565,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.additionalFee = {
                 'surcharge': $scope.order.surcharge,
                 'tax': $scope.order.tax,
+                'name': $scope.order.name,
+                'closingAt': $scope.order.closingAt,
                 'submitted': false
             };
 
@@ -580,13 +582,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.showJoinLink = false;
             $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
 
-            //$scope.additionalFee = {
-            //    'surcharge': $scope.order.surcharge,
-            //    'tax': $scope.order.tax,
-            //    'name': $scope.order.name,
-            //    'closingAt': $scope.order.closingAt,
-            //    'submitted': false
-            //}
+
 
             // Check if the order was newly created
             if ($stateParams.new) {
