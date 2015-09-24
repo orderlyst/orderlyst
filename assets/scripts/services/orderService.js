@@ -15,6 +15,8 @@ module.exports = function(module) {
         .then(function (response) {
           $currentScope.userDictionary[uid] = response.data;
           deferred.resolve(response.data);
+        }, function(response) {
+          deferred.reject(response);
         });
       return deferred.promise;
     };
@@ -26,6 +28,8 @@ module.exports = function(module) {
         .then(function (response) {
           $currentScope.items = Array.prototype.slice.call(response.data, 0);
           deferred.resolve($currentScope.items);
+        }, function(response) {
+          deferred.reject(response);
         });
       return deferred.promise;
     };
@@ -39,6 +43,8 @@ module.exports = function(module) {
         .then(function(response) {
           $currentScope.order = response.data;
           deferred.resolve($currentScope.order);
+        }, function (response) {
+          deferred.reject(response);
         });
       return deferred.promise;
     };
@@ -75,6 +81,8 @@ module.exports = function(module) {
         } else {
           fetchOrder(orderId).then(function() {
             deferred.resolve($currentScope.order);
+          }, function(response) {
+            deferred.reject(response);
           });
         }
         return deferred.promise;
@@ -86,6 +94,8 @@ module.exports = function(module) {
         } else {
           fetchItems(orderId).then(function(){
             deferred.resolve($currentScope.items);
+          }, function(response) {
+            deferred.reject(response);
           });
         }
         return deferred.promise;
@@ -97,6 +107,8 @@ module.exports = function(module) {
         } else {
           fetchUser(uid).then(function(){
             deferred.resolve($currentScope.userDictionary[uid]);
+          }, function(response) {
+            deferred.reject(response);
           });
         }
         return deferred.promise;

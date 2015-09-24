@@ -164,10 +164,11 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
 ];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
+    '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
     '$ionicSideMenuDelegate', '$order', '$window',
-    function($scope, $http, $stateParams, $store, $location, loadOrder,
+    function($scope, $http, $stateParams, $store, $location,
              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
+        $scope.disconnected = false;
 
         $scope.uid = $store.get('_orderlyst_uid');
         var hasAccount = ($scope.uid !== -1);
@@ -179,7 +180,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'user': $scope.uid,
             'quantity': 1,
             'submitted': false
-        };;
+        };
 
         $order.setScope($scope);
         $order.register($stateParams.orderId);
@@ -478,17 +479,35 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $order
             .getItems()
             .then(function(items) {
-                console.log($scope.items);
-                console.log(items);
+                var idArray = [];
                 $scope.items.forEach(function(item) {
-                    $order.getUser(item.UserUserId, function(user) {
+                    idArray.push(item.itemId);
+                    $store.set('_orderlyst_item_' + item.itemId, item);
+                    $order.getUser(item.UserUserId).then(function(user) {
+                        $store.set('_orderlyst_user_' + user.userId, user);
                         $scope.userDictionary[user.userId] = user;
                     });
                 });
+
+                $store.set('_orderlyst_order_' + $stateParams.orderId + '_items', idArray);
                 $scope.isLoading = false;
+            }, function(response) {
+                $scope.disconnected = true;
+                var idArray = $store.get('_orderlyst_order_' + $stateParams.orderId + '_items');
+                var items = idArray.map(function(id) {
+                    return $store.get('_orderlyst_item_' + id);
+                });
+
+                items.forEach(function(item) {
+                    var userId = item.UserUserId;
+                    var user = $store.get('_orderlyst_user_' + userId);
+                    $scope.userDictionary[user.userId] = user;
+                });
+                $scope.items = items;
             });
 
         var renderPage = function(order) {
+            $store.set('_orderlyst_order_' + order.orderId, order);
             $scope.isOwner = $scope.uid === $scope.order.UserUserId;
             $scope.additionalFee = {
                 'surcharge': $scope.order.surcharge,
@@ -537,6 +556,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $order
                 .getUser($scope.uid)
                 .then(function(user) {
+                    $store.set('_orderlyst_user_' + user.userId, user);
+                    $scope.userDictionary[user.userId] = user;
+                }, function(response) {
+                    var user = $store.get('_orderlyst_user_' + $scope.uid); 
                     $scope.userDictionary[user.userId] = user;
                 });
 
@@ -544,6 +567,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $order
                 .getUser($scope.order.UserUserId)
                 .then(function(user) {
+                    $store.set('_orderlyst_user_' + user.userId, user);
+                    $scope.userDictionary[user.userId] = user;
+                }, function(response) {
+                    var user = $store.get('_orderlyst_user_' + $scope.order.UserUserId);
                     $scope.userDictionary[user.userId] = user;
                 });
 
@@ -552,7 +579,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $order
             .getOrder()
-            .then(renderPage);
+            .then(renderPage,
+                 function(response) {
+                      var order = $store.get('_orderlyst_order_' + $stateParams.orderId);
+                      $scope.order = order;
+                 });
     }
 ];
 

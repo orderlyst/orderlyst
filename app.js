@@ -31,10 +31,7 @@ app.use(cacheManifest({
   },{
     file: __dirname + '/public/assets/fonts/ionicons.ttf',
     path: '/assets/fonts/ionicons.ttf?v=2.0.0'
-  }],
-  fallbacks: [
-    '/ /index.html'
-  ]
+  }]
 }));
 
 app.use(require('./middlewares/ws'));
