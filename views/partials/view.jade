@@ -37,7 +37,7 @@ block content
                                       i S{{(order.surcharge/numActiveUsers()) * (100+order.tax)/100 + itemCollectionSubtotalFee(groupedByUserItems) * order.tax/100 | currency}}
                                         
                                 .item.item-divider.row.personal-cost
-                                    .col.col-75.text-right Total
+                                    .col.col-60.text-right Total
                                     .col.text-right
                                       b S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
 
