@@ -82,7 +82,7 @@ router.post('/:id', function(req, res, next) {
     values.name = req.body.name
   }
   if (req.body.closingAt) {
-    values.name = new Date(req.body.closingAt);
+    values.closingAt = new Date(req.body.closingAt);
   }
   values.isOpen = req.body.isOpen;
 
