@@ -57,3 +57,12 @@ input.special-height {
 #joinLink {
   -webkit-user-modify: read-write;
 }
+
+ionic-timepicker {
+  .button {
+    font-size: x-large;
+    background-color: transparent;
+    color: $color-primary-blue;
+    text-decoration: underline;
+  }
+}
