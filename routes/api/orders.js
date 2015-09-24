@@ -186,6 +186,42 @@ router.post('/:id/items', function(req, res, next) {
 });
 
 /**
+ * To update details of an order item
+ */
+router.post('/:id/items/:itemId', function(req, res, next){
+  var orderId = idTransform.decrypt(req.params.id);
+  var itemId = req.params.itemId;
+
+  var name = req.body.name;
+  var price = req.body.price;
+
+  req.models.Item
+    .update(
+      {
+        "name": name,
+        "price": price
+      },
+      {
+      "where": {
+        "itemId": itemId,
+        "OrderOrderId": orderId
+      }
+    })
+    .then(function() {
+      req.models.Item
+        .findAll({
+          "where": {
+            "OrderOrderId": orderId
+          }
+        })
+        .then(function(items){
+          req.wsUpdate(req.params.id, 'items', items);
+          res.json(items);
+        });
+    });
+});
+
+/**
  * To delete a order item
  */
 router.delete('/:id/items/:itemId', function(req, res, next){
