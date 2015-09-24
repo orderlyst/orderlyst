@@ -19,8 +19,7 @@ ion-modal-view
                 .form-error(ng-message="required") Item price is required
                 .form-error(ng-message="pattern") Price must be valid
 
-            .item.item-input.item-floating-label(ng-class="{ 'has-error': newItemForm.quantity.$invalid && itemFormData.submitted, \
-                    'valid': newItemForm.quantity.$valid && itemFormData.submitted && newItemForm.quantity.$dirty }")
+            .item.item-input.item-floating-label
                 .row
                   .col-20.text-center.col-offset-20 Quantity
                   .col-20.text-right(ng-click="decrementFormDataQuantity()")
