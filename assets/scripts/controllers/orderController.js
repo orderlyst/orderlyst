@@ -371,20 +371,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         // Setup popover
 
-        $scope.showJoinLink = false;
-        $scope.joinLink = '';
-        $scope.showLink = function() {
-            $scope.showJoinLink = true;
-            $scope.selectJoinLink();
-        };
-
-        $scope.selectJoinLink = function() {
-            $timeout(function() {
-                var elem = indow.document.getElementById('joinLink');
-                elem.setSelectionRange(0, elem.value.length);
-            });
-        };
-
         $ionicPopover.fromTemplateUrl('partials/orderPopover', {
             scope: $scope
         }).then(function(popover) {
@@ -398,11 +384,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.closePopover = function($event) {
             $scope.popover.hide($event);
         };
-
-        $scope.$on('popover.hidden', function() {
-            // Execute action
-            $scope.showJoinLink = false;
-        });
 
         $scope.$on('$destroy', function() {
             $scope.addItemModal.remove();
@@ -647,11 +628,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 var date = new Date($scope.order.closingAt);
                 return date.getHours() + ':' + date.getMinutes();
             };
-
-            $scope.showJoinLink = false;
-            $scope.joinLink = $location.protocol() + "://" + $location.host() + ':' + $location.port() + '/join/' + $scope.order.code;
-
-
 
             // Check if the order was newly created
             if ($stateParams.new) {
