@@ -5,9 +5,16 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
 
-        $scope.disconnected = function() {
-            return !$window.navigator.onLine;
-        };
+        $scope.disconnected = false;
+        $scope.$watch(
+            function() {
+                return !$window.navigator.onLine;
+            }, function(newValue, oldValue) {
+                $scope.disconnected = newValue;
+            }
+        );
+
+
         //$scope.createOrder = function() {
         //    if (hasAccount) {
         //        $http.post(
@@ -189,6 +196,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'quantity': 1,
             'submitted': false
         };
+
+        $scope.disconnected = false;
+
+        $scope.$watch(
+            function() {
+                return !$window.navigator.onLine;
+            }, function(newValue, oldValue) {
+                $scope.disconnected = newValue;
+            }
+        );
 
         $scope.disconnected = function() {
           return !$window.navigator.onLine;

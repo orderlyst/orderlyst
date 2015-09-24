@@ -27,9 +27,9 @@ block content
                                             span.orderlyst-badge {{groupedItems.length}}
                                         .col.col-30.text-right
                                             .annotation S{{price * groupedItems.length | currency}}
-                                        ion-option-button.button-dark(ng-if="!disconnected() && order.isOpen", \
+                                        ion-option-button.button-dark(ng-if="!disconnected && order.isOpen", \
                                             ng-click="removeOrderItem(groupedItems[0])") -1
-                                        ion-option-button.button-filled(ng-if="!disconnected() && order.isOpen", \
+                                        ion-option-button.button-filled(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)") +1
                                 .item.item-divider.personal-cost <i class="icon ion-cash"></i> Total
                                 .item.item-divider.row.personal-cost
@@ -56,16 +56,16 @@ block content
                                             span.orderlyst-badge {{groupedItems.length}}
                                         .col.col-30.text-right
                                             | S{{price * groupedItems.length | currency}}
-                                        ion-option-button.button-filled.ion-android-cart(ng-if="!disconnected() && order.isOpen", \
+                                        ion-option-button.button-filled.ion-android-cart(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)")
                     .spacer(ng-if="!items.length")
                         .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
-                ion-footer-bar.bar-filled(ng-if="!disconnected() && order.isOpen")
-                    button.button.button-clear(ng-if="!disconnected() && order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item <i class="icon ion-android-cart"></i>
-                ion-footer-bar.bar-disabled(ng-if="!disconnected() && !order.isOpen")
-                    button.button.button-clear(ng-if="!disconnected() && !order.isOpen" ng-disabled=true) <i class="icon ion-ios-locked"></i> Order Locked
-                ion-footer-bar.bar-disabled(ng-if="disconnected()")
-                    button.button.button-clear(ng-if="disconnected()" ng-disabled=true)  Offline
+                ion-footer-bar.bar-filled(ng-if="!disconnected && order.isOpen")
+                    button.button.button-clear(ng-if="!disconnected && order.isOpen" ng-click="openAddItemModal()") <i class="icon ion-ios-plus-empty"></i> Add Item <i class="icon ion-android-cart"></i>
+                ion-footer-bar.bar-disabled(ng-if="!disconnected && !order.isOpen")
+                    button.button.button-clear(ng-if="!disconnected && !order.isOpen" ng-disabled=true) <i class="icon ion-ios-locked"></i> Order Locked
+                ion-footer-bar.bar-disabled(ng-if="disconnected")
+                    button.button.button-clear(ng-if="disconnected" ng-disabled=true)  Offline
         ion-tab(title="Total Orders")
             ion-view
                 ion-content
@@ -112,7 +112,7 @@ block content
                                 .col.col-60.col-offset-10 Total:
                                 .col.col-30.text-right S{{totalFee() | currency}}
 
-                ion-footer-bar.bar-orderlyst(ng-if="!disconnected() && isOwner")
+                ion-footer-bar.bar-orderlyst(ng-if="!disconnected && isOwner")
                     button.button.button.button-filled.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees
                     button.button.button.button-blank.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
                     button.button.button.button-blank.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order

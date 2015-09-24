@@ -95,14 +95,23 @@ module.exports = function(module) {
 
     stream.onMessage(function(response) {
       var message = JSON.parse(response.data);
-      console.log(message);
       var data = message.data;
       if (message.type === 'user') {
-        $currentScope.userDictionary[data.userId] = data;
+        $currentScope.userDictionary[uid] = response.data;
+        $store.set(createUserKey(uid), response.data);
       } else if (message.type === 'items') {
-        $currentScope.items = data;
+        $currentScope.items = Array.prototype.slice.call(response.data, 0);
+        var idArray = $currentScope.items.map(function(item) {
+          return item.itemId;
+        });
+        $store.set(createOrderItemsKey(orderId), idArray);
+        $currentScope.items.map(function(item) {
+          $store.set(createItemsKey(item.itemId), item);
+        });
       } else if (message.type === 'order') {
-        $currentScope.order = data;
+        $currentScope.order = response.data;
+        $store.set(createOrderKey(orderId), response.data);
+        deferred.resolve($currentScope.order);
       }
     });
 
