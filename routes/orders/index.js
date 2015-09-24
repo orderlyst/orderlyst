@@ -7,6 +7,7 @@ router.get('/fbshareclose', function(req, res, next) {
 
 router.get('/join/:code', function(req, res, next){
   var code = req.params.code;
+  var _order;
 
   req.models.Order
     .find({
@@ -17,14 +18,19 @@ router.get('/join/:code', function(req, res, next){
     })
     .then(function(order){
       if (order) {
+        _order = order;
         console.log('loading meta');
         // render page with order
-        res.render('meta', {
-          order: order
-        });
+        return verifier.generate();
       } else {
         next();
       }
+    })
+    .then(function(token){
+      res.render('meta', {
+        order: _order,
+        token: token
+      });
     });
 });
 
