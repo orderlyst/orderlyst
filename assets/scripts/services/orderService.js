@@ -110,8 +110,8 @@ module.exports = function(module) {
       var message = JSON.parse(response.data);
       var data = message.data;
       if (message.type === 'user') {
-        $currentScope.userDictionary[uid] = data;
-        $store.set(createUserKey(uid), data);
+        $currentScope.userDictionary[data.userId] = data;
+        $store.set(createUserKey(data.userId), data);
       } else if (message.type === 'items') {
         $currentScope.items = Array.prototype.slice.call(data, 0);
         var idArray = $currentScope.items.map(function(item) {
