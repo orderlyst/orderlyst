@@ -5,7 +5,7 @@ ion-view
       ion-content.has-header(padding=true)
         .spacer
           h3.text-center.vertical-aligned Create a new order
-        h4.text-center.has-side-margin Get started by entering your order name!
+        h4.text-center.has-side-margin Get started by entering where you are ordering from!
         //h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
         form.create-order-form(name="createOrderForm", formnovalidate="true")
           .list
@@ -25,7 +25,7 @@ ion-view
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
               .form-error(ng-message="required") We need your order's name.
 
-            label.item.item-input.item-floating-label Your order will close at&nbsp
+            label.item.item-input.item-floating-label Your order will close at&nbsp;
               ionic-timepicker(input-obj='timePickerObject24Hour')
                 button.button.button-filled
                   standard-time-no-meridian(etime='timePickerObject24Hour.inputEpochTime')
