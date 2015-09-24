@@ -673,7 +673,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
             // Add items quantity times
             var createItemResponse = function(data) {
-                $scope.isLoading = false;
                 if ($scope.items.filter(function(item) {
                         return item.itemId === data.itemId;
                     }).length > 0) return;
@@ -734,6 +733,52 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $scope.closeOwnerItemsFormModal = function() {
             $scope.editOwnerItemsModal.hide();
+        };
+
+        $scope.editOwnerItemsForm = function() {
+            $scope.ownerItemsFormData.submitted = true;
+            var orderItemData = angular.copy($scope.ownerItemsFormData);
+            delete orderItemData.items;
+            console.log(orderItemData);
+            if (orderItemData.price === '' || orderItemData.price === undefined ||
+                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
+            $scope.isLoading = true;
+
+            // Clear formData
+            $scope.userItemsFormData.submitted = false;
+
+            // Remove all items then re-add
+            var promises = [];
+
+            // Update items prices
+            var updateItemResponse = function(data) {
+                $store.set('_orderlyst_items_' + data.itemId, data);
+            };
+
+            $scope.ownerItemsFormData.items.map(function(item) {
+                var promise = $http.post(
+                    '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items/' + item.itemId,
+                    orderItemData,
+                    {
+                        headers: {
+                            "x-access-token": $window.token
+                        }
+                    }
+                ).success(updateItemResponse);
+                promises.push(promise);
+            });
+
+            $q.all(promises).then(function(response) {
+                // Hide modal
+                $scope.closeOwnerItemsFormModal();
+                notify("The price of all " + orderItemData.name + " successfully changed", "success");
+
+                var idArray = $scope.items.map(function(item) {
+                    return item.itemId;
+                });
+
+                $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
+            })
         };
 
         // Fee aggregate scope methods
