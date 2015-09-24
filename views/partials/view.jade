@@ -112,7 +112,7 @@ block content
                                 .col.col-60.col-offset-10 Total:
                                 .col.col-30.text-right S{{totalFee() | currency}}
 
-                ion-footer-bar.bar-orderlyst(ng-if="isOwner")
+                ion-footer-bar.bar-orderlyst(ng-if="!disconnected() && isOwner")
                     button.button.button.button-filled.button-clear(ng-click="openAdditionalFeeModal()") Additional Fees
                     button.button.button.button-blank.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
                     button.button.button.button-blank.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
