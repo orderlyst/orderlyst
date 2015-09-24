@@ -494,8 +494,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             fees.submitted = true;
             if (fees.surcharge === '' || fees.surcharge === undefined ||
                 fees.tax === '' || fees.surcharge === undefined ||
-                !(/^[0-9]+(\.[0-9][05])?$/.test(fees.surcharge)) ||
-                !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax))) return;
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(fees.surcharge)) ||
+                !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax)) ||
+                fees.name === undefined) return;
             $scope.isLoading = true;
             // Hide modal
             $scope.closeAdditionalFeeModal();
