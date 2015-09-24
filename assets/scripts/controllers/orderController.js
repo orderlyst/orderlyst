@@ -33,8 +33,8 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     }
 ];
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order, $ionicPopup) {
         $scope.joinOrder = {};
         $scope.submitted = false;
         $scope.joinOrder.code = $stateParams.orderCode;
@@ -44,7 +44,37 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
 
         if ($scope.hasAccount) {
             $scope.joinOrder.name = uid;
+            if ($scope.hasAccount) {
+                $http
+                    .get('/api/users/' + encodeURIComponent(uid), {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
+                    })
+                    .then(function(response) {
+                        $scope.joinOrder.name = response.data.name;
+                        $scope.userName = response.data.name;
+                    });
+            }
         }
+
+        $scope.logoutConfirm = function() {
+          $ionicPopup.show({
+              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be recovered.",
+              title: "Log Out",
+              scope: $scope,
+              buttons: [{
+                  text: 'Cancel'
+              }, {
+                  text: "Confirm",
+                  type: "button-filled",
+                  onTap: function(e) {
+                    $store.remove('_orderlyst_uid');
+                    $scope.hasAccount = false;
+                  }
+              }]
+          });
+        };
 
         $scope.submit = function(form) {
             $scope.submitted = true;
@@ -83,6 +113,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                         $scope.hasAccount = true;
                         var user = result[1].data;
                         $store.set('_orderlyst_uid', user.userId);
+                        $scope.userName = $scope.joinOrder.name;
                     }
                     if (order) {
                         $order.register(order.orderId);
@@ -97,8 +128,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     }
 ];
 
-var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order',
-    function($scope, $http, $location, $store, $window, $order) {
+var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $location, $store, $window, $order, $ionicPopup) {
         $scope.createOrder = {};
         $scope.submitted = false;
         var uid = $store.get('_orderlyst_uid');
@@ -116,6 +147,24 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                     $scope.userName = response.data.name;
                 });
         }
+
+        $scope.logoutConfirm = function() {
+          $ionicPopup.show({
+              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be recovered.",
+              title: "Log Out",
+              scope: $scope,
+              buttons: [{
+                  text: 'Cancel'
+              }, {
+                  text: "Confirm",
+                  type: "button-filled",
+                  onTap: function(e) {
+                    $store.remove('_orderlyst_uid');
+                    $scope.hasAccount = false;
+                  }
+              }]
+          });
+        };
 
         var date = new Date();
         $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59);
@@ -288,50 +337,32 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
         };
 
-        $scope.showChangeNamePopup = function() {
-            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-            var popup = $ionicPopup.show({
-                template: '<input type="text" ng-model="changeNameData.name"/>',
-                title: 'Change Your Name',
-                scope: $scope,
-                buttons: [{
-                    text: 'Cancel',
-                    onTap: function(e) {
-                        if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+        $scope.nameChanging = false;
+
+        $scope.toggleNameChanging = function() {
+            if ($scope.nameChanging) {
+                if ($scope.nameChangeData === undefined || $scope.nameChangeData === '') {
+                    console.log(1);
+                    return;
+                } else if ($scope.nameChangeData !== $scope.userDictionary[$scope.uid].name) {
+                    console.log(2);
+                    $http.post(
+                        '/api/users/' + encodeURIComponent($scope.uid), {
+                            name: $scope.nameChangeData
+                        },
+                        {
+                            headers: {
+                                "x-access-token": $window.token
+                            }
                         }
-                        return false;
-                    }
-                }, {
-                    text: '<b>Save</b>',
-                    type: 'button-filled',
-                    onTap: function(e) {
-                        if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-                            e.preventDefault();
-                        } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
-                            return false;
-                        } else {
-                            return $scope.changeNameData.name;
-                        }
-                    }
-                }]
-            });
-            popup.then(function(name) {
-                if (name === false) return;
-                $http.post(
-                    '/api/users/' + encodeURIComponent($scope.uid), {
-                        name: name
-                    },
-                    {
-                      headers: {
-                        "x-access-token": $window.token
-                      }
-                    }
-                ).then(function(response) {
-                        $scope.userDictionary[$scope.uid].name = name;
+                    ).then(function(response) {
+                            $scope.userDictionary[$scope.uid].name = $scope.nameChangeData;
+                            notify("Your name was changed successfully", "success");
                     });
-            });
+                }
+                console.log(3);
+            }
+            $scope.nameChanging = !$scope.nameChanging;
         };
 
         // Setup order settings modal form
@@ -731,6 +762,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 .getUser($scope.uid)
                 .then(function(user) {
                     $scope.userDictionary[user.userId] = user;
+                    $scope.nameChangeData = user.name;
                 }, function(response) {
                 });
 

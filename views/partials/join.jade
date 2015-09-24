@@ -7,6 +7,7 @@ ion-view
           h3.vertical-aligned.text-center Join an Order
         h4.text-center Enter the order code<span ng-hide="hasAccount"> and your name</span> to get started!
         form.join-order-form(name="joinOrderForm")
+          p.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}. <a ng-click="logoutConfirm()" href="#">Not you?</a>
           .list
             label.item.item-input.item-floating-label(ng-class="{'has-error': submitted && (joinOrderForm.code.$invalid || codeNotAvailable)}")
               span.input-label What is the order code?

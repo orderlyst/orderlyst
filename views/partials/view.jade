@@ -31,11 +31,15 @@ block content
                                             ng-click="removeOrderItem(groupedItems[0])") -1
                                         ion-option-button.button-filled(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)") +1
-                                .item.item-divider.personal-cost <i class="icon ion-cash"></i> Total
                                 .item.item-divider.row.personal-cost
-                                    .col.col-70 (S{{itemCollectionSubtotalFee(groupedByUserItems) | currency }} + S{{order.surcharge | currency}} / {{numActiveUsers()}}) * {{100 + order.tax}}%
-                                    .col.col-30.text-right
-                                        u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
+                                    .col.col-60.text-right Additional
+                                    .col.text-right
+                                      i S{{(order.surcharge/numActiveUsers()) * (100+order.tax)/100 + itemCollectionSubtotalFee(groupedByUserItems) * order.tax/100 | currency}}
+                                        
+                                .item.item-divider.row.personal-cost
+                                    .col.col-60.text-right Total
+                                    .col.text-right
+                                      b S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
 
                         // Otherwise
                         .list.card.card-personal(ng-if="!hasOrderItems()")
@@ -113,6 +117,6 @@ block content
                                 .col.col-30.text-right S{{totalFee() | currency}}
 
                 ion-footer-bar.bar-orderlyst(ng-if="!disconnected && isOwner")
-                    button.button.button.button-filled.button-clear(ng-click="openOrderSettingsModal()") Order Settings
-                    button.button.button.button-blank.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
-                    button.button.button.button-blank.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order
+                    button.button.button.button-blank.button-clear(ng-click="openOrderSettingsModal()") Order Settings
+                    button.button.button.button-filled.button-clear(ng-if="order.isOpen",ng-click="showLockOrderPopup()") <i class="icon ion-ios-unlocked"></i> Lock Order
+                    button.button.button.button-filled.button-clear(ng-if="!order.isOpen", ng-click="toggleLocked()") <i class="icon ion-ios-locked"></i> Unlock Order

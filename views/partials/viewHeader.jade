@@ -16,6 +16,11 @@ ion-view
     ion-side-menu#sideMenu(side="left")
       ion-content(has-header="true")
         .list
-          .bar.bar-header.bar-dark.item.item-divider {{userDictionary[uid].name}}
+          .bar.bar-header.bar-dark.item.item-divider(ng-if="!nameChanging")
+            | {{userDictionary[uid].name}}
+            span.ord-blue(ng-click="toggleNameChanging()") &nbsp;<i class="icon ion-edit"></i>
+          .bar.bar-header.bar-dark.item.item-divider( ng-if="nameChanging")
+            input(ng-model="$parent.$parent.$parent.nameChangeData")
+            span.ord-blue(ng-click="toggleNameChanging()") &nbsp;<i class="icon ion-checkmark"></i>
           a.item(href='/') <i class="icon ion-ios-home"></i> Home
           a.item(href='/create') New Order
