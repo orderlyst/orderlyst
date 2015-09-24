@@ -593,14 +593,17 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }
         });
 
+        $scope.$watch("items", function(newValue, oldValue) {
+            $scope.items.forEach(function(item) {
+                $order.getUser(item.UserUserId, function(user) {
+                    $scope.userDictionary[user.userId] = user;
+                });
+            });
+        });
+
         $order
             .getItems()
             .then(function(items) {
-                $scope.items.forEach(function(item) {
-                    $order.getUser(item.UserUserId, function(user) {
-                        $scope.userDictionary[user.userId] = user;
-                    });
-                });
                 $scope.isLoading = false;
             });
 
