@@ -72,7 +72,7 @@ router.post('/:id', function(req, res, next) {
   var orderId = idTransform.decrypt(req.params.id);
 
   var values = {};
-  if (req.body.surcharge !== undefined) {
+  if (req.body.surcharge) {
     values.surcharge = req.body.surcharge;
   }
   if (req.body.tax !== undefined) {
@@ -216,7 +216,10 @@ router.post('/:id/items/:itemId', function(req, res, next){
         })
         .then(function(items){
           req.wsUpdate(req.params.id, 'items', items);
-          res.json(items);
+            console.log(itemId);
+          res.json(items.filter(function(item) {
+            return item.itemId == itemId;
+          })[0]);
         });
     });
 });
