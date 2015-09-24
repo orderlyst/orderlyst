@@ -365,7 +365,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             ).success(function(data) {
                     $scope.isLoading = false;
                     $scope.order = data;
-                });
+                    notify("Order has been updated", 'success');
+            });
         };
 
         // Setup popover
