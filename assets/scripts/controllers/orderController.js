@@ -632,7 +632,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 var newOrderPopup = function() {
 
                     var popup = $ionicPopup.show({
-                        template: '<div class="spacer text-center">{{order.code}}</div>',
+                        template: '<input readonly class="spacer text-center" value="{{order.code}}" onclick="this.focus();this.select()">',
                         title: "<h3>Got 'yer Code!</h3>",
                         scope: $scope,
                         buttons: [{
