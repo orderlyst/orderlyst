@@ -6,8 +6,7 @@ module.exports = function(app) {
       '$stateProvider',
       '$urlRouterProvider',
       '$locationProvider',
-      '$httpProvider',
-      function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+      function($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode({
           "enabled": true
         });
