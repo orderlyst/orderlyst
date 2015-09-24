@@ -19,7 +19,7 @@ ion-view
               .form-error(ng-message="maxlength") Your name is a little long (more than 20 characters). Do you have a nickname instead?
               .form-error(ng-message="minlength") Your name is a little short (less than 3 characters). It'll be hard for others to recognise you.
 
-            label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
+            label.above.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
                     && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
               span.input-label Where are you ordering from?
               input(type='text', placeholder='Where are you ordering from?', ng-model="createOrder.orderName", ng-required="true", name="orderName")
