@@ -72,10 +72,10 @@ router.post('/:id', function(req, res, next) {
   var orderId = idTransform.decrypt(req.params.id);
 
   var values = {};
-  if (req.body.surcharge) {
+  if (req.body.surcharge !== undefined) {
     values.surcharge = req.body.surcharge;
   }
-  if (req.body.tax) {
+  if (req.body.tax !== undefined) {
     values.tax = req.body.tax;
   }
   if (req.body.name) {
