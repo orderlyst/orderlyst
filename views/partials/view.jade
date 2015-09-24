@@ -35,7 +35,7 @@ block content
                                 .item.item-divider.row.personal-cost
                                     .col.col-70 (S{{itemCollectionSubtotalFee(groupedByUserItems) | currency }} + S{{order.surcharge | currency}} / {{numActiveUsers()}}) * {{100 + order.tax}}%
                                     .col.col-30.text-right
-                                        u {{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
+                                        u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
 
                         // Otherwise
                         .list.card.card-personal(ng-if="!hasOrderItems()")
