@@ -252,50 +252,32 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
         };
 
-        $scope.showChangeNamePopup = function() {
-            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-            var popup = $ionicPopup.show({
-                template: '<input type="text" ng-model="changeNameData.name"/>',
-                title: 'Change Your Name',
-                scope: $scope,
-                buttons: [{
-                    text: 'Cancel',
-                    onTap: function(e) {
-                        if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
+        $scope.nameChanging = false;
+
+        $scope.toggleNameChanging = function() {
+            if ($scope.nameChanging) {
+                if ($scope.nameChangeData === undefined || $scope.nameChangeData === '') {
+                    console.log(1);
+                    return;
+                } else if ($scope.nameChangeData !== $scope.userDictionary[$scope.uid].name) {
+                    console.log(2);
+                    $http.post(
+                        '/api/users/' + encodeURIComponent($scope.uid), {
+                            name: $scope.nameChangeData
+                        },
+                        {
+                            headers: {
+                                "x-access-token": $window.token
+                            }
                         }
-                        return false;
-                    }
-                }, {
-                    text: '<b>Save</b>',
-                    type: 'button-filled',
-                    onTap: function(e) {
-                        if ($scope.changeNameData.name === '' || $scope.changeNameData.name === undefined) {
-                            $scope.changeNameData = angular.copy($scope.userDictionary[$scope.uid]);
-                            e.preventDefault();
-                        } else if ($scope.changeNameData.name === $scope.userDictionary[$scope.uid].name) {
-                            return false;
-                        } else {
-                            return $scope.changeNameData.name;
-                        }
-                    }
-                }]
-            });
-            popup.then(function(name) {
-                if (name === false) return;
-                $http.post(
-                    '/api/users/' + encodeURIComponent($scope.uid), {
-                        name: name
-                    },
-                    {
-                      headers: {
-                        "x-access-token": $window.token
-                      }
-                    }
-                ).then(function(response) {
-                        $scope.userDictionary[$scope.uid].name = name;
+                    ).then(function(response) {
+                            $scope.userDictionary[$scope.uid].name = $scope.nameChangeData;
+                            notify("Your name was changed successfully", "success");
                     });
-            });
+                }
+                console.log(3);
+            }
+            $scope.nameChanging = !$scope.nameChanging;
         };
 
         // Setup order settings modal form
@@ -649,6 +631,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 .getUser($scope.uid)
                 .then(function(user) {
                     $scope.userDictionary[user.userId] = user;
+                    // Assign name to changeNameData
+                    $scope.nameChangeData = user.name;
                 });
 
             // fetch order owner details
