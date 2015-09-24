@@ -1,6 +1,6 @@
 module.exports = function(module) {
     'use strict';
-    module.factory("$store", function ($parse) {
+    module.factory("$store", ['$parse', function ($parse) {
         /**
          * Global Vars
          */
@@ -108,5 +108,5 @@ module.exports = function(module) {
             }
         };
         return publicMethods;
-    });
+    }]);
 };

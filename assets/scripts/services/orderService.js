@@ -1,7 +1,8 @@
 module.exports = function(module) {
   'use strict';
 
-  module.factory("$order", function ($websocket, $q, $rootScope, $http, $location, $window) {
+  module.factory("$order", ['$websocket', '$q', '$rootScope', '$http', '$location', '$window',
+                 function ($websocket, $q, $rootScope, $http, $location, $window) {
 
     var stream = $websocket('ws://' + $location.host() + ':8080/wsctrl');
 
@@ -116,6 +117,6 @@ module.exports = function(module) {
     };
 
     return methods;
-  });
+  }]);
 
 };
