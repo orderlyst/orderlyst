@@ -14,7 +14,7 @@ Orderlyst API Server provides RESTful transfer of information between the fronte
 In this action, you can fetch a user's name and information.
 
 + Parameters
-    + userId: 1 (required, integer) - ID of the user
+    + userId: cDess== (required, base64) - ID of the user
 
 + Response 200 (application/json)
 
@@ -48,6 +48,9 @@ In this action, you can create a new user which can be used in interacting with 
 
 In the event that the user wants to change a detail, such as changing their name, you can use this action to update their details.
 
++ Parameters
+    + userId: cDess== (required, base64) - ID of the user
+    
 + Request (application/json)
 
         {
@@ -72,7 +75,7 @@ In the event that the user wants to change a detail, such as changing their name
 In this action, you can fetch an order and its information.
 
 + Parameters
-    + orderId: 1 (required, integer) - ID of the order
+    + orderId: BeCd== (required, base64) - ID of the order
 
 + Response 200 (application/json)
 
@@ -122,7 +125,7 @@ In this action, you can create a new order.
 In this action, you can create a new order.
 
 + Parameters
-    + orderId: 1 (required, integer) - ID of the order
+    + orderId: BeDc== (required, base64) - ID of the order
 
 + Request (application/json)
 
@@ -181,7 +184,7 @@ In this action, you can search for an order and its information. Only orders wit
 In this action, you can fetch all the order's items
 
 + Parameters
-    + orderId: 1 (required, integer) - ID of the order
+    + orderId: BeDc== (required, base64) - ID of the order
 
 + Response 200 (application/json)
 
@@ -211,7 +214,7 @@ In this action, you can fetch all the order's items
 In this action, you can create a new order item.
 
 + Parameters
-    + orderId: 1 (required, integer) - ID of the order
+    + orderId: BcEd= (required, base64) - ID of the order
 
 + Request (application/json)
 
@@ -234,12 +237,39 @@ In this action, you can create a new order item.
         }
         
         
+### Update an Order Item [POST /orders/{orderId}/items/{itemId}]
+
+In this action, you can update the details of an order's item
+
++ Parameters
+    + orderId: BeDc== (required, base64) - ID of the order
+    + itemId: 4 (required, integer) - ID of the item
+
++ Request (application/json)
+
+        {
+            "name": "prata",
+            "price": "2.5"
+        }
+        
++ Response 200 (application/json)
+
+        {
+          "itemId": 2,
+          "name": "prata",
+          "price": 2.5,
+          "UserUserId": 1,
+          "OrderOrderId": 1,
+          "updatedAt": "2015-09-12T04:39:46.000Z",
+          "createdAt": "2015-09-12T04:39:46.000Z"
+        }
+        
 ### Delete an Order Item [DELETE /orders/{orderId}/items/{itemId}]
 
 In this action, you can delete an order's item
 
 + Parameters
-    + orderId: 8 (required, integer) - ID of the order
+    + orderId: BeDc== (required, base64) - ID of the order
     + itemId: 4 (required, integer) - ID of the item
 
 + Response 200 (application/json)
