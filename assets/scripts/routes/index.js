@@ -36,14 +36,7 @@ module.exports = function(app) {
             ).state('view', {
                 url: "/orders/:orderId?new",
                 controller: "ViewOrderController",
-                templateUrl: "/partials/view",
-                resolve: {
-                    loadOrder:  function($http, $stateParams){
-                        return $http.get(
-                            '/api/orders/' + $stateParams.orderId
-                        );
-                    }
-                }
+                templateUrl: "/partials/view"
             }
         );
 

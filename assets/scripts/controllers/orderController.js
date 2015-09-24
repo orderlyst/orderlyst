@@ -43,6 +43,11 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                 promises.push($http.post(
                     '/api/orders/search', {
                         code: $scope.joinOrder.code
+                    },
+                    {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
                     }
                 ));
 
@@ -51,6 +56,11 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     promises.push($http.post(
                         '/api/users', {
                             name: $scope.joinOrder.name
+                        },
+                        {
+                          headers: {
+                            "x-access-token": $window.token
+                          }
                         }
                     ));
                 }
@@ -86,7 +96,11 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         // Retrieve name if user has an account
         if ($scope.hasAccount) {
             $http
-                .get('/api/users/' + encodeURIComponent(uid))
+                .get('/api/users/' + encodeURIComponent(uid), {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
+                })
                 .then(function(response) {
                     $scope.userName = response.data.name;
                 });
@@ -136,7 +150,12 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                 $http
                   .post(
                     '/api/orders',
-                    values
+                    values,
+                    {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
+                    }
                   )
                   .then(function(response) {
                     $order.register(response.data.orderId);
@@ -148,6 +167,11 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   .post(
                     '/api/users', {
                         name: createOrder.name
+                    },
+                    {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
                     }
                   )
                   .then(function(response) {
@@ -156,7 +180,12 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                     values.hostUserId = response.data.userId;
                     return $http.post(
                         '/api/orders',
-                        values
+                        values,
+                        {
+                          headers: {
+                            "x-access-token": $window.token
+                          }
+                        }
                     );
                   })
                   .then(function(response) {
@@ -169,9 +198,9 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
 ];
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
-    'loadOrder', '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
+    '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
     '$ionicSideMenuDelegate', '$order', '$window',
-    function($scope, $http, $stateParams, $store, $location, loadOrder,
+    function($scope, $http, $stateParams, $store, $location,
              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
 
         $scope.uid = $store.get('_orderlyst_uid');
@@ -268,6 +297,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $http.post(
                     '/api/users/' + $scope.uid, {
                         name: name
+                    },
+                    {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
                     }
                 ).then(function(response) {
                         $scope.userDictionary[$scope.uid].name = name;
@@ -391,6 +425,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     name: name,
                     price: price,
                     user: $scope.uid
+                },
+                {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
                 }
             )
                 .then(function(response) {
@@ -428,7 +467,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             for (var i = 0; i < orderItemData.quantity; i++) {
                 $http.post(
                     '/api/orders/' + $scope.order.orderId + '/items',
-                    orderItemData
+                    orderItemData,
+                    {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
+                    }
                 ).success(createItemResponse);
             }
             notify(pluralize(orderItemData.quantity, orderItemData.name) + ' added', 'success');
@@ -436,7 +480,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.removeOrderItem = function(item) {
             $scope.isLoading = true;
             $http.delete(
-                '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId
+                '/api/orders/' + $scope.order.orderId + '/items/' + item.itemId,
+                {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
+                }
             ).success(function(data) {
                     $scope.isLoading = false;
                     $scope.items = $scope.items.filter(function(i) {
@@ -461,7 +510,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             fees.submitted = false;
             $http.post(
                 '/api/orders/' + $scope.order.orderId,
-                fees
+                fees,
+                {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
+                }
             ).success(function(data) {
                     $scope.isLoading = false;
                     $scope.order = data;
@@ -494,7 +548,12 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.order.isOpen = !$scope.order.isOpen;
             $http.post(
                 '/api/orders/' + $scope.order.orderId,
-                $scope.order
+                $scope.order,
+                {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
+                }
             ).success(function(data) {});
         };
 

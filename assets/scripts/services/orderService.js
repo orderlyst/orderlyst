@@ -1,7 +1,7 @@
 module.exports = function(module) {
   'use strict';
 
-  module.factory("$order", function ($websocket, $q, $rootScope, $http, $location) {
+  module.factory("$order", function ($websocket, $q, $rootScope, $http, $location, $window) {
 
     var stream = $websocket('ws://' + $location.host() + ':8080/wsctrl');
 
@@ -11,7 +11,11 @@ module.exports = function(module) {
     var fetchUser = function (uid) {
       var deferred = $q.defer();
       $http
-        .get('/api/users/' + encodeURIComponent(uid))
+        .get('/api/users/' + encodeURIComponent(uid), {
+          headers: {
+            "x-access-token": $window.token
+          }
+        })
         .then(function (response) {
           $currentScope.userDictionary[uid] = response.data;
           deferred.resolve(response.data);
@@ -22,7 +26,11 @@ module.exports = function(module) {
     var fetchItems = function(orderId) {
       var deferred = $q.defer();
       $http
-        .get('/api/orders/' + encodeURIComponent(orderId) + '/items')
+        .get('/api/orders/' + encodeURIComponent(orderId) + '/items', {
+          headers: {
+            "x-access-token": $window.token
+          }
+        })
         .then(function (response) {
           $currentScope.items = Array.prototype.slice.call(response.data, 0);
           deferred.resolve($currentScope.items);
@@ -34,7 +42,11 @@ module.exports = function(module) {
       var deferred = $q.defer();
       $http
         .get(
-          '/api/orders/' + encodeURIComponent(orderId)
+          '/api/orders/' + encodeURIComponent(orderId), {
+            headers: {
+              "x-access-token": $window.token
+            }
+          }
         )
         .then(function(response) {
           $currentScope.order = response.data;
