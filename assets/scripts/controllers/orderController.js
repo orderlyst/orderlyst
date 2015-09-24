@@ -545,6 +545,20 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             }, 0);
         };
 
+        $scope.userSubtotalFee = function(uid) {
+          return $scope.items.filter(function(item) {
+             return item.UserUserId === uid;
+          }).reduce(function(a, b) {
+              return a + parseFloat(b.price);
+          }, 0);
+        };
+
+        $scope.itemCollectionSubtotalFee = function(items) {
+          return items.reduce(function(a, b) {
+              return a + parseFloat(b.price);
+          }, 0);
+        };
+
         $scope.totalFee = function() {
             return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
         };
