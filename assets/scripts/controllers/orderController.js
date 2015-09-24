@@ -591,6 +591,26 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             ).success(function(data) {});
         };
 
+        // To watch isOpen scope change and notify to clients
+        $scope.$watch("order.isOpen", function(newValue, oldValue) {
+            // Sanity check
+            if (newValue !== oldValue && oldValue  !== undefined) {
+                if (newValue) {
+                    if ($scope.isOwner) {
+                        notify("The order is now open", 'success');
+                    } else {
+                        notify("The host just opened the order", "success");
+                    }
+                } else {
+                    if ($scope.isOwner) {
+                        notify("The order is now locked", 'warning');
+                    } else {
+                        notify("The host just locked the order", "warning");
+                    }
+                }
+            }
+        });
+
         $order
             .getItems()
             .then(function(items) {
