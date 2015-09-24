@@ -407,7 +407,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             var orderItemData = angular.copy($scope.itemFormData);
             if (orderItemData.name === '' || orderItemData.name === undefined ||
                 orderItemData.price === '' || orderItemData.price === undefined ||
-                !(/^[1-9][0-9]*(\.[0-9][05])?$/.test(orderItemData.price)) ||
+                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price)) ||
                 +orderItemData.quantity < 1) return;
             $scope.isLoading = true;
             // Hide modal
