@@ -18,6 +18,18 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
 
         if ($scope.hasAccount) {
             $scope.joinOrder.name = uid;
+            if ($scope.hasAccount) {
+                $http
+                    .get('/api/users/' + encodeURIComponent(uid), {
+                      headers: {
+                        "x-access-token": $window.token
+                      }
+                    })
+                    .then(function(response) {
+                        $scope.joinOrder.name = response.data.name;
+                        $scope.userName = response.data.name;
+                    });
+            }
         }
 
         $scope.submit = function(form) {

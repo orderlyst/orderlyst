@@ -6,9 +6,9 @@ ion-view
         .spacer
           h3.text-center.vertical-aligned Create a new order
         h4.text-center.has-side-margin Get started by entering where you are ordering from!
-        //h4.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
         form.create-order-form(name="createOrderForm", formnovalidate="true")
           .list
+            p.text-center.has-side-margin(ng-if="hasAccount") You are logged in as {{userName}}
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
                     && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
               span.input-label What is your name?
