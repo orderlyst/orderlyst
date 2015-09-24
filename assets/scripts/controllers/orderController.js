@@ -4,6 +4,10 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
+
+        $scope.disconnected = function() {
+            return !$window.navigator.onLine;
+        };
         //$scope.createOrder = function() {
         //    if (hasAccount) {
         //        $http.post(
@@ -168,7 +172,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
     '$ionicSideMenuDelegate', '$order', '$window',
     function($scope, $http, $stateParams, $store, $location,
              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
-        $scope.disconnected = false;
 
         $scope.uid = $store.get('_orderlyst_uid');
         var hasAccount = ($scope.uid !== -1);
@@ -180,6 +183,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'user': $scope.uid,
             'quantity': 1,
             'submitted': false
+        };
+
+        $scope.disconnected = function() {
+          return !$window.navigator.onLine;
         };
 
         $order.setScope($scope);
@@ -203,7 +210,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
             var popup = $ionicPopup.show({
                 template: "Are you sure that you want to lock the order? " +
-                "After you lock the order, people will not be able to add more item tothe order.",
+                "After you lock the order, people will not be able to add more item to the order.",
                 title: "Lock Order",
                 scope: $scope,
                 buttons: [{
@@ -420,6 +427,15 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     $scope.items = $scope.items.filter(function(i) {
                         return i.itemId !== item.itemId;
                     });
+
+                    var idArray = $scope.items.map(function(item) {
+                        return item.itemId;
+                    });
+
+                    $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items');
+
+                    $store.removeItem('_orderlyst_items_' + item.itemId);
+
                     notify(pluralize(1, item.name) + ' removed', 'warning');
                 });
         };
@@ -479,31 +495,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $order
             .getItems()
             .then(function(items) {
-                var idArray = [];
                 $scope.items.forEach(function(item) {
-                    idArray.push(item.itemId);
-                    $store.set('_orderlyst_item_' + item.itemId, item);
                     $order.getUser(item.UserUserId).then(function(user) {
-                        $store.set('_orderlyst_user_' + user.userId, user);
                         $scope.userDictionary[user.userId] = user;
                     });
                 });
 
-                $store.set('_orderlyst_order_' + $stateParams.orderId + '_items', idArray);
                 $scope.isLoading = false;
             }, function(response) {
-                $scope.disconnected = true;
-                var idArray = $store.get('_orderlyst_order_' + $stateParams.orderId + '_items');
-                var items = idArray.map(function(id) {
-                    return $store.get('_orderlyst_item_' + id);
-                });
-
-                items.forEach(function(item) {
-                    var userId = item.UserUserId;
-                    var user = $store.get('_orderlyst_user_' + userId);
-                    $scope.userDictionary[user.userId] = user;
-                });
-                $scope.items = items;
             });
 
         var renderPage = function(order) {
@@ -533,7 +532,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 'name': $scope.order.name,
                 'closingAt': $scope.order.closingAt,
                 'submitted': false
-            }
+            };
 
             // Check if the order was newly created
             if ($stateParams.new) {
@@ -556,24 +555,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $order
                 .getUser($scope.uid)
                 .then(function(user) {
-                    $store.set('_orderlyst_user_' + user.userId, user);
                     $scope.userDictionary[user.userId] = user;
                 }, function(response) {
-                    $scope.disconnected = true;
-                    var user = $store.get('_orderlyst_user_' + $scope.uid); 
-                    $scope.userDictionary[user.userId] = user;
                 });
 
             // fetch order owner details
             $order
                 .getUser($scope.order.UserUserId)
                 .then(function(user) {
-                    $store.set('_orderlyst_user_' + user.userId, user);
                     $scope.userDictionary[user.userId] = user;
                 }, function(response) {
-                    $scope.disconnected = true;
-                    var user = $store.get('_orderlyst_user_' + $scope.order.UserUserId);
-                    $scope.userDictionary[user.userId] = user;
                 });
 
         };
@@ -583,9 +574,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             .getOrder()
             .then(renderPage,
                  function(response) {
-                      $scope.disconnected = true;
-                      var order = $store.get('_orderlyst_order_' + $stateParams.orderId);
-                      $scope.order = order;
                  });
     }
 ];

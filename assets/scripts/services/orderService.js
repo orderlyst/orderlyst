@@ -1,51 +1,95 @@
 module.exports = function(module) {
   'use strict';
 
-  module.factory("$order", function ($websocket, $q, $rootScope, $http) {
+  module.factory("$order", function ($websocket, $q, $rootScope, $http, $window, $store) {
 
     var stream = $websocket('ws://localhost:8080/wsctrl');
 
     var $currentScope;
     var orderId;
 
+    var createUserKey = function(uid) {
+      return '_orderlyst_users_' + uid;
+    };
+
+    var createOrderItemsKey = function(orderId) {
+      return '_orderlyst_orders_' + orderId + '_items';
+    };
+
+    var createItemsKey = function(itemId) {
+      return '_orderlyst_items_' + itemId;
+    };
+
+    var createOrderKey = function(orderId) {
+      return '_orderlyst_orders_' + orderId;
+    };
+
     var fetchUser = function (uid) {
       var deferred = $q.defer();
-      $http
-        .get('/api/users/' + encodeURIComponent(uid))
-        .then(function (response) {
-          $currentScope.userDictionary[uid] = response.data;
-          deferred.resolve(response.data);
-        }, function(response) {
-          deferred.reject(response);
-        });
+      if ($window.navigator.onLine) {
+        $http
+          .get('/api/users/' + encodeURIComponent(uid))
+          .then(function (response) {
+            $currentScope.userDictionary[uid] = response.data;
+            $store.set(createUserKey(uid), response.data);
+            deferred.resolve(response.data);
+          }, function(response) {
+            deferred.reject(response);
+          });
+      } else {
+        $currentScope.userDictionary[uid] = $store.get(createUserKey(uid));
+        deferred.resolve($currentScope.userDictionary[uid]);
+      }
       return deferred.promise;
     };
 
     var fetchItems = function(orderId) {
       var deferred = $q.defer();
-      $http
-        .get('/api/orders/' + encodeURIComponent(orderId) + '/items')
-        .then(function (response) {
-          $currentScope.items = Array.prototype.slice.call(response.data, 0);
-          deferred.resolve($currentScope.items);
-        }, function(response) {
-          deferred.reject(response);
+      if ($window.navigator.onLine) {
+        $http
+          .get('/api/orders/' + encodeURIComponent(orderId) + '/items')
+          .then(function (response) {
+            $currentScope.items = Array.prototype.slice.call(response.data, 0);
+            var idArray = $currentScope.items.map(function(item) {
+              return item.itemId;
+            });
+            $store.set(createOrderItemsKey(orderId), idArray);
+            $currentScope.items.map(function(item) {
+              $store.set(createItemsKey(item.itemId), item);
+            });
+            deferred.resolve($currentScope.items);
+          }, function(response) {
+            deferred.reject(response);
+          });
+      } else {
+        var idArray = $store.get(createOrderItemsKey(orderId));
+        $currentScope.items = idArray.map(function(itemId) {
+          return $store.get(createItemsKey(itemId));
         });
+        deferred.resolve($currentScope.items);
+      }
       return deferred.promise;
     };
 
     var fetchOrder = function(orderId) {
       var deferred = $q.defer();
-      $http
-        .get(
-          '/api/orders/' + encodeURIComponent(orderId)
-        )
-        .then(function(response) {
-          $currentScope.order = response.data;
-          deferred.resolve($currentScope.order);
-        }, function (response) {
-          deferred.reject(response);
-        });
+
+      if ($window.navigator.onLine) {
+        $http
+          .get(
+            '/api/orders/' + encodeURIComponent(orderId)
+          )
+          .then(function(response) {
+            $currentScope.order = response.data;
+            $store.set(createOrderKey(orderId), response.data);
+            deferred.resolve($currentScope.order);
+          }, function (response) {
+            deferred.reject(response);
+          });
+      } else {
+        $currentScope.order = $store.get(createOrderKey(orderId));
+        deferred.resolve($currentScope.order);
+      }
       return deferred.promise;
     };
 
