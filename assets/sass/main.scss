@@ -49,6 +49,10 @@ ion-footer-bar.ng-leave {
   }
 }
 
+.bar.bar-footer .button {
+  font-weight: bold;
+}
+
 .bar-filled {
   border: 1px solid $color-primary-blue;
   background-color: $color-primary-blue;
@@ -105,6 +109,7 @@ ion-footer-bar.ng-leave {
 
 .tab-item {
   color: $color-primary-grey !important;
+  font-weight: bold;
 }
 
 .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
