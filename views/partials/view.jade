@@ -8,7 +8,7 @@ block content
                         span.ord-blue.order-title {{order.name}}
                         span.pull-right
                             | <i class="icon ion-android-alarm-clock"></i>
-                            span.ord-blue {{getClosingTime()}}
+                            span.ord-blue {{order.closingAt | date:'H:mm'}}
 
                     .line-text
                         span.text Order Code: {{order.code}}

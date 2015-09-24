@@ -624,11 +624,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $location.url('/join/' + encodeURIComponent($scope.order.code));
             }
 
-            $scope.getClosingTime = function() {
-                var date = new Date($scope.order.closingAt);
-                return date.getHours() + ':' + date.getMinutes();
-            };
-
             // Check if the order was newly created
             if ($stateParams.new) {
                 var newOrderPopup = function() {
