@@ -7,8 +7,8 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     }
 ];
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order) {
+var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order, $ionicPopup) {
         $scope.joinOrder = {};
         $scope.submitted = false;
         $scope.joinOrder.code = $stateParams.orderCode;
@@ -31,6 +31,24 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     });
             }
         }
+
+        $scope.logoutConfirm = function() {
+          $ionicPopup.show({
+              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be recovered.",
+              title: "Log Out",
+              scope: $scope,
+              buttons: [{
+                  text: 'Cancel'
+              }, {
+                  text: "Confirm",
+                  type: "button-filled",
+                  onTap: function(e) {
+                    $store.remove('_orderlyst_uid');
+                    $scope.hasAccount = false;
+                  }
+              }]
+          });
+        };
 
         $scope.submit = function(form) {
             $scope.submitted = true;
@@ -69,6 +87,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                         $scope.hasAccount = true;
                         var user = result[1].data;
                         $store.set('_orderlyst_uid', user.userId);
+                        $scope.userName = $scope.joinOrder.name;
                     }
                     if (order) {
                         $order.register(order.orderId);
@@ -83,8 +102,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
     }
 ];
 
-var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order',
-    function($scope, $http, $location, $store, $window, $order) {
+var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $location, $store, $window, $order, $ionicPopup) {
         $scope.createOrder = {};
         $scope.submitted = false;
         var uid = $store.get('_orderlyst_uid');
@@ -102,6 +121,24 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                     $scope.userName = response.data.name;
                 });
         }
+
+        $scope.logoutConfirm = function() {
+          $ionicPopup.show({
+              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be recovered.",
+              title: "Log Out",
+              scope: $scope,
+              buttons: [{
+                  text: 'Cancel'
+              }, {
+                  text: "Confirm",
+                  type: "button-filled",
+                  onTap: function(e) {
+                    $store.remove('_orderlyst_uid');
+                    $scope.hasAccount = false;
+                  }
+              }]
+          });
+        };
 
         var date = new Date();
         $scope.createOrder.closingAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59);
