@@ -4,6 +4,32 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
+
+        $scope.disconnected = false;
+        $scope.$watch(
+            function() {
+                return !$window.navigator.onLine;
+            }, function(newValue, oldValue) {
+                $scope.disconnected = newValue;
+            }
+        );
+
+
+        //$scope.createOrder = function() {
+        //    if (hasAccount) {
+        //        $http.post(
+        //            '/api/orders',
+        //            {
+        //              hostUserId: uid
+        //            }
+        //        ).success(function (data) {
+        //          $order.register(data.orderId);
+        //          $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
+        //        });
+        //    } else {
+        //        $location.url('/create');
+        //    }
+        //};
     }
 ];
 
@@ -200,6 +226,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'submitted': false
         };
 
+        $scope.disconnected = false;
+
+        $scope.$watch(
+            function() {
+                return !$window.navigator.onLine;
+            }, function(newValue, oldValue) {
+                $scope.disconnected = newValue;
+            }
+        );
+
         $order.setScope($scope);
         $order.register($stateParams.orderId);
 
@@ -225,7 +261,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
             var popup = $ionicPopup.show({
                 template: "Are you sure that you want to lock the order? " +
-                "After you lock the order, people will not be able to add more item tothe order.",
+                "After you lock the order, people will not be able to add more item to the order.",
                 title: "Lock Order",
                 scope: $scope,
                 buttons: [{
@@ -459,6 +495,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             // HACK
             $scope.itemFormData.submitted = true;
             var orderItemData = angular.copy($scope.itemFormData);
+            console.log(orderItemData);
             if (orderItemData.name === '' || orderItemData.name === undefined ||
                 orderItemData.price === '' || orderItemData.price === undefined ||
                 !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price)) ||
@@ -478,6 +515,13 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                         return item.itemId === data.itemId;
                     }).length > 0) return;
                 $scope.items.push(data);
+                $store.set('_orderlyst_items_' + data.itemId, data);
+                var idArray = $scope.items.map(function(item) {
+                    return item.itemId;
+                });
+                console.log($scope.items);
+
+                $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
             };
             for (var i = 0; i < orderItemData.quantity; i++) {
                 $http.post(
@@ -507,11 +551,42 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     $scope.items = $scope.items.filter(function(i) {
                         return i.itemId !== item.itemId;
                     });
+
+                    var idArray = $scope.items.map(function(item) {
+                        return item.itemId;
+                    });
+
+                    $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
+
+                    $store.remove('_orderlyst_items_' + item.itemId);
+
                     notify(pluralize(1, item.name) + ' removed', 'warning');
                 });
         };
 
         // Fee aggregate scope methods
+        // Aditional Fees scope methods
+
+        $scope.updateOrderAdditionalFee = function() {
+            var fees = $scope.additionalFee;
+            fees.submitted = true;
+            if (fees.surcharge === '' || fees.surcharge === undefined ||
+                fees.tax === '' || fees.surcharge === undefined ||
+                !(/^[0-9]+(\.[0-9][05])?$/.test(fees.surcharge)) ||
+                !(/^[0-9]+(\.[0-9]+)?$/.test(fees.tax))) return;
+            $scope.isLoading = true;
+            // Hide modal
+            $scope.closeAdditionalFeeModal();
+            fees.submitted = false;
+            $http.post(
+                '/api/orders/' + $scope.order.orderId,
+                fees
+            ).success(function(data) {
+                    $scope.isLoading = false;
+                    $scope.order = data;
+                    $store.set('_orderlyst_orders_' + $scope.order.orderId, $scope.order);
+                });
+        };
 
         $scope.getSurcharge = function() {
             return $scope.order.surcharge;
@@ -604,7 +679,14 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $order
             .getItems()
             .then(function(items) {
+                $scope.items.forEach(function(item) {
+                    $order.getUser(item.UserUserId).then(function(user) {
+                        $scope.userDictionary[user.userId] = user;
+                    });
+                });
+
                 $scope.isLoading = false;
+            }, function(response) {
             });
 
         var renderPage = function(order) {
@@ -649,6 +731,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 .getUser($scope.uid)
                 .then(function(user) {
                     $scope.userDictionary[user.userId] = user;
+                }, function(response) {
                 });
 
             // fetch order owner details
@@ -656,6 +739,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 .getUser($scope.order.UserUserId)
                 .then(function(user) {
                     $scope.userDictionary[user.userId] = user;
+                }, function(response) {
                 });
 
         };
@@ -663,7 +747,9 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $order
             .getOrder()
-            .then(renderPage);
+            .then(renderPage,
+                 function(response) {
+                 });
     }
 ];
 
