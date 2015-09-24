@@ -15,7 +15,7 @@ block content
 
                     ion-list(ng-if="items.length")
                         // If i have order items
-                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")
+                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'itemId' | where: { UserUserId: uid } | groupBy: 'UserUserId'")
                             .list.card
                                 .item.item-divider.item-personal-header
                                     b {{userDictionary[user].name}}
@@ -44,7 +44,7 @@ block content
                             small.item.annotation Tap "Add Item" or swipe existing items to start adding to your order.
 
 
-                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'OrderOrderId' | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
+                        div(ng-repeat="(user, groupedByUserItems) in items | unique: 'itemId' | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
                             .list.card
                                 .item.item-divider
                                     b {{userDictionary[user].name}}
@@ -68,7 +68,7 @@ block content
             ion-view
                 ion-content
                     ion-list(ng-if="items.length")
-                        ul(ng-repeat="(name, prices) in items | unique: 'OrderOrderId' | groupBy: 'name'")
+                        ul(ng-repeat="(name, prices) in items | unique: 'itemId' | groupBy: 'name'")
                             div(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
                                 li.row.item
                                     .col.col-70

@@ -421,7 +421,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             var createItemResponse = function(data) {
                 $scope.isLoading = false;
                 if ($scope.items.filter(function(item) {
-                        return item.OrderOrderId === data.OrderOrderId
+                        return item.itemId === data.itemId;
                     }).length > 0) return;
                 $scope.items.push(data);
             };
