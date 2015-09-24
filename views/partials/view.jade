@@ -32,7 +32,7 @@ block content
                                         ion-option-button.button-filled(ng-if="order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)") +1
                                 .item.item-divider.row.personal-cost
-                                    .col.col-75.text-right Additional
+                                    .col.col-60.text-right Additional
                                     .col.text-right
                                       i S{{(order.surcharge/numActiveUsers()) * (100+order.tax)/100 + itemCollectionSubtotalFee(groupedByUserItems) * order.tax/100 | currency}}
                                         
