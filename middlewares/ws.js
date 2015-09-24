@@ -11,7 +11,7 @@ wss.on('connection', function connection(client) {
   });
   client.on('close', function(){
     client.orderId = null;
-  })
+  });
   clients.push(client);
 });
 

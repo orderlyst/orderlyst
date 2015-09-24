@@ -338,6 +338,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.popover.show($event);
         };
 
+        $scope.closePopover = function($event) {
+            $scope.popover.hide($event);
+        };
+
         $scope.$on('popover.hidden', function() {
             // Execute action
             $scope.showJoinLink = false;
@@ -351,6 +355,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         // For showing new item added message
         var notify = function(message, type) {
+            $scope.closePopover();
             $scope.alertOn = true;
             $scope.alertMessage = message;
             $scope.alertType = type;
@@ -358,6 +363,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 $scope.alertOn = false;
             }, 1000);
         };
+
+        $scope.notify = notify;
 
         // My order scope methods
 
