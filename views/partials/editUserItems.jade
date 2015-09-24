@@ -1,0 +1,34 @@
+ion-modal-view
+    ion-header-bar.bar-orderlyst.bar-filled
+        h2.title Edit Items
+    ion-content.has-header
+        form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="editUserItemsForm", novalidate="")
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': editUserItemsForm.name.$invalid && userItemsFormData.submitted, \
+                    'valid': editUserItemsForm.name.$valid && userItemsFormData.submitted && editUserItemsForm.name.$dirty }")
+                span.input-label Item Name
+                input(type="text",placeholder="Item Name",ng-model="userItemsFormData.name", ng-required="true", name="name")
+            .form-errors(ng-show="editUserItemsForm.name.$error && userItemsFormData.submitted", ng-messages="editUserItemsForm.name.$error")
+                .form-error(ng-message="required") Item name is required
+
+            label.item.item-input.item-floating-label(ng-class="{ 'has-error': editUserItemsForm.price.$invalid && userItemsFormData.submitted, \
+                    'valid': editUserItemsForm.price.$valid && userItemsFormData.submitted && editUserItemsForm.price.$dirty }")
+                span.input-label Item Price (S$)
+                input(type="number",placeholder="Item Price (S$)",ng-model="userItemsFormData.price", ng-required="true", \
+                ng-pattern="/^[1-9][0-9]*(\.[0-9]([05])?)?$/", name="price")
+            .form-errors(ng-show="editUserItemsForm.price.$error && userItemsFormData.submitted", ng-messages="editUserItemsForm.price.$error")
+                .form-error(ng-message="required") Item price is required
+                .form-error(ng-message="pattern") Price must be valid
+
+            .item.item-input.item-floating-label
+                .row
+                    .col-20.text-center.col-offset-20 Quantity
+                    .col-20.text-right(ng-click="decrementUserItemsFormDataQuantity()")
+                        i.ion-minus.icon
+                    .col-20.text-center
+                        .special-height {{userItemsFormData.quantity}}
+                    .col-20.text-left(ng-click="incrementUserItemsFormDataQuantity()")
+                        i.icon.ion-plus
+
+    ion-footer-bar.bar-orderlyst()
+        button.button.button-clear.button-blank(ng-click="closeUserItemsFormModal()") Cancel
+        button.button.button-clear.button-filled(ng-click="editUserItemsForm()") Edit Order Items

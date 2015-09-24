@@ -276,6 +276,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             'quantity': 1,
             'submitted': false
         };
+        $scope.userItemsFormData = { 'submitted': false };
 
         $scope.disconnected = false;
 
@@ -596,6 +597,49 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                     notify(pluralize(1, item.name) + ' removed', 'warning');
                 });
         };
+
+        // Edit User Order Items
+        $ionicModal.fromTemplateUrl('/partials/editUserItems', function(modal) {
+            $scope.editUserItemsModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up',
+            hardwareBackButtonClose: false
+        });
+
+        $scope.openEditUserItemsModal = function(items) {
+            $scope.userItemsFormData.UserUserId = items[0].UserUserId;
+            $scope.userItemsFormData.name = items[0].name;
+            $scope.userItemsFormData.price = items[0].price;
+            $scope.userItemsFormData.quantity = items.length;
+            $scope.editUserItemsModal.show();
+        };
+
+        $scope.incrementUserItemsFormDataQuantity = function() {
+            // Cast the quantity to numeric first
+            $scope.userItemsFormData.quantity = +$scope.userItemsFormData.quantity;
+            if ($scope.userItemsFormData.quantity < 1) {
+                $scope.userItemsFormData.quantity = 1;
+            } else {
+                console.log('add one');
+                $scope.userItemsFormData.quantity++;
+            }
+        };
+
+        $scope.decrementUserItemsFormDataQuantity = function() {
+            // Cast the quantity to numeric first
+            $scope.userItemsFormData.quantity = +$scope.userItemsFormData.quantity;
+            if ($scope.userItemsFormData.quantity > 0) {
+                console.log('sub one');
+                $scope.userItemsFormData.quantity--;
+            } else {
+                $scope.userItemsFormData.quantity = 0;
+            }
+        };
+
+        $scope.closeUserItemsFormModal = function() {
+            $scope.editUserItemsModal.hide();
+        }
 
         // Fee aggregate scope methods
         // Aditional Fees scope methods
