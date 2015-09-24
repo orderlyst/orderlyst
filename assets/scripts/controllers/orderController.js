@@ -608,10 +608,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         });
 
         $scope.openEditUserItemsModal = function(items) {
-            $scope.userItemsFormData.UserUserId = items[0].UserUserId;
+            $scope.userItemsFormData.user = items[0].UserUserId;
             $scope.userItemsFormData.name = items[0].name;
             $scope.userItemsFormData.price = items[0].price;
             $scope.userItemsFormData.quantity = items.length;
+            $scope.userItemsFormData.items = items;
             $scope.editUserItemsModal.show();
         };
 
@@ -639,7 +640,79 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
         $scope.closeUserItemsFormModal = function() {
             $scope.editUserItemsModal.hide();
-        }
+        };
+
+        $scope.editUserItemsForm = function() {
+            $scope.userItemsFormData.submitted = true;
+            var orderItemData = angular.copy($scope.userItemsFormData);
+            delete orderItemData.items;
+            console.log(orderItemData);
+            if (orderItemData.name === '' || orderItemData.name === undefined ||
+                orderItemData.price === '' || orderItemData.price === undefined ||
+                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
+            $scope.isLoading = true;
+
+            // Clear formData
+            $scope.userItemsFormData.submitted = false;
+
+            // Remove all items then re-add
+            var promises = [];
+
+            $scope.userItemsFormData.items.map(function(item) {
+                var promise = $http.delete(
+                    '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items/' + item.itemId,
+                    {
+                        headers: {
+                            "x-access-token": $window.token
+                        }
+                    }
+                );
+                promises.push(promise);
+            });
+
+            // Add items quantity times
+            var createItemResponse = function(data) {
+                $scope.isLoading = false;
+                if ($scope.items.filter(function(item) {
+                        return item.itemId === data.itemId;
+                    }).length > 0) return;
+                $scope.items.push(data);
+                $store.set('_orderlyst_items_' + data.itemId, data);
+            };
+            for (var i = 0; i < orderItemData.quantity; i++) {
+                var promise = $http.post(
+                    '/api/orders/' + encodeURIComponent($scope.order.orderId) + '/items',
+                    orderItemData,
+                    {
+                        headers: {
+                            "x-access-token": $window.token
+                        }
+                    }
+                ).success(createItemResponse);
+                promises.push(promise);
+            }
+            $q.all(promises).then(function(response) {
+                var removedItemIds = $scope.userItemsFormData.items.map(function(item) {
+                    return item.itemId;
+                });
+                $scope.items = $scope.items.filter(function(i) {
+                    return removedItemIds.indexOf(i.itemId) < 0;
+                });
+                removedItemIds.map(function(id) {
+                    $store.remove('_orderlyst_items_' + id);
+                });
+
+                var idArray = $scope.items.map(function(item) {
+                    return item.itemId;
+                });
+
+                $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
+
+                // Hide modal
+                $scope.closeUserItemsFormModal();
+                notify("Items were successfully editted", "success");
+            })
+        };
 
         // Fee aggregate scope methods
         // Aditional Fees scope methods
