@@ -21,11 +21,11 @@ block content
                                     b {{userDictionary[user].name}}
                                 ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                     ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                        .col.col-70
+                                        .col.col-75
                                             span.annotation {{name}}
                                             b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
                                             span.orderlyst-badge {{groupedItems.length}}
-                                        .col.col-30.text-right
+                                        .col.text-right
                                             .annotation S{{price * groupedItems.length | currency}}
                                         ion-option-button.ion-edit.button-grey(ng-if="order.isOpen", \
                                             ng-click="openEditUserItemsModal(groupedItems)")
@@ -57,11 +57,11 @@ block content
                                     b {{userDictionary[user].name}}
                                 ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                     ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                        .col.col-70
+                                        .col.col-75
                                             span.annotation {{name}}
                                             b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
                                             span.orderlyst-badge {{groupedItems.length}}
-                                        .col.col-30.text-right
+                                        .col.text-right
                                             | S{{price * groupedItems.length | currency}}
                                         ion-option-button.button-filled.ion-android-cart(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)")
@@ -78,16 +78,15 @@ block content
                 ion-content
                     ion-list(can-swipe="true", ng-if="items.length")
                         div(ng-repeat="(name, prices) in items | unique: 'itemId' | groupBy: 'name'")
-                            ion-item.item(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                .row
-                                    .col.col-70
-                                        | {{name}}
-                                        b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
-                                        span.orderlyst-badge {{groupedItems.length}}
-                                    .col.col-30.text-right
-                                        | S{{price * groupedItems.length | currency}}
-                                    ion-option-button.ion-edit.button-grey(ng-if="isOwner", \
-                                        ng-click="openEditOwnerItemsModal(groupedItems)")
+                            ion-item.user-order-item(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
+                                .col.col-75
+                                    | {{name}}
+                                    b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
+                                    span.orderlyst-badge {{groupedItems.length}}
+                                .col.text-right
+                                    | S{{price * groupedItems.length | currency}}
+                                ion-option-button.ion-edit.button-grey(ng-if="!disconnected && isOwner", \
+                                    ng-click="openEditOwnerItemsModal(groupedItems)")
                         .order-fee
                             .row.item
                                 .col.col-60.col-offset-10 Subtotal:
@@ -119,7 +118,9 @@ block content
                             hr
                             .row.item
                                 .col.col-60.col-offset-10 Total:
-                                .col.col-30.text-right S{{totalFee() | currency}}
+                                .col.col-30.text-right
+                                    b
+                                        u S{{totalFee() | currency}}
 
                 ion-footer-bar.bar-orderlyst(ng-if="!disconnected && isOwner")
                     button.button.button.button-blank.button-clear(ng-click="openOrderSettingsModal()") Order Settings

@@ -238,7 +238,11 @@ ion-footer-bar.ng-leave {
 
 .row > .col {
   height: 100%;
-  white-space: normal;
+  white-space: pre-wrap;
+}
+
+.col {
+  white-space: pre-wrap;
 }
 
 .hidden {
