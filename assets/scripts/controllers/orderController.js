@@ -1,7 +1,7 @@
 var pluralize = require('../helpers/pluralize.js');
 
-var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
-    function($scope, $http, $window, $store, $location, $order) {
+var startOrder = ['$scope', '$http', '$window', '$store', '$state', '$order',
+    function($scope, $http, $window, $store, $state, $order) {
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
         $scope.disconnected = !window.navigator.onLine;
@@ -17,8 +17,8 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     }
 ];
 
-var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order', '$ionicPopup',
-    function($scope, $http, $location, $store, $stateParams, $q, $ionicModal, $window, $order, $ionicPopup) {
+var joinOrder = ['$scope', '$http', '$state', '$store', '$stateParams', '$q', '$ionicModal', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $state, $store, $stateParams, $q, $ionicModal, $window, $order, $ionicPopup) {
         $scope.joinOrder = {};
         $scope.submitted = false;
         $scope.joinOrder.code = $stateParams.orderCode;
@@ -119,7 +119,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     }
                     if (order) {
                         $order.register(order.orderId);
-                        $location.url('/orders/' + encodeURIComponent(order.orderId));
+
+                        $state.go('view', {orderId: order.orderId});
                     } else {
                         // order is not found or no longer available.
                         $scope.codeNotAvailable = true;
@@ -240,7 +241,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   )
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                    $state.go('view', {orderId: response.data.orderId});
+                    //$location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             } else {
                 if (createOrder.name === undefined || createOrder.orderName === undefined) return;
@@ -271,7 +273,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
                   })
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
+                    $state.go('view', {orderId: response.data.orderId});
+                    //$location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             }
         };
@@ -948,7 +951,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
 
 
             if (!hasAccount) {
-                $location.url('/join/' + encodeURIComponent($scope.order.code));
+                $state.go('joinOrder', {orderCode: $scope.order.code});
+                //$location.url('/join/' + encodeURIComponent($scope.order.code));
             }
 
             // Check if the order was newly created

@@ -22,5 +22,5 @@ ion-view
           .bar.bar-header.bar-dark.item.item-divider( ng-if="nameChanging")
             input(ng-model="$parent.$parent.$parent.nameChangeData")
             span.ord-blue.large(ng-click="toggleNameChanging()") &nbsp;<i class="icon ion-checkmark"></i>
-          a.item(href='/') <i class="icon ion-ios-home"></i> Home
-          a.item(href='/create') New Order
+          a.item(ui-sref='index') <i class="icon ion-ios-home"></i> Home
+          a.item(ui-sref="create") New Order
