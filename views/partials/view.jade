@@ -100,7 +100,9 @@ block content
                             hr
                             .row.item
                                 .col.col-60.col-offset-10 Total:
-                                .col.col-30.text-right S{{ totalFee() | currency}}
+                                .col.col-30.text-right
+                                    b
+                                        u S{{ totalFee() | currency}}
 
                     div(ng-if="!items.length")
                         .row.item.text-center
