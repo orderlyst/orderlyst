@@ -12,7 +12,7 @@ ion-view
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.name.$invalid \
                     && submitted, 'valid': createOrderForm.name.$valid && submitted }", ng-if="!hasAccount")
               span.input-label What is your name?
-              input(type='text', placeholder='What is your name?', ng-model="createOrder.name", ng-minlength="2", ng-maxlength="20", ng-required="true", name="name")
+              input(type='text', placeholder='What is your name?', ng-model="createOrder.name", ng-minlength="3", ng-maxlength="20", ng-required="true", name="name")
             .form-errors(ng-if="submitted && createOrderForm.name.$error", ng-messages="createOrderForm.name.$error")
               .form-error(ng-message="required") We need your name.
               .form-error(ng-message="maxlength") Your name is a little long (more than 20 characters). Do you have a nickname instead?
