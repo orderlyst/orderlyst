@@ -25,4 +25,5 @@ ion-view
               .form-error(ng-message="minlength") Your name is a little short (less than 2 characters). It'll be hard for others to recognise you.
           .row
             .col-80.col-offset-10
-              button.button.button-filled.button-block(ng-click="submit(joinOrderForm)") Join Order
+              button.button.button-filled.button-block(ng-if="!disconnected" ng-click="submit(joinOrderForm)") Join Order
+              button.button.button-disabled.button-block(ng-if="disconnected") Offline

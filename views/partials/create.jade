@@ -32,4 +32,5 @@ ion-view
 
           .row
             .col-80.col-offset-10
-              button.button.button-blank.button-block(ng-click="submit(createOrderForm)") Create Order
+              button.button.button-blank.button-block(ng-if="!disconnected" ng-click="submit(createOrderForm)") Create Order
+              button.button.button-disabled.button-block(ng-if="disconnected") Offline

@@ -4,15 +4,16 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
     function($scope, $http, $window, $store, $location, $order) {
         var uid = $store.get('_orderlyst_uid');
         var hasAccount = (uid !== -1);
+        $scope.disconnected = !window.navigator.onLine;
+        $window.addEventListener('online', function(event) {
+            $scope.disconnected = false;
+            $scope.$apply();
+        }, false);
 
-        $scope.disconnected = false;
-        $scope.$watch(
-            function() {
-                return !$window.navigator.onLine;
-            }, function(newValue, oldValue) {
-                $scope.disconnected = newValue;
-            }
-        );
+        $window.addEventListener('offline', function(event) {
+            $scope.disconnected = true;
+            $scope.$apply();
+        }, false);
     }
 ];
 
@@ -24,6 +25,16 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
         var uid = $store.get('_orderlyst_uid');
         $scope.hasAccount = (uid !== -1);
         $scope.codeNotAvailable = false;
+        $scope.disconnected = !window.navigator.onLine;
+        $window.addEventListener('online', function(event) {
+            $scope.disconnected = false;
+            $scope.$apply();
+        }, false);
+
+        $window.addEventListener('offline', function(event) {
+            $scope.disconnected = true;
+            $scope.$apply();
+        }, false);
 
         if ($scope.hasAccount) {
             $scope.joinOrder.name = uid;
@@ -125,6 +136,16 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         $scope.submitted = false;
         var uid = $store.get('_orderlyst_uid');
         $scope.hasAccount = (uid !== -1);
+        $scope.disconnected = !window.navigator.onLine;
+        $window.addEventListener('online', function(event) {
+            $scope.disconnected = false;
+            $scope.$apply();
+        }, false);
+
+        $window.addEventListener('offline', function(event) {
+            $scope.disconnected = true;
+            $scope.$apply();
+        }, false);
 
         // Retrieve name if user has an account
         if ($scope.hasAccount) {
@@ -277,16 +298,16 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         };
         $scope.userItemsFormData = { 'submitted': false };
         $scope.ownerItemsFormData = { 'submitted': false };
+        $scope.disconnected = !window.navigator.onLine;
+        $window.addEventListener('online', function(event) {
+            $scope.disconnected = false;
+            $scope.$apply();
+        }, false);
 
-        $scope.disconnected = false;
-
-        $scope.$watch(
-            function() {
-                return !$window.navigator.onLine;
-            }, function(newValue, oldValue) {
-                $scope.disconnected = newValue;
-            }
-        );
+        $window.addEventListener('offline', function(event) {
+            $scope.disconnected = true;
+            $scope.$apply();
+        }, false);
 
         $order.setScope($scope);
         $order.register($stateParams.orderId);
