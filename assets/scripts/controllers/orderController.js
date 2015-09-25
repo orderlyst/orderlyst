@@ -27,18 +27,23 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
 
         if ($scope.hasAccount) {
             $scope.joinOrder.name = uid;
-            if ($scope.hasAccount) {
-                $http
-                    .get('/api/users/' + encodeURIComponent(uid), {
-                      headers: {
-                        "x-access-token": $window.token
-                      }
-                    })
-                    .then(function(response) {
-                        $scope.joinOrder.name = response.data.name;
-                        $scope.userName = response.data.name;
-                    });
-            }
+            $http
+                .get('/api/users/' + encodeURIComponent(uid), {
+                  headers: {
+                    "x-access-token": $window.token
+                  }
+                })
+                .then(
+                  function(response) {
+                    $scope.joinOrder.name = response.data.name;
+                    $scope.userName = response.data.name;
+                  },
+                  function () {
+                    $store.set('_orderlyst_uid', -1);
+                    uid = -1;
+                    $scope.hasAccount = false;
+                  }
+                );
         }
 
         $scope.logoutConfirm = function() {
