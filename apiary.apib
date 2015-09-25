@@ -24,6 +24,12 @@ In this action, you can fetch a user's name and information.
           "createdAt": "2015-09-11T13:31:17.000Z",
           "updatedAt": "2015-09-11T13:36:01.000Z"
         }
+        
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
+        }
 
 ### Create a New User [POST /users/]
 
@@ -65,6 +71,12 @@ In the event that the user wants to change a detail, such as changing their name
           "createdAt": "2015-09-11T13:31:17.000Z",
           "updatedAt": "2015-09-11T13:36:01.000Z"
         }
+        
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
+        }
 
 ## Group Orders & Items
 
@@ -90,6 +102,12 @@ In this action, you can fetch an order and its information.
           "createdAt": "2015-09-11T13:32:41.000Z",
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
         }
 
 ### Create an Order [POST /orders/]
@@ -152,6 +170,12 @@ In this action, you can create a new order.
           "UserUserId": 1
         }
         
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
+        }
+        
 ### Search for an Order [GET /orders/search]
 
 In this action, you can search for an order and its information. Only orders with status `isOpen` set to true will be returned by the API.
@@ -176,6 +200,10 @@ In this action, you can search for an order and its information. Only orders wit
           "updatedAt": "2015-09-11T13:32:41.000Z",
           "UserUserId": 1
         }
+        
++ Response 404 (application/json)
+
+        {}
 
 ## Items Collection [/orders/{orderId}/items]
 
@@ -208,7 +236,13 @@ In this action, you can fetch all the order's items
             "OrderOrderId": 1
           }
         ]
+        
++ Response 404 (application/json)
 
+        {
+            "status": "404 Not Found"
+        }
+        
 ### Create an Order Item [POST /orders/{orderId}/items]
 
 In this action, you can create a new order item.
@@ -236,6 +270,11 @@ In this action, you can create a new order item.
           "createdAt": "2015-09-12T04:39:46.000Z"
         }
         
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
+        }
         
 ### Update an Order Item [POST /orders/{orderId}/items/{itemId}]
 
@@ -264,6 +303,12 @@ In this action, you can update the details of an order's item
           "createdAt": "2015-09-12T04:39:46.000Z"
         }
         
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
+        }
+        
 ### Delete an Order Item [DELETE /orders/{orderId}/items/{itemId}]
 
 In this action, you can delete an order's item
@@ -276,4 +321,10 @@ In this action, you can delete an order's item
 
         {
           "status": "200 OK"
+        }
+        
++ Response 404 (application/json)
+
+        {
+            "status": "404 Not Found"
         }
