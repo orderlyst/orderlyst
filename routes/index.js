@@ -44,10 +44,14 @@ router.get('/join/:code', function(req, res, next){
       }
     })
     .then(function(token){
-      res.render('meta', {
-        order: _order,
-        token: token
-      });
+      if (_order) {
+        res.render('meta', {
+          order: _order,
+          token: token
+        });
+      } else {
+        next();
+      }
     });
 });
 
