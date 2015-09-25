@@ -711,7 +711,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 // Hide modal
                 $scope.closeUserItemsFormModal();
                 notify("Items were successfully editted", "success");
-            })
+            });
         };
 
         // Edit order item on Summary page
@@ -778,7 +778,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
 
                 $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
-            })
+            });
         };
 
         // Fee aggregate scope methods

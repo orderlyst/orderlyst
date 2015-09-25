@@ -79,7 +79,7 @@ router.post('/:id', function(req, res, next) {
     values.tax = req.body.tax;
   }
   if (req.body.name) {
-    values.name = req.body.name
+    values.name = req.body.name;
   }
   if (req.body.closingAt) {
     values.closingAt = new Date(req.body.closingAt);
