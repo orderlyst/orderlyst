@@ -263,24 +263,17 @@ router.delete('/:id/items/:itemId', function(req, res, next){
       }
     })
     .then(function(result) {
-      var count = result[0];
-      if (count === 1) {
-        req.models.Item
-          .findAll({
-            "where": {
-              "OrderOrderId": orderId
-            }
-          })
-          .then(function(items){
-            req.wsUpdate(req.params.id, 'items', items);
-          });
-
-        res.json({status: "200 OK"});
-      } else {
-        res.status(404).json({
-          "status": "404 Not Found"
+      req.models.Item
+        .findAll({
+          "where": {
+            "OrderOrderId": orderId
+          }
+        })
+        .then(function(items){
+          req.wsUpdate(req.params.id, 'items', items);
         });
-      }
+
+      res.json({status: "200 OK"});
     });
 });
 
