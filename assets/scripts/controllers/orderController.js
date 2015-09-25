@@ -272,7 +272,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
         $scope.itemFormData = {
             'user': $scope.uid,
             'quantity': 1,
-            'submitted': false
+            'submitted': false,
+            'price': 0.00
         };
         $scope.userItemsFormData = { 'submitted': false };
         $scope.ownerItemsFormData = { 'submitted': false };
@@ -536,7 +537,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             console.log(orderItemData);
             if (orderItemData.name === '' || orderItemData.name === undefined ||
                 orderItemData.price === '' || orderItemData.price === undefined ||
-                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price)) ||
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(orderItemData.price)) ||
                 +orderItemData.quantity < 1) return;
             $scope.isLoading = true;
             // Hide modal
@@ -544,7 +545,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             // Clear formData
             $scope.itemFormData.submitted = false;
             $scope.itemFormData.name = '';
-            $scope.itemFormData.price = '';
+            $scope.itemFormData.price = 0.00;
             $scope.itemFormData.quantity = 1;
             // Add items quantity times
             var createItemResponse = function(data) {
@@ -653,7 +654,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             console.log(orderItemData);
             if (orderItemData.name === '' || orderItemData.name === undefined ||
                 orderItemData.price === '' || orderItemData.price === undefined ||
-                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
             $scope.isLoading = true;
 
             // Clear formData
@@ -744,7 +745,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             delete orderItemData.items;
             console.log(orderItemData);
             if (orderItemData.price === '' || orderItemData.price === undefined ||
-                !(/^[1-9][0-9]*(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
+                !(/^[0-9]+(\.[0-9]([05])?)?$/.test(orderItemData.price))) return;
             $scope.isLoading = true;
 
             // Clear formData
