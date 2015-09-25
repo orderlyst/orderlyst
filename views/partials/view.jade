@@ -79,7 +79,7 @@ block content
                     button.button.button-clear(ng-if="disconnected" ng-disabled=true)  Offline
         ion-tab(title="Summary")
             ion-view
-                ion-content.has-footer
+                ion-content(ng-class="{'has-footer': isOwner}")
                     ion-list(can-swipe="true", ng-if="items.length")
                         div(ng-repeat="(name, prices) in items | unique: 'itemId' | groupBy: 'name'")
                             ion-item.user-order-item(ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
