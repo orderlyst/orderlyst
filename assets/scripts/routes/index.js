@@ -33,6 +33,7 @@ module.exports = function(app) {
                 controller: "CreateOrderController"
             }
             ).state('view', {
+                cache: false,
                 url: "/orders/:orderId?new",
                 controller: "ViewOrderController",
                 templateUrl: "/partials/view"
