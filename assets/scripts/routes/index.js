@@ -37,7 +37,16 @@ module.exports = function(app) {
             }
             ).state('view', {
                 cache: false,
-                url: "/orders/:orderId?new",
+                url: "/orders/:orderId",
+                controller: "ViewOrderController",
+                templateUrl: "/partials/view"
+            }
+            ).state('viewNew', {
+                cache: false,
+                params: {
+                  new: true
+                },
+                url: "/orders/:orderId",
                 controller: "ViewOrderController",
                 templateUrl: "/partials/view"
             }

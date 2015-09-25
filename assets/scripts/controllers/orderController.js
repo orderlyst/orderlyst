@@ -241,7 +241,7 @@ var createOrder = ['$scope', '$http', '$state', '$store', '$window', '$order', '
                   )
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $state.go('view', {orderId: response.data.orderId});
+                    $state.go('viewNew', {orderId: response.data.orderId});
                     //$location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             } else {
@@ -273,7 +273,7 @@ var createOrder = ['$scope', '$http', '$state', '$store', '$window', '$order', '
                   })
                   .then(function(response) {
                     $order.register(response.data.orderId);
-                    $state.go('view', {orderId: response.data.orderId});
+                    $state.go('viewNew', {orderId: response.data.orderId});
                     //$location.url('/orders/' + encodeURIComponent(response.data.orderId) + '?new=true');
                   });
             }
