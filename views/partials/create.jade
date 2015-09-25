@@ -20,10 +20,10 @@ ion-view
 
             label.above.item.item-input.item-floating-label(ng-class="{ 'has-error': createOrderForm.orderName.$invalid \
                     && submitted, 'valid': createOrderForm.orderName.$valid && submitted }")
-              span.input-label Where are you ordering from?
-              input(type='text', placeholder='Where are you ordering from?', ng-model="createOrder.orderName", ng-required="true", name="orderName")
+              span.input-label What is the title of your order?
+              input(type='text', placeholder='What is the title of your order?', ng-model="createOrder.orderName", ng-required="true", name="orderName")
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
-              .form-error(ng-message="required") We need your order's name.
+              .form-error(ng-message="required") The title of your order is needed. You can put the shop you are buying from or the event that is related to the order.
 
             label.item.item-input Your order will close at&nbsp;
               ionic-timepicker(input-obj='timePickerObject24Hour')
