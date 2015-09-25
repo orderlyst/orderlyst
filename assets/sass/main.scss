@@ -301,6 +301,11 @@ ion-footer-bar.ng-leave {
     top: 50%;
     transform: translateY(-50%);
   }
+  &.spacer-image {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
 }
 
 .navbar-brand {
