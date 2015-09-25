@@ -21,7 +21,7 @@ block content
                                     b {{userDictionary[user].name}}
                                 ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                     ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                        .col.col-75
+                                        .col.col-60
                                             span.annotation {{name}}
                                             b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
                                             span.orderlyst-badge {{groupedItems.length}}
@@ -44,12 +44,10 @@ block content
                                       b
                                         u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
 
-                        // Otherwise
                         .list.card.card-personal(ng-if="!hasOrderItems()")
                             .item.item-divider
                                 b {{userDictionary[uid].name}}
-                            small.item.annotation Tap "Add Item" or swipe existing items to start adding to your order.
-
+                            small.item.annotation Tap "Add Item" or swipe items ordered by others to start adding to your order.
 
                         div(ng-repeat="(user, groupedByUserItems) in items | unique: 'itemId' | removeWith: { UserUserId: uid } | groupBy: 'UserUserId'")
                             .list.card
@@ -57,7 +55,7 @@ block content
                                     b {{userDictionary[user].name}}
                                 ul.div(ng-repeat="(name, prices) in groupedByUserItems | groupBy: 'name'")
                                     ion-item.user-order-item(can-swipe="true", ng-repeat="(price, groupedItems) in prices | groupBy: 'price'")
-                                        .col.col-75
+                                        .col.col-60
                                             span.annotation {{name}}
                                             b &nbsp;&nbsp;&nbsp;<i class="icon ion-close-round"></i>&nbsp;&nbsp;&nbsp;
                                             span.orderlyst-badge {{groupedItems.length}}
@@ -65,6 +63,12 @@ block content
                                             | S{{price * groupedItems.length | currency}}
                                         ion-option-button.button-filled.ion-android-cart(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)")
+                                            
+                                    .item.item-divider.row.personal-cost(ng-show="isOwner && !order.isOpen")
+                                        .col.col-60.text-left Total
+                                        .col.text-right
+                                          b
+                                            u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
                     .spacer(ng-if="!items.length")
                         .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
                 ion-footer-bar.bar-filled(ng-if="!disconnected && order.isOpen")
