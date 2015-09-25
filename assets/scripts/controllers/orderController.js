@@ -834,21 +834,25 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         };
 
         $scope.getSurcharge = function() {
+          if ($scope.order) {
             return $scope.order.surcharge;
+          }
         };
 
         $scope.getTax = function() {
+          if ($scope.order) {
             return $scope.order.tax * ($scope.order.surcharge + $scope.subtotalFee()) / 100;
+          }
         };
 
         $scope.subtotalFee = function() {
-            return $scope.items.reduce(function(a, b) {
+            return ($scope.items || []).reduce(function(a, b) {
                 return a + parseFloat(b.price);
             }, 0);
         };
 
         $scope.userSubtotalFee = function(uid) {
-          return $scope.items.filter(function(item) {
+          return ($scope.items || []).filter(function(item) {
              return item.UserUserId === uid;
           }).reduce(function(a, b) {
               return a + parseFloat(b.price);
@@ -856,17 +860,19 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         };
 
         $scope.itemCollectionSubtotalFee = function(items) {
-          return items.reduce(function(a, b) {
+          return (items || []).reduce(function(a, b) {
               return a + parseFloat(b.price);
           }, 0);
         };
 
         $scope.totalFee = function() {
+          if ($scope.order) {
             return ($scope.subtotalFee() + $scope.order.surcharge) * (1 + $scope.order.tax / 100);
+          }
         };
 
         $scope.numActiveUsers = function() {
-            return $scope.items.reduce(function(acc, next) {
+            return ($scope.items || []).reduce(function(acc, next) {
                 if (acc.ids.indexOf(next.UserUserId) < 0) {
                     acc.ids.push(next.UserUserId);
                     acc.count++;
