@@ -15,7 +15,13 @@ router.get('/:id', function(req, res, next) {
       }
     })
     .then(function(user){
-      res.json(user);
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
+      }
     });
 });
 
@@ -90,6 +96,10 @@ router.post('/:id', function(req, res, next) {
             notifyWSClients(userId, user);
             res.json(user);
           });
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
       }
     });
 });

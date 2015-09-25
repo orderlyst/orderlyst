@@ -16,8 +16,14 @@ router.post('/search', function(req, res, next) {
         "isOpen": true
       }
     })
-    .then(function(orders){
-      res.json(orders);
+    .then(function(order){
+      if (order) {
+        res.json(order);
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
+      }
     });
 });
 
@@ -34,7 +40,13 @@ router.get('/:id', function(req, res, next) {
       }
     })
     .then(function(order){
-      res.json(order);
+      if (order) {
+        res.json(order);
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
+      }
     });
 });
 
@@ -60,7 +72,9 @@ router.post('/', function(req, res, next) {
             res.json(order);
           });
       } else {
-        // error
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
       }
     });
 });
@@ -97,7 +111,6 @@ router.post('/:id', function(req, res, next) {
     )
     .then(function(result){
       var count = result[0];
-      console.log(result);
       if (count === 1) {
         req.models.Order
           .find({
@@ -110,7 +123,9 @@ router.post('/:id', function(req, res, next) {
             res.json(order);
           });
       } else {
-        next();
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
       }
     });
 });
@@ -180,7 +195,9 @@ router.post('/:id/items', function(req, res, next) {
           res.json(item);
         });
     } else {
-      next();
+      res.status(404).json({
+        "status": "404 Not Found"
+      });
     }
   });
 });
@@ -207,20 +224,27 @@ router.post('/:id/items/:itemId', function(req, res, next){
         "OrderOrderId": orderId
       }
     })
-    .then(function() {
-      req.models.Item
-        .findAll({
-          "where": {
-            "OrderOrderId": orderId
-          }
-        })
-        .then(function(items){
-          req.wsUpdate(req.params.id, 'items', items);
-            console.log(itemId);
-          res.json(items.filter(function(item) {
-            return item.itemId == itemId;
-          })[0]);
+    .then(function(result) {
+      var count = result[0];
+      if (count === 1) {
+        req.models.Item
+          .findAll({
+            "where": {
+              "OrderOrderId": orderId
+            }
+          })
+          .then(function(items){
+            req.wsUpdate(req.params.id, 'items', items);
+              console.log(itemId);
+            res.json(items.filter(function(item) {
+              return item.itemId == itemId;
+            })[0]);
+          });
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
         });
+      }
     });
 });
 
@@ -238,19 +262,26 @@ router.delete('/:id/items/:itemId', function(req, res, next){
         "OrderOrderId": orderId
       }
     })
-    .then(function() {
-      req.models.Item
-        .findAll({
-          "where": {
-            "OrderOrderId": orderId
-          }
-        })
-        .then(function(items){
-          req.wsUpdate(req.params.id, 'items', items);
-        });
-    });
+    .then(function(result) {
+      var count = result[0];
+      if (count === 1) {
+        req.models.Item
+          .findAll({
+            "where": {
+              "OrderOrderId": orderId
+            }
+          })
+          .then(function(items){
+            req.wsUpdate(req.params.id, 'items', items);
+          });
 
-  res.json({status: "200 OK"});
+        res.json({status: "200 OK"});
+      } else {
+        res.status(404).json({
+          "status": "404 Not Found"
+        });
+      }
+    });
 });
 
 module.exports = router;
