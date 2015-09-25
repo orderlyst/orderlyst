@@ -22,11 +22,11 @@ ion-modal-view
             .item.item-input.item-floating-label
                 .row
                   .col-20.text-center.col-offset-20 Quantity
-                  .col-20.text-right(ng-click="decrementFormDataQuantity()")
+                  .col-20.text-right.quantity-control(ng-click="decrementFormDataQuantity()")
                     i.ion-minus.icon
                   .col-20.text-center
                       .special-height {{itemFormData.quantity}}
-                  .col-20.text-left(ng-click="incrementFormDataQuantity()")
+                  .col-20.text-left.quantity-control(ng-click="incrementFormDataQuantity()")
                     i.icon.ion-plus
 
     ion-footer-bar.bar-orderlyst()

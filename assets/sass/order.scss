@@ -69,3 +69,8 @@ input.special-height {
 .input-size {
   font-size: $input-font-size;
 }
+
+.quantity-control {
+  font-size: $input-font-size + 2;
+  color: $color-primary-blue;
+}
