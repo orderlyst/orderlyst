@@ -63,9 +63,9 @@ router.post('/:id', function(req, res, next) {
       .then(function(orders){
         orders.forEach(function(order){
           req.wsUpdate(order.orderId, 'user', user);
-        })
+        });
       });
-  }
+  };
 
   req.models.User
     .update(

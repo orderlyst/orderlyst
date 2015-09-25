@@ -13,23 +13,6 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
                 $scope.disconnected = newValue;
             }
         );
-
-
-        //$scope.createOrder = function() {
-        //    if (hasAccount) {
-        //        $http.post(
-        //            '/api/orders',
-        //            {
-        //              hostUserId: uid
-        //            }
-        //        ).success(function (data) {
-        //          $order.register(data.orderId);
-        //          $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-        //        });
-        //    } else {
-        //        $location.url('/create');
-        //    }
-        //};
     }
 ];
 
@@ -64,7 +47,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
               title: "Log Out",
               scope: $scope,
               buttons: [{
-                  text: 'Cancel'
+                  text: 'Cancel',
+                  type: 'button-blank'
               }, {
                   text: "Confirm",
                   type: "button-filled",
@@ -155,7 +139,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
               title: "Log Out",
               scope: $scope,
               buttons: [{
-                  text: 'Cancel'
+                  text: 'Cancel',
+                  type: 'button-blank'
               }, {
                   text: "Confirm",
                   type: "button-filled",
@@ -318,7 +303,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 title: "Lock Order",
                 scope: $scope,
                 buttons: [{
-                    text: 'Cancel'
+                    text: 'Cancel',
+                    type: 'button-blank'
                 }, {
                     text: "Confirm",
                     type: "button-filled",
@@ -711,7 +697,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 // Hide modal
                 $scope.closeUserItemsFormModal();
                 notify("Items were successfully editted", "success");
-            })
+            });
         };
 
         // Edit order item on Summary page
@@ -778,7 +764,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 });
 
                 $store.set('_orderlyst_orders_' + $scope.order.orderId + '_items', idArray);
-            })
+            });
         };
 
         // Fee aggregate scope methods
