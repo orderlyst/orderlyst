@@ -5,11 +5,11 @@ ion-view
       ion-header-bar.bar-orderlyst
         ion-nav-bar(animation="slide-left-right")
           ion-nav-buttons(side="left")
-            button.button.button-icon.fa.fa-bars(ng-click="toggleSideMenu()")
+            .button.button-icon.icon.ion-navicon-round(ng-click="toggleSideMenu()")
           ion-nav-title
             a.navbar-brand
           ion-nav-buttons(side="right")
-            button.button.button-icon.icon.ion-share(ng-click="openPopover($event)")
+            .button.button-icon.icon.ion-share(ng-click="openPopover($event)")
       ion-view
         block content
 
