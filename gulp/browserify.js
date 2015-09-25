@@ -6,6 +6,7 @@ var $ = require('gulp-load-plugins')({
 });
 var browserify = require('browserify');
 var gulp = require('gulp');
+var util = require('gulp-util');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
@@ -57,9 +58,9 @@ var debowerify = require('debowerify');
       // optional, remove if you dont want sourcemaps
 //      .pipe($.sourcemaps.init({})) // loads map from browserify file
          // Add transformation tasks to the pipeline here.
-      //.pipe($.streamify($.uglify({
-      //  compress: {drop_console: true}
-      //})))
+      .pipe($.streamify(process.env.NODE_ENV == 'production' ? $.uglify({
+        compress: {drop_console: true}
+      }) : util.noop() ))
 //      .pipe($.sourcemaps.write('./')) // writes .map file
       .pipe(gulp.dest('public/assets/scripts'));
   };

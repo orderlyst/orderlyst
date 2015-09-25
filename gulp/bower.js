@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var util = require('gulp-util');
 var $ = require('gulp-load-plugins')({
   pattern : ['gulp-*', 'main-bower-files', 'del'],
   camelize: true
@@ -58,7 +59,7 @@ var $ = require('gulp-load-plugins')({
     return gulp.src($.mainBowerFiles())
       .pipe(jsFilter)
       .pipe($.concat('vendor.js'))
-      //.pipe($.uglify())
+      .pipe(process.env.NODE_ENV == 'production' ? $.uglify() : util.noop())
       .pipe(gulp.dest('public/assets/scripts'));
   });
 

@@ -15,6 +15,7 @@
     "express": "~4.13.1",
     "express-rate-limit": "^1.2.0",
     "express-validator": "^2.17.1",
+    "gulp-uglify": "^1.4.1",
     "jade": "~1.11.0",
     "join": "^3.0.0",
     "jsonwebtoken": "^5.0.5",

@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var util = require('gulp-util');
 var autoprefixer = require('gulp-autoprefixer');
 var $ = require('gulp-load-plugins')({
   pattern : ['gulp-*', 'del'],
@@ -51,7 +52,7 @@ var bootstrapDir = './bower_components/bootstrap-sass';
     return gulp.src('assets/scripts/**/*.js')
       .pipe($.jshint())
       .pipe($.jshint.reporter('jshint-stylish'))
-      //.pipe($.uglify())
+      .pipe(process.env.NODE_ENV === 'production' ? $.uglify() : util.noop())
       .pipe(gulp.dest('public/assets/scripts/'))
       .pipe($.notify({'message': 'JavaScripts are loaded.', onLast: true}));
   });
