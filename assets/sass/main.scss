@@ -95,22 +95,28 @@ ion-footer-bar.ng-leave {
   button {
     width: 48%;
   }
-  button.button-filled, button.button-filled.button-clear {
+  .button-filled, .button-filled.button-clear, .button.button-filled {
     color: white;
     background-color: $color-primary-blue;
     border: 1px solid $color-primary-blue;
   }
-  button.button-blank, button.button-blank.button-clear {
+  .button-blank, .button-blank.button-clear {
     color: $color-primary-blue;
     background-color: white;
     border: 1px solid $color-primary-blue;
   }
 }
 
-.button.button-grey {
-  border-color: $color-primary-grey;
+.button.button-filled {
+  border-color: $color-primary-blue;
   color: white;
-  background-color: $color-primary-grey;
+  background-color: $color-primary-blue;
+}
+
+.button.button-yellow {
+  border-color: $color-primary-yellow;
+  color: black;
+  background-color: $color-primary-yellow;
 }
 
 
