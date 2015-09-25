@@ -64,11 +64,11 @@ block content
                                         ion-option-button.button-filled.ion-android-cart(ng-if="!disconnected && order.isOpen", \
                                             ng-click="createAdHocOrderItem(name, price)")
                                             
-                                    .item.item-divider.row.personal-cost(ng-show="isOwner && !order.isOpen")
-                                        .col.col-60.text-left Total
-                                        .col.text-right
-                                          b
-                                            u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
+                                .item.item-divider.row.personal-cost(ng-show="isOwner && !order.isOpen")
+                                    .col.col-60.text-left Total
+                                    .col.text-right
+                                      b
+                                        u S{{(itemCollectionSubtotalFee(groupedByUserItems) + order.surcharge/numActiveUsers()) * (100+order.tax)/100 | currency}}
                     .spacer(ng-if="!items.length")
                         .vertical-aligned Tap "Add Item" or swipe existing<br>items to start adding to your order.
                 ion-footer-bar.bar-filled(ng-if="!disconnected && order.isOpen")
