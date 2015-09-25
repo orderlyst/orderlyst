@@ -13,23 +13,6 @@ var startOrder = ['$scope', '$http', '$window', '$store', '$location', '$order',
                 $scope.disconnected = newValue;
             }
         );
-
-
-        //$scope.createOrder = function() {
-        //    if (hasAccount) {
-        //        $http.post(
-        //            '/api/orders',
-        //            {
-        //              hostUserId: uid
-        //            }
-        //        ).success(function (data) {
-        //          $order.register(data.orderId);
-        //          $window.location.href = '/orders/' + encodeURIComponent(data.orderId) + '?new=true';
-        //        });
-        //    } else {
-        //        $location.url('/create');
-        //    }
-        //};
     }
 ];
 
