@@ -336,6 +336,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
             $scope.addItemModal.hide();
         };
 
+        $scope.openWhatsApp = function() {
+          $window.open("whatsapp://send?text=Orderlyst%20Supper%20order%20at%20http%3A%2F%2Forderlyst.this.sg%2Fjoin%2F" + $scope.order.code);
+        }
+
         $scope.openFacebookShareLink = function(code) {
             $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
         };

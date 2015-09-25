@@ -1,8 +1,7 @@
 ion-popover-view
     ion-content.text-center
         .item.metadata Your Order Code is <b>{{order.code}}</b>
-        .item
-          a(ng-href="whatsapp://send?text=Orderlyst%20Supper%20order%20at%20http%3A%2F%2Forderlyst.this.sg%2Fjoin%2F{{order.code}}") WhatsApp
+        .item(ng-click="openWhatsApp()") WhatsApp
         .item(ng-click="openFacebookShareLink(order.code)")
           i.icon.ion-social-facebook
           | &nbsp;Share on Facebook
