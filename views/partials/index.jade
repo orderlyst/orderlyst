@@ -14,7 +14,7 @@
         .tutorial.tut4
 .row#homeButtons
   .col-80.col-offset-10
-    div(ng-if="disconnected") You are offline. Please connect to the internet to join or create an order.
+    div.text-center(ng-if="disconnected") You are offline. Please connect to the internet to join or create an order.
     div(ng-if="!disconnected")
       a.button.button-filled.button-block(href='/join') Join Order
     div(ng-if="!disconnected")
