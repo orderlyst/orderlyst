@@ -60,7 +60,7 @@ var joinOrder = ['$scope', '$http', '$state', '$store', '$stateParams', '$q', '$
 
         $scope.logoutConfirm = function() {
           $ionicPopup.show({
-              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be recovered.",
+              template: "Are you sure you want to log out? Once you log out, all associated items and orders will be lost.",
               title: "Log Out",
               scope: $scope,
               buttons: [{
