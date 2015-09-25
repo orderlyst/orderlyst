@@ -25,12 +25,12 @@ ion-view
             .form-errors(ng-if="submitted && createOrderForm.orderName.$error", ng-messages="createOrderForm.orderName.$error")
               .form-error(ng-message="required") The title of your order is needed. You can put the shop you are buying from or the event that is related to the order.
 
-            label.item.item-input Your order will close at&nbsp;
+            label.item.item-input.input-size Your order will close at&nbsp;
               ionic-timepicker(input-obj='timePickerObject24Hour')
-                button.button
+                button.button-blank
                   standard-time-no-meridian(etime='timePickerObject24Hour.inputEpochTime')
 
           .row
             .col-80.col-offset-10
-              button.button.button-blank.button-block(ng-if="!disconnected" ng-click="submit(createOrderForm)") Create Order
+              button.button.button-filled.button-block(ng-if="!disconnected" ng-click="submit(createOrderForm)") Create Order
               button.button.button-disabled.button-block(ng-if="disconnected") Offline

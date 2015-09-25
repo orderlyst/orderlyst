@@ -58,19 +58,14 @@ input.special-height {
   -webkit-user-modify: read-write;
 }
 
-ionic-timepicker {
-  .button {
-    font-size: x-large;
-    background-color: transparent;
-    color: $color-primary-blue;
-    text-decoration: underline;
-  }
-}
-
 .spacer-order-create {
   background-image: url('/assets/images/create.png');
 }
 
 .spacer-order-join {
   background-image: url('/assets/images/join.png');
+}
+
+.input-size {
+  font-size: $input-font-size;
 }
