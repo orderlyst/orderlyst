@@ -108,24 +108,30 @@ var joinOrder = ['$scope', '$http', '$state', '$store', '$stateParams', '$q', '$
                     ));
                 }
 
-                $q.all(promises).then(function(result) {
-                    var order = result[0].data;
-                    if (result[1]) {
-                        // user created
-                        $scope.hasAccount = true;
-                        var user = result[1].data;
-                        $store.set('_orderlyst_uid', user.userId);
-                        $scope.userName = $scope.joinOrder.name;
-                    }
-                    if (order) {
-                        $order.register(order.orderId);
+                $q.all(promises)
+                  .then(
+                    function(result) {
+                      var order = result[0].data;
+                      if (result[1]) {
+                          // user created
+                          $scope.hasAccount = true;
+                          var user = result[1].data;
+                          $store.set('_orderlyst_uid', user.userId);
+                          $scope.userName = $scope.joinOrder.name;
+                      }
+                      if (order) {
+                          $order.register(order.orderId);
 
-                        $state.go('view', {orderId: order.orderId});
-                    } else {
-                        // order is not found or no longer available.
-                        $scope.codeNotAvailable = true;
+                          $state.go('view', {orderId: order.orderId});
+                      } else {
+                          // order is not found or no longer available.
+                          $scope.codeNotAvailable = true;
+                      }
+                    },
+                    function(){
+                      $scope.codeNotAvailable = true;
                     }
-                });
+                  );
             }
         };
     }
