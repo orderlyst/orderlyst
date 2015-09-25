@@ -18,16 +18,19 @@ module.exports = function(app) {
                 controller: "StartOrderController"
             }
             ).state('join', {
+                cache: false,
                 url: "/join",
                 templateUrl: "/partials/join",
                 controller: "JoinOrderController"
             }
             ).state('joinOrder', {
+                cache: false,
                 url: "/join/:orderCode",
                 templateUrl: "/partials/join",
                 controller: "JoinOrderController"
             }
             ).state('create', {
+                cache: false,
                 url: "/create",
                 templateUrl: "/partials/create",
                 controller: "CreateOrderController"
