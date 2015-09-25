@@ -39,6 +39,7 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
                     $scope.userName = response.data.name;
                   },
                   function () {
+                    $scope.joinOrder.name = '';
                     $store.set('_orderlyst_uid', -1);
                     uid = -1;
                     $scope.hasAccount = false;
@@ -128,14 +129,21 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
         // Retrieve name if user has an account
         if ($scope.hasAccount) {
             $http
-                .get('/api/users/' + encodeURIComponent(uid), {
-                  headers: {
-                    "x-access-token": $window.token
-                  }
-                })
-                .then(function(response) {
-                    $scope.userName = response.data.name;
-                });
+              .get('/api/users/' + encodeURIComponent(uid), {
+                headers: {
+                  "x-access-token": $window.token
+                }
+              })
+              .then(
+                function(response) {
+                  $scope.userName = response.data.name;
+                },
+                function() {
+                  $store.set('_orderlyst_uid', -1);
+                  uid = -1;
+                  $scope.hasAccount = false;
+                }
+              );
         }
 
         $scope.logoutConfirm = function() {
