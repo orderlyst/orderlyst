@@ -47,7 +47,8 @@ var joinOrder = ['$scope', '$http', '$location', '$store', '$stateParams', '$q',
               title: "Log Out",
               scope: $scope,
               buttons: [{
-                  text: 'Cancel'
+                  text: 'Cancel',
+                  type: 'button-blank'
               }, {
                   text: "Confirm",
                   type: "button-filled",
@@ -138,7 +139,8 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
               title: "Log Out",
               scope: $scope,
               buttons: [{
-                  text: 'Cancel'
+                  text: 'Cancel',
+                  type: 'button-blank'
               }, {
                   text: "Confirm",
                   type: "button-filled",
@@ -301,7 +303,8 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
                 title: "Lock Order",
                 scope: $scope,
                 buttons: [{
-                    text: 'Cancel'
+                    text: 'Cancel',
+                    type: 'button-blank'
                 }, {
                     text: "Confirm",
                     type: "button-filled",
