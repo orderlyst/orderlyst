@@ -203,13 +203,15 @@ In this action, you can search for an order and its information. Only orders wit
         
 + Response 404 (application/json)
 
-        {}
+        {
+            "status": "404 Not Found"
+        }
 
 ## Items Collection [/orders/{orderId}/items]
 
 ### Fetch all items of an order [GET /orders/{orderId}/items]
 
-In this action, you can fetch all the order's items
+In this action, you can fetch all the order's items. If the order does not exists, the API will return an empty array instead.
 
 + Parameters
     + orderId: BeDc== (required, base64) - ID of the order
