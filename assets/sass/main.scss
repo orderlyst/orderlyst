@@ -196,6 +196,12 @@ ion-footer-bar.ng-leave {
   background-color: $color-primary-blue;
 }
 
+.button-grey, .button.button-grey {
+  color: white;
+  border-color: $color-primary-grey;
+  background-color: $color-primary-grey;
+}
+
 .header-item .button.button-icon.button-filled {
   color: white;
   background-color: $color-primary-blue;
