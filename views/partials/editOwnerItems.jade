@@ -1,6 +1,6 @@
 ion-modal-view
     ion-header-bar.bar-orderlyst.bar-filled.text-center
-        h2.title Change {{ownerItemsFormData.name}}'s Price
+        h2.title Update Price
     ion-content.has-header
         form.new-order-item-form.modal-body.list(accept-charset="UTF-8", name="editOwnerItemsForm", novalidate="")
             label.item Item Name: {{ownerItemsFormData.name}}
@@ -18,4 +18,4 @@ ion-modal-view
 
     ion-footer-bar.bar-orderlyst()
         button.button.button-clear.button-blank(ng-click="closeOwnerItemsFormModal()") Cancel
-        button.button.button-clear.button-filled(ng-click="editOwnerItemsForm()") Edit {{ownerItemsFormData.name}}
+        button.button.button-clear.button-filled(ng-click="editOwnerItemsForm()") Update Price
