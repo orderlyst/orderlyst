@@ -12,7 +12,7 @@ ion-modal-view
 
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': orderSettingsForm.surcharge.$invalid && orderSettings.submitted, \
                     'valid': orderSettingsForm.surcharge.$valid && orderSettings.submitted && orderSettingsForm.surcharge.$dirty }")
-                span.input-label Surcharges (S$)
+                span.input-label Surcharge (S$)
                 input(type="number",placeholder="Surcharge (S$)",ng-model="orderSettings.surcharge", ng-required="true", name="surcharge", \
                 ng-pattern="/^[0-9]+(\.[0-9]([05])?)?$/")
             .form-errors(ng-show="orderSettingsForm.surcharge.$error && orderSettings.submitted", ng-messages="orderSettingsForm.surcharge.$error")
@@ -21,8 +21,8 @@ ion-modal-view
 
             label.item.item-input.item-floating-label(ng-class="{ 'has-error': orderSettingsForm.tax.$invalid && orderSettings.submitted, \
                     'valid': orderSettingsForm.tax.$valid && orderSettings.submitted && orderSettingsForm.tax.$dirty }")
-                span.input-label Taxes (%)
-                input(type="number",placeholder="Taxes (%)",ng-model="orderSettings.tax", ng-required="true", \
+                span.input-label Tax (%)
+                input(type="number",placeholder="Tax (%)",ng-model="orderSettings.tax", ng-required="true", \
                 ng-pattern="/^[0-9]+(\.[0-9]+)?$/", name="tax")
             .form-errors(ng-show="orderSettingsForm.tax.$error && orderSettings.submitted", ng-messages="orderSettingsForm.tax.$error")
                 .form-error(ng-message="required") Tax is required
