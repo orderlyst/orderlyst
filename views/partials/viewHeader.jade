@@ -17,8 +17,8 @@ ion-view
       ion-content(has-header="true")
         .list
           .bar.bar-header.bar-dark.item.item-divider(ng-if="!nameChanging")
-            span.special-height {{userDictionary[uid].name}}
-            span.ord-blue(ng-click="toggleNameChanging()") &nbsp;<div class="button button-yellow main-container icon ion-edit"></div>
+            span(ng-click="toggleNameChanging()") {{userDictionary[uid].name}}
+            span.ord-blue.large(ng-click="toggleNameChanging()") &nbsp;<i class="icon ion-edit"></i>
           .bar.bar-header.bar-dark.item.item-divider( ng-if="nameChanging")
             input(ng-model="$parent.$parent.$parent.nameChangeData")
             span.ord-blue(ng-click="toggleNameChanging()") &nbsp;<div class="button button-filled main-container icon ion-checkmark"></div>
