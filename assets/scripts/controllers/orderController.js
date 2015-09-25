@@ -131,8 +131,8 @@ var joinOrder = ['$scope', '$http', '$state', '$store', '$stateParams', '$q', '$
     }
 ];
 
-var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order', '$ionicPopup',
-    function($scope, $http, $location, $store, $window, $order, $ionicPopup) {
+var createOrder = ['$scope', '$http', '$state', '$store', '$window', '$order', '$ionicPopup',
+    function($scope, $http, $state, $store, $window, $order, $ionicPopup) {
         $scope.createOrder = {};
         $scope.submitted = false;
         var uid = $store.get('_orderlyst_uid');
@@ -281,10 +281,10 @@ var createOrder = ['$scope', '$http', '$location', '$store', '$window', '$order'
     }
 ];
 
-var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$location',
+var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
     '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
     '$ionicSideMenuDelegate', '$order', '$window',
-    function($scope, $http, $stateParams, $store, $location,
+    function($scope, $http, $stateParams, $store, $state,
              $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
 
         $scope.uid = $store.get('_orderlyst_uid');
