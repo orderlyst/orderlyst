@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var verifier = require('./../middlewares/verifier');
+var ua = require('ua-parser');
+var idTransform = require('../middlewares/id-transform');
 
 router.use('/api', verifier.middleware);
 router.use('/api', require('./api/'));
@@ -17,6 +19,29 @@ router.get('/partials/:filename', function (req, res, next) {
   res.render("partials/" + filename, {});
 });
 
+router.get('/open-whatsapp/:orderId', function(req, res, next) {
+  var orderId = idTransform.decrypt(req.params.orderId);
+  var r = ua.parse(req.headers['user-agent']);
+
+  req.models.Order
+    .find({
+      "where": {
+        "orderId": orderId,
+        "isOpen": true
+      }
+    })
+    .then(function(order){
+      if (order) {
+        if (r.device.family === 'iPhone' || r.device.family === 'Android') {
+          res.redirect(302, 'whatsapp://send?text=Order%20' + encodeURIComponent(order.name) + '%20with%20Orderlyst%20at%20http%3A%2F%2Forderlyst.this.sg%2Fjoin%2F' + order.code);
+        } else {
+          res.redirect(302, 'https://web.whatsapp.com/');
+        }
+      } else {
+        next();
+      }
+    });
+});
 
 router.get('/fbshareclose', function(req, res, next) {
   res.send('<html><script>window.close()</script></html>');

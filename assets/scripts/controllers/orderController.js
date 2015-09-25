@@ -289,9 +289,9 @@ var createOrder = ['$scope', '$http', '$state', '$store', '$window', '$order', '
 
 var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
     '$ionicTabsDelegate', '$timeout', '$ionicModal', '$ionicPopup', '$ionicPopover', '$q',
-    '$ionicSideMenuDelegate', '$order', '$window',
+    '$ionicSideMenuDelegate', '$order', '$window', '$location',
     function($scope, $http, $stateParams, $store, $state,
-             $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window) {
+             $ionicTabsDelegate, $timeout, $ionicModal, $ionicPopup, $ionicPopover, $q, $ionicSideMenuDelegate, $order, $window, $location) {
 
         $scope.uid = $store.get('_orderlyst_uid');
         var hasAccount = ($scope.uid !== -1);
@@ -368,11 +368,11 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         };
 
         $scope.openWhatsApp = function() {
-          $window.open("whatsapp://send?text=Orderlyst%20Supper%20order%20at%20http%3A%2F%2Forderlyst.this.sg%2Fjoin%2F" + $scope.order.code);
+          $window.open("http://" + $location.host() + ':' + $location.port() + "/open-whatsapp/" + encodeURIComponent($scope.order.orderId));
         }
 
         $scope.openFacebookShareLink = function(code) {
-            $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
+          $window.open('https://www.facebook.com/dialog/share?app_id=409661689237786&display=popup&href=' + encodeURIComponent('http://orderlyst.this.sg/join/' + code) + '&redirect_uri=' + encodeURIComponent('http://orderlyst.this.sg/fbshareclose'));
         };
 
         $scope.nameChanging = false;
