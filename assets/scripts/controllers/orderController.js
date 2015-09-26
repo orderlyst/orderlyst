@@ -360,6 +360,10 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         };
 
         $scope.openAddItemModal = function() {
+            $scope.itemFormData.submitted = false;
+            $scope.itemFormData.name = '';
+            $scope.itemFormData.price = 0.00;
+            $scope.itemFormData.quantity = 1;
             $scope.addItemModal.show();
         };
 
@@ -574,9 +578,6 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
             $scope.closeAddItemModal();
             // Clear formData
             $scope.itemFormData.submitted = false;
-            $scope.itemFormData.name = '';
-            $scope.itemFormData.price = 0.00;
-            $scope.itemFormData.quantity = 1;
             // Add items quantity times
             var createItemResponse = function(data) {
                 $scope.isLoading = false;
