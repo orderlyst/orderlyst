@@ -644,6 +644,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         });
 
         $scope.openEditUserItemsModal = function(items) {
+            $scope.userItemsFormData.submitted = false;
             $scope.userItemsFormData.user = items[0].UserUserId;
             $scope.userItemsFormData.name = items[0].name;
             $scope.userItemsFormData.price = items[0].price;
@@ -759,6 +760,7 @@ var viewOrder = ['$scope', '$http', '$stateParams', '$store', '$state',
         });
 
         $scope.openEditOwnerItemsModal = function(items) {
+            $scope.ownerItemsFormData.submitted = false;
             $scope.ownerItemsFormData.name = items[0].name;
             $scope.ownerItemsFormData.price = items[0].price;
             $scope.ownerItemsFormData.quantity = items.length;
