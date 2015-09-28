@@ -32,11 +32,11 @@ router.get('/open-whatsapp/:orderId', function(req, res, next) {
     })
     .then(function(order){
       if (order) {
-        if (r.device.family === 'iPhone' || r.device.family === 'Android') {
+        //if (r.device.family === 'iPhone' || r.device.family === 'Android') {
           res.redirect(302, 'whatsapp://send?text=Order%20' + encodeURIComponent(order.name) + '%20with%20Orderlyst%20at%20http%3A%2F%2Forderlyst.this.sg%2Fjoin%2F' + order.code);
-        } else {
-          res.redirect(302, 'https://web.whatsapp.com/');
-        }
+        //} else {
+        //  res.redirect(302, 'https://web.whatsapp.com/');
+        //}
       } else {
         next();
       }
